@@ -1,0 +1,1037 @@
+"""
+Commands
+
+Commands describe the input the account can do to the game.
+
+"""
+
+from evennia.commands.command import Command as BaseCommand
+
+from world.skills import SKILL_CATEGORIES, canonical_skill_name
+from world.dice import ResultTier
+from world.building_menus import (
+    ExitBuildingMenu, ItemBuildingMenu, WeaponBuildingMenu, ArmorBuildingMenu,
+)
+from typeclasses.exits import LockableExit, VALID_ATTRIBUTES
+from typeclasses.items import Item, Weapon, Armor
+from world.skills import ALL_SKILLS
+from world import body_parts as body_parts_registry
+
+# from evennia import default_cmds
+
+
+class Command(BaseCommand):
+    """
+    Base command (you may see this if a child command had no help text defined)
+
+    Note that the class's `__doc__` string is used by Evennia to create the
+    automatic help entry for the command, so make sure to document consistently
+    here. Without setting one, the parent's docstring will show (like now).
+
+    """
+
+    # Each Command class implements the following methods, called in this order
+    # (only func() is actually required):
+    #
+    #     - at_pre_cmd(): If this returns anything truthy, execution is aborted.
+    #     - parse(): Should perform any extra parsing needed on self.args
+    #         and store the result on self.
+    #     - func(): Performs the actual work.
+    #     - at_post_cmd(): Extra actions, often things done after
+    #         every command, like prompts.
+    #
+    pass
+
+
+# -------------------------------------------------------------
+#
+# The default commands inherit from
+#
+#   evennia.commands.default.muxcommand.MuxCommand.
+#
+# If you want to make sweeping changes to default commands you can
+# uncomment this copy of the MuxCommand parent and add
+#
+#   COMMAND_DEFAULT_CLASS = "commands.command.MuxCommand"
+#
+# to your settings file. Be warned that the default commands expect
+# the functionality implemented in the parse() method, so be
+# careful with what you change.
+#
+# -------------------------------------------------------------
+
+# from evennia.utils import utils
+#
+#
+# class MuxCommand(Command):
+#     """
+#     This sets up the basis for a MUX command. The idea
+#     is that most other Mux-related commands should just
+#     inherit from this and don't have to implement much
+#     parsing of their own unless they do something particularly
+#     advanced.
+#
+#     Note that the class's __doc__ string (this text) is
+#     used by Evennia to create the automatic help entry for
+#     the command, so make sure to document consistently here.
+#     """
+#     def has_perm(self, srcobj):
+#         """
+#         This is called by the cmdhandler to determine
+#         if srcobj is allowed to execute this command.
+#         We just show it here for completeness - we
+#         are satisfied using the default check in Command.
+#         """
+#         return super().has_perm(srcobj)
+#
+#     def at_pre_cmd(self):
+#         """
+#         This hook is called before self.parse() on all commands
+#         """
+#         pass
+#
+#     def at_post_cmd(self):
+#         """
+#         This hook is called after the command has finished executing
+#         (after self.func()).
+#         """
+#         pass
+#
+#     def parse(self):
+#         """
+#         This method is called by the cmdhandler once the command name
+#         has been identified. It creates a new set of member variables
+#         that can be later accessed from self.func() (see below)
+#
+#         The following variables are available for our use when entering this
+#         method (from the command definition, and assigned on the fly by the
+#         cmdhandler):
+#            self.key - the name of this command ('look')
+#            self.aliases - the aliases of this cmd ('l')
+#            self.permissions - permission string for this command
+#            self.help_category - overall category of command
+#
+#            self.caller - the object calling this command
+#            self.cmdstring - the actual command name used to call this
+#                             (this allows you to know which alias was used,
+#                              for example)
+#            self.args - the raw input; everything following self.cmdstring.
+#            self.cmdset - the cmdset from which this command was picked. Not
+#                          often used (useful for commands like 'help' or to
+#                          list all available commands etc)
+#            self.obj - the object on which this command was defined. It is often
+#                          the same as self.caller.
+#
+#         A MUX command has the following possible syntax:
+#
+#           name[ with several words][/switch[/switch..]] arg1[,arg2,...] [[=|,] arg[,..]]
+#
+#         The 'name[ with several words]' part is already dealt with by the
+#         cmdhandler at this point, and stored in self.cmdname (we don't use
+#         it here). The rest of the command is stored in self.args, which can
+#         start with the switch indicator /.
+#
+#         This parser breaks self.args into its constituents and stores them in the
+#         following variables:
+#           self.switches = [list of /switches (without the /)]
+#           self.raw = This is the raw argument input, including switches
+#           self.args = This is re-defined to be everything *except* the switches
+#           self.lhs = Everything to the left of = (lhs:'left-hand side'). If
+#                      no = is found, this is identical to self.args.
+#           self.rhs: Everything to the right of = (rhs:'right-hand side').
+#                     If no '=' is found, this is None.
+#           self.lhslist - [self.lhs split into a list by comma]
+#           self.rhslist - [list of self.rhs split into a list by comma]
+#           self.arglist = [list of space-separated args (stripped, including '=' if it exists)]
+#
+#           All args and list members are stripped of excess whitespace around the
+#           strings, but case is preserved.
+#         """
+#         raw = self.args
+#         args = raw.strip()
+#
+#         # split out switches
+#         switches = []
+#         if args and len(args) > 1 and args[0] == "/":
+#             # we have a switch, or a set of switches. These end with a space.
+#             switches = args[1:].split(None, 1)
+#             if len(switches) > 1:
+#                 switches, args = switches
+#                 switches = switches.split('/')
+#             else:
+#                 args = ""
+#                 switches = switches[0].split('/')
+#         arglist = [arg.strip() for arg in args.split()]
+#
+#         # check for arg1, arg2, ... = argA, argB, ... constructs
+#         lhs, rhs = args, None
+#         lhslist, rhslist = [arg.strip() for arg in args.split(',')], []
+#         if args and '=' in args:
+#             lhs, rhs = [arg.strip() for arg in args.split('=', 1)]
+#             lhslist = [arg.strip() for arg in lhs.split(',')]
+#             rhslist = [arg.strip() for arg in rhs.split(',')]
+#
+#         # save to object properties:
+#         self.raw = raw
+#         self.switches = switches
+#         self.args = args.strip()
+#         self.arglist = arglist
+#         self.lhs = lhs
+#         self.lhslist = lhslist
+#         self.rhs = rhs
+#         self.rhslist = rhslist
+#
+#         # if the class has the account_caller property set on itself, we make
+#         # sure that self.caller is always the account if possible. We also create
+#         # a special property "character" for the puppeted object, if any. This
+#         # is convenient for commands defined on the Account only.
+#         if hasattr(self, "account_caller") and self.account_caller:
+#             if utils.inherits_from(self.caller, "evennia.objects.objects.DefaultObject"):
+#                 # caller is an Object/Character
+#                 self.character = self.caller
+#                 self.caller = self.caller.account
+#             elif utils.inherits_from(self.caller, "evennia.accounts.accounts.DefaultAccount"):
+#                 # caller was already an Account
+#                 self.character = self.caller.get_puppet(self.session)
+#             else:
+#                 self.character = None
+
+
+
+def format_equipment_lines(caller):
+    """
+    Shared renderer for the worn/wielded-items table - used by both
+    `equipment` (standalone) and `sheet` (embedded), so the two never
+    drift out of sync with each other.
+    """
+    lines = []
+    equipment = caller.equipment
+    for slot_id in caller.equip_slots:
+        label = body_parts_registry.slot_display_name(slot_id) + ":"
+        item = equipment.get(slot_id)
+        if item:
+            item_str = f"|w{item.get_display_name(caller)}|n"
+        else:
+            item_str = "|x(empty)|n"
+        lines.append(f"  {label:<14} {item_str}")
+    return lines
+
+
+def format_body_lines(caller):
+    """
+    Shared renderer for the body-parts/damage table - used by both
+    `body` (standalone) and `sheet` (embedded).
+    """
+    lines = []
+    damage = caller.body_part_damage
+    body_parts = caller.body_parts
+
+    rows = []
+    for part_id in body_parts:
+        part_data = body_parts_registry.get_body_part_data(part_id) or {}
+        label = part_data.get("display_name", part_id)
+        slots = part_data.get("equip_slots", [])
+        slot_str = ", ".join(body_parts_registry.slot_display_name(s) for s in slots) or "-"
+        rows.append((label, slot_str, part_id))
+
+    label_width = max((len(label) for label, _, _ in rows), default=0)
+    slot_width = max((len(slot_str) for _, slot_str, _ in rows), default=0)
+
+    for label, slot_str, part_id in rows:
+        dmg = damage.get(part_id, 0)
+        disabled = caller.is_body_part_disabled(part_id)
+        if disabled:
+            status = "|rDISABLED|n"
+        elif dmg:
+            status = f"|r{dmg} dmg|n"
+        else:
+            status = "|ghealthy|n"
+
+        lines.append(
+            f"  {label:<{label_width}} |x(slots: {slot_str:<{slot_width}})|n  {status}"
+        )
+    return lines
+
+
+class CmdSheet(Command):
+    """
+    View your character's full stats and information.
+
+    Usage:
+      sheet
+    """
+
+    key = "sheet"
+    aliases = ["score", "sh"]
+    help_category = "General"
+
+    def func(self):
+        """
+        Render and display the character sheet.
+        """
+        caller = self.caller
+
+        # Defensive self-heal: catches characters created before some of
+        # these fields existed on the typeclass (at_object_creation only
+        # ever runs once, so old objects wouldn't otherwise pick them up).
+        if caller.ensure_data_integrity():
+            caller.msg("|x(sheet: found and repaired missing character data)|n")
+
+        sheet = []
+        sheet.append("|y" + "=" * 78 + "|n")
+        sheet.append(f"|w{'CHARACTER SHEET':^78}|n")
+        sheet.append("|y" + "=" * 78 + "|n")
+
+        # ----- Identity -----
+        race_label = caller.race_data.get("display_name", caller.race)
+        display_name = caller.name.capitalize() if caller.name else caller.name
+        name_str = f" Name: |w{display_name:<20}|n"
+        sex_str = f"Sex: |w{str(caller.sex):<12}|n"
+        race_str = f"Race: |w{race_label}|n"
+        sheet.append(f"{name_str}{sex_str}{race_str}")
+
+        size_str = f" Size: |w{caller.size_category:<15}|n"
+        vision_str = f"Vision: |w{caller.vision:<12}|n"
+        sheet.append(f"{size_str}{vision_str}")
+
+        if caller.languages:
+            sheet.append(f" Languages: |w{', '.join(caller.languages)}|n")
+
+        sheet.append("|y" + "-" * 78 + "|n")
+
+        # ----- Vitals -----
+        sheet.append(
+            f" HP: |w{caller.hp}/{caller.max_hp}|n   "
+            f"Mana: |w{caller.mana}/{caller.max_mana}|n   "
+            f"Stamina: |w{caller.stamina}/{caller.max_stamina}|n"
+        )
+        sheet.append(
+            f" Combat Speed: |w{caller.combat_speed}|n   "
+            f"Weight: |w{caller.weight}/{caller.max_weight}|n"
+        )
+        sheet.append(f" XP: |w{caller.xp}|n")
+        sheet.append("|y" + "-" * 78 + "|n")
+
+        # ----- Attributes (base + any active modifier total) -----
+        sheet.append(f"|c{'PHYSICAL':^26}{'MENTAL':^26}{'SOCIAL':^26}|n")
+
+        def fmt_attr(label, attr_name):
+            base = getattr(caller, attr_name)
+            mod = caller.get_modifier_total(attr_name)
+            val = f"{base}+{mod}" if mod else f"{base}"
+            return f"  {label:<12} |w{val:<5}|n"
+
+        def format_row(p_attr, p_label, m_attr, m_label, s_attr, s_label):
+            return (
+                fmt_attr(p_label, p_attr)
+                + fmt_attr(m_label, m_attr)
+                + fmt_attr(s_label, s_attr)
+            )
+
+        sheet.append(format_row("might", "Might", "intelligence", "Intelligence", "charisma", "Charisma"))
+        sheet.append(format_row("agility", "Agility", "cunning", "Cunning", "influence", "Influence"))
+        sheet.append(format_row("endurance", "Endurance", "willpower", "Willpower", "appearance", "Appearance"))
+
+        sheet.append("|y" + "-" * 78 + "|n")
+
+        # ----- Skills (grouped by category, all skills shown) -----
+        skills = caller.attributes.get("skills", default={})
+        sheet.append("|c" + f"{'SKILLS':^78}" + "|n")
+        for category, category_skills in SKILL_CATEGORIES.items():
+            sheet.append(f" |y{category}:|n")
+            skill_line = "   "
+            for i, name in enumerate(category_skills):
+                rank = skills.get(name, 0)
+                total = caller.get_skill_total(name)
+                val = f"{rank}+{total - rank}" if total != rank else f"{rank}"
+                skill_line += f"{name:<14}|w{val:<5}|n"
+                if (i + 1) % 3 == 0:
+                    sheet.append(skill_line)
+                    skill_line = "   "
+            if skill_line.strip():
+                sheet.append(skill_line)
+        sheet.append("|y" + "-" * 78 + "|n")
+
+        # ----- Perks -----
+        perks = caller.perks
+        if perks:
+            perk_str = ", ".join(
+                f"{pid} (rank {rank})" if rank > 1 else pid
+                for pid, rank in perks.items()
+            )
+            sheet.append(f" |gPerks:|n {perk_str}")
+
+        # ----- Backgrounds -----
+        backgrounds = caller.backgrounds
+        if backgrounds:
+            sheet.append(f" |gBackgrounds:|n {', '.join(backgrounds.keys())}")
+
+        # ----- Conditions -----
+        conditions = caller.conditions
+        if conditions:
+            cond_str = ", ".join(
+                f"{name} ({value})" if value != 1 else name
+                for name, value in conditions.items()
+            )
+            sheet.append(f" |rConditions:|n {cond_str}")
+
+        if perks or backgrounds or conditions:
+            sheet.append("|y" + "-" * 78 + "|n")
+
+        # ----- Active modifiers (debug/transparency view) -----
+        active_modifiers = caller.active_modifiers
+        if active_modifiers:
+            sheet.append(" |mActive Modifiers:|n")
+            for stat_name, sources in active_modifiers.items():
+                total = sum(sources.values())
+                source_str = ", ".join(f"{sid}: {val:+d}" for sid, val in sources.items())
+                sheet.append(f"   {stat_name:<14} |w{total:+d}|n  ({source_str})")
+            sheet.append("|y" + "-" * 78 + "|n")
+
+        # ----- Equipment -----.
+        sheet.append("Type EQUIPMENT or EQ to see your equipment." + "|n")
+        #sheet.append("|c" + f"{'EQUIPMENT':^78}" + "|n")
+        #sheet.extend(format_equipment_lines(caller))
+        #sheet.append("|y" + "-" * 78 + "|n")
+
+        # ----- Body -----
+        sheet.append("Type BODY to see your body part status." + "|n")
+        #sheet.append("|c" + f"{'BODY':^78}" + "|n")
+        #sheet.extend(format_body_lines(caller))
+        #sheet.append("|y" + "=" * 78 + "|n")
+
+        caller.msg("\n".join(sheet))
+
+
+class CmdBody(Command):
+    """
+    View your character's body parts and any hit-location damage.
+
+    Usage:
+      body
+    """
+
+    key = "body"
+    aliases = ["parts"]
+    help_category = "General"
+
+    def func(self):
+        caller = self.caller
+
+        lines = []
+        lines.append("|y" + "=" * 78 + "|n")
+        lines.append(f"|w{'BODY':^78}|n")
+        lines.append("|y" + "=" * 78 + "|n")
+
+        lines.extend(format_body_lines(caller))
+
+        lines.append("|y" + "-" * 78 + "|n")
+        lines.append(" |xType 'equipment' (or 'eq') to see what you're wearing.|n")
+        lines.append("|y" + "=" * 78 + "|n")
+
+        caller.msg("\n".join(lines))
+
+
+class CmdEquipment(Command):
+    """
+    View what you're wearing/wielding in each of your equip slots.
+
+    Usage:
+      equipment
+      eq
+    """
+
+    key = "equipment"
+    aliases = ["eq"]
+    help_category = "General"
+
+    def func(self):
+        caller = self.caller
+
+        lines = []
+        lines.append("|y" + "=" * 78 + "|n")
+        lines.append(f"|w{'EQUIPMENT':^78}|n")
+        lines.append("|y" + "=" * 78 + "|n")
+
+        lines.extend(format_equipment_lines(caller))
+
+        lines.append("|y" + "-" * 78 + "|n")
+        lines.append(" |xType 'body' to see your body parts.|n")
+        lines.append("|y" + "=" * 78 + "|n")
+
+        caller.msg("\n".join(lines))
+
+
+class CmdRoll(Command):
+    """
+    Roll an attribute + skill check via the exploding d10 dice pool.
+
+    Usage:
+      roll <attribute>/<skill> [= <required successes>] [+ <bonus dice>]
+
+    Examples:
+      roll agility/stealth
+      roll agility/stealth = 2
+      roll intelligence/arcana = 2 + 1
+    """
+
+    key = "roll"
+    aliases = ["check"]
+    help_category = "General"
+
+    VALID_ATTRIBUTES = (
+        "might", "agility", "endurance",
+        "intelligence", "cunning", "willpower",
+        "charisma", "influence", "appearance",
+    )
+
+    def func(self):
+        caller = self.caller
+        args = self.args.strip()
+
+        if not args:
+            caller.msg("Usage: roll <attribute>/<skill> [= <required successes>] [+ <bonus dice>]")
+            return
+
+        extra_bonus_dice = 0
+        if "+" in args:
+            args, bonus_str = args.rsplit("+", 1)
+            args = args.strip()
+            bonus_str = bonus_str.strip()
+            if not bonus_str.isdigit():
+                caller.msg("Bonus dice must be a whole number.")
+                return
+            extra_bonus_dice = int(bonus_str)
+
+        required_successes = 1
+        if "=" in args:
+            args, req_str = args.split("=", 1)
+            args = args.strip()
+            req_str = req_str.strip()
+            if not req_str.isdigit():
+                caller.msg("Required successes must be a whole number.")
+                return
+            required_successes = int(req_str)
+
+        if "/" not in args:
+            caller.msg("Usage: roll <attribute>/<skill> [= <required successes>] [+ <bonus dice>]")
+            return
+
+        attribute_name, skill_name = (part.strip() for part in args.split("/", 1))
+        attribute_name = attribute_name.lower()
+
+        if attribute_name not in self.VALID_ATTRIBUTES:
+            caller.msg(
+                f"'{attribute_name}' isn't a valid attribute. "
+                f"Choose from: {', '.join(self.VALID_ATTRIBUTES)}"
+            )
+            return
+
+        canonical = canonical_skill_name(skill_name)
+        if canonical is None:
+            caller.msg(
+                f"'{skill_name}' isn't a recognized skill. "
+                f"Use |wskills|n to see the full list."
+            )
+            return
+
+        caller.perform_skill_check(
+            attribute_name, canonical, required_successes,
+            extra_bonus_dice=extra_bonus_dice,
+        )
+
+
+class CmdSkills(Command):
+    """
+    List every skill, grouped by category, with your current ranks.
+
+    Usage:
+      skills
+    """
+
+    key = "skills"
+    aliases = ["skilllist"]
+    help_category = "General"
+
+    def func(self):
+        caller = self.caller
+        current = caller.attributes.get("skills", default={})
+
+        lines = []
+        lines.append("|y" + "=" * 78 + "|n")
+        lines.append(f"|w{'SKILLS':^78}|n")
+        lines.append("|y" + "=" * 78 + "|n")
+
+        for category, category_skills in SKILL_CATEGORIES.items():
+            lines.append(f"|c{category}|n")
+            line = "  "
+            for i, name in enumerate(category_skills):
+                rank = current.get(name, 0)
+                line += f"{name:<16}|w{rank:<3}|n"
+                if (i + 1) % 3 == 0:
+                    lines.append(line)
+                    line = "  "
+            if line.strip():
+                lines.append(line)
+            lines.append("")
+
+        caller.msg("\n".join(lines).rstrip())
+
+
+class CmdPick(Command):
+    """
+    Attempt to pick a locked door/exit.
+
+    Usage:
+      pick <exit>
+
+    Rolls the exit's configured attribute/skill (pick_attribute /
+    pick_skill, default Agility/Thievery) against its pick_successes
+    difficulty. On a SUCCESS or CRITICAL, the exit unlocks. Builders
+    set the difficulty per-exit with, e.g.:
+
+      @set north/pick_successes = 4
+      @set north/pick_attribute = agility
+      @set north/pick_skill = Thievery
+
+    An exit with pickable = False (@set north/pickable = False) can
+    never be picked open - useful for a door that only opens via a
+    lever or key.
+    """
+
+    key = "pick"
+    help_category = "General"
+
+    def func(self):
+        caller = self.caller
+
+        if not self.args or not self.args.strip():
+            caller.msg("Pick what? Usage: pick <exit>")
+            return
+
+        target_name = self.args.strip()
+        exit_obj = caller.search(
+            target_name,
+            candidates=caller.location.exits if caller.location else [],
+        )
+        if not exit_obj:
+            return  # caller.search already sent a not-found message
+
+        if not exit_obj.attributes.has("locked"):
+            caller.msg(f"{exit_obj.get_display_name(caller)} isn't something you can pick.")
+            return
+
+        if not exit_obj.db.locked:
+            caller.msg(f"{exit_obj.get_display_name(caller)} is already unlocked.")
+            return
+
+        if not exit_obj.attributes.get("pickable", default=True):
+            caller.msg(f"{exit_obj.get_display_name(caller)} can't be picked open.")
+            return
+
+        pick_successes = exit_obj.attributes.get("pick_successes", default=3)
+        pick_attribute = exit_obj.attributes.get("pick_attribute", default="agility")
+        pick_skill = exit_obj.attributes.get("pick_skill", default="Thievery")
+
+        result = caller.perform_skill_check(
+            pick_attribute, pick_skill, pick_successes, announce=False
+        )
+
+        label = f"{pick_attribute.capitalize()} / {pick_skill}"
+        caller.msg(f"|c[Picking {exit_obj.get_display_name(caller)} - {label}]|n {result}")
+
+        if result.tier >= ResultTier.SUCCESS:
+            exit_obj.db.locked = False
+            caller.msg(f"|gThe lock clicks open.|n")
+            if caller.location:
+                caller.location.msg_contents(
+                    f"{caller.get_display_name(None)} picks {exit_obj.get_display_name(None)} open.",
+                    exclude=caller,
+                )
+        else:
+            caller.msg("|rYou fail to pick the lock.|n")
+
+
+class CmdUnlock(Command):
+    """
+    Unlock a door/exit using a matching key from your inventory.
+
+    Usage:
+      unlock <exit>
+
+    Searches everything you're carrying for a Key whose key_id
+    matches the exit's key_id. Unlike picking, this always succeeds
+    if you have the right key - no roll involved - and the key isn't
+    consumed, so it works again next time.
+    """
+
+    key = "unlock"
+    help_category = "General"
+
+    def func(self):
+        caller = self.caller
+
+        if not self.args or not self.args.strip():
+            caller.msg("Unlock what? Usage: unlock <exit>")
+            return
+
+        exit_obj = caller.search(
+            self.args.strip(),
+            candidates=caller.location.exits if caller.location else [],
+        )
+        if not exit_obj:
+            return
+
+        if not hasattr(exit_obj, "key_matches"):
+            caller.msg(f"{exit_obj.get_display_name(caller)} isn't something you can unlock.")
+            return
+
+        if not exit_obj.locked:
+            caller.msg(f"{exit_obj.get_display_name(caller)} is already unlocked.")
+            return
+
+        matching_key = next(
+            (item for item in caller.contents if exit_obj.key_matches(item)),
+            None,
+        )
+        if matching_key is None:
+            caller.msg("You don't have a key that fits.")
+            return
+
+        exit_obj.locked = False
+        caller.msg(
+            f"|gYou unlock {exit_obj.get_display_name(caller)} with "
+            f"{matching_key.get_display_name(caller)}.|n"
+        )
+        if caller.location:
+            caller.location.msg_contents(
+                f"{caller.get_display_name(None)} unlocks {exit_obj.get_display_name(None)}.",
+                exclude=caller,
+            )
+
+
+class CmdLock(Command):
+    """
+    Lock a door/exit using a matching key from your inventory.
+
+    Usage:
+      lock <exit>
+
+    Same key-matching rule as unlock - requires a Key in your
+    inventory whose key_id matches the exit's key_id.
+    """
+
+    key = "lock"
+    help_category = "General"
+
+    def func(self):
+        caller = self.caller
+
+        if not self.args or not self.args.strip():
+            caller.msg("Lock what? Usage: lock <exit>")
+            return
+
+        exit_obj = caller.search(
+            self.args.strip(),
+            candidates=caller.location.exits if caller.location else [],
+        )
+        if not exit_obj:
+            return
+
+        if not hasattr(exit_obj, "key_matches"):
+            caller.msg(f"{exit_obj.get_display_name(caller)} isn't something you can lock.")
+            return
+
+        if exit_obj.locked:
+            caller.msg(f"{exit_obj.get_display_name(caller)} is already locked.")
+            return
+
+        matching_key = next(
+            (item for item in caller.contents if exit_obj.key_matches(item)),
+            None,
+        )
+        if matching_key is None:
+            caller.msg("You don't have a key that fits.")
+            return
+
+        exit_obj.locked = True
+        caller.msg(f"|gYou lock {exit_obj.get_display_name(caller)}.|n")
+
+
+class CmdDoorEdit(Command):
+    """
+    Open a menu-driven editor for a locked door/exit (OasisOLC-style).
+
+    Usage:
+      doedit <exit>
+
+    Lets you toggle locked/pickable and set pick_successes,
+    pick_attribute, pick_skill, and the locked-traversal message
+    through a numbered menu instead of a string of @set commands.
+
+    Valid attributes: """ + ", ".join(VALID_ATTRIBUTES) + """
+    Valid skills: """ + ", ".join(ALL_SKILLS) + """
+    """
+
+    key = "doedit"
+    aliases = ["oasisdoor"]
+    locks = "cmd:perm(Builder)"
+    help_category = "Building"
+
+    def func(self):
+        caller = self.caller
+
+        if not self.args or not self.args.strip():
+            caller.msg("Edit what? Usage: doedit <exit>")
+            return
+
+        exit_obj = caller.search(
+            self.args.strip(),
+            candidates=caller.location.exits if caller.location else [],
+        )
+        if not exit_obj:
+            return
+
+        if not isinstance(exit_obj, LockableExit):
+            caller.msg(
+                f"{exit_obj.get_display_name(caller)} isn't a LockableExit "
+                f"(use @typeclass {exit_obj.key} = typeclasses.exits.LockableExit first)."
+            )
+            return
+
+        try:
+            menu = ExitBuildingMenu(caller, exit_obj)
+        except Exception as err:
+            caller.msg(f"|rFailed to open the door editor: {err}|n")
+            from evennia.utils import logger
+            logger.log_trace()
+            return
+
+        # Some versions/configurations of the building_menu contrib
+        # require an explicit call to start displaying the menu rather
+        # than doing so automatically on construction. Harmless no-op
+        # if this build already opens on __init__.
+        if hasattr(menu, "open") and callable(menu.open):
+            try:
+                menu.open()
+            except Exception as err:
+                caller.msg(f"|rFailed to display the door editor: {err}|n")
+                from evennia.utils import logger
+                logger.log_trace()
+
+
+class CmdItemEdit(Command):
+    """
+    Open a menu-driven editor for an item (OasisOLC-style).
+
+    Usage:
+      itemedit <item>
+
+    Lets you set an item's attributes - identity, physical properties,
+    equipment slot/stats, magick, tool, and light fields - through a
+    numbered menu instead of a string of 'set' commands. Which fields
+    show up depends on the item's typeclass: a Weapon gets an extra
+    combat section (weapon type, stamina cost) a plain Item doesn't,
+    for example.
+
+    See 'help item attributes' for what every field means and what
+    values it accepts.
+    """
+
+    key = "itemedit"
+    aliases = ["oasisitem"]
+    locks = "cmd:perm(Builder)"
+    help_category = "Building"
+
+    def func(self):
+        caller = self.caller
+
+        if not self.args or not self.args.strip():
+            caller.msg("Edit what? Usage: itemedit <item>")
+            return
+
+        item = caller.search(
+            self.args.strip(),
+            candidates=caller.contents + (caller.location.contents if caller.location else []),
+        )
+        if not item:
+            return
+
+        if not isinstance(item, Item):
+            caller.msg(
+                f"{item.get_display_name(caller)} isn't an Item "
+                f"(use @typeclass {item.key} = typeclasses.items.Item, "
+                f"or one of its subclasses, first)."
+            )
+            return
+
+        # Dispatch on typeclass - this is what makes the menu's
+        # available fields change depending on what kind of item it
+        # is, rather than one menu trying to cover every field for
+        # every item type.
+        if isinstance(item, Weapon):
+            menu_class = WeaponBuildingMenu
+        elif isinstance(item, Armor):
+            menu_class = ArmorBuildingMenu
+        else:
+            menu_class = ItemBuildingMenu
+
+        try:
+            menu = menu_class(caller, item)
+        except Exception as err:
+            caller.msg(f"|rFailed to open the item editor: {err}|n")
+            from evennia.utils import logger
+            logger.log_trace()
+            return
+
+        # See the matching comment in CmdDoorEdit: some versions of the
+        # building_menu contrib need an explicit open() call.
+        if hasattr(menu, "open") and callable(menu.open):
+            try:
+                menu.open()
+            except Exception as err:
+                caller.msg(f"|rFailed to open the item editor: {err}|n")
+                from evennia.utils import logger
+                logger.log_trace()
+
+
+class CmdWear(Command):
+    """
+    Wear/wield an item you're carrying. The slot is always whichever
+    one the item itself is built for - you don't choose it.
+
+    Usage:
+      wear <item>
+
+    Available slots come from your race's body parts (see 'body') -
+    e.g. head, torso, back, arms, left_wrist, right_wrist, left_ring,
+    legs, feet, wielded, offhand, floaty, and for races that have
+    them, tail and wings. If an item won't wear, it either isn't
+    equippable or a builder hasn't set its slot yet (itemedit <item>,
+    or @set <item>/wear_slot = <slot>) - it's not something you pick
+    at wear-time.
+
+    Builders/staff only:
+      wear <item> = <slot>
+        Force a slot at wear-time, bypassing the item's own
+        wear_slot. Useful for testing an item before its slot is
+        configured. Regular characters can't do this.
+    """
+
+    key = "wear"
+    aliases = ["wield"]
+    help_category = "General"
+
+    def func(self):
+        caller = self.caller
+
+        if not self.args or not self.args.strip():
+            caller.msg("Wear what? Usage: wear <item>")
+            return
+
+        is_builder = caller.locks.check_lockstring(caller, "dummy:perm(Builder)")
+
+        if "=" in self.args:
+            item_name, slot_override = (part.strip() for part in self.args.split("=", 1))
+            if not is_builder:
+                caller.msg(
+                    "You can't choose a slot - what you wear goes wherever "
+                    "the item itself is made for."
+                )
+                return
+        else:
+            item_name, slot_override = self.args.strip(), None
+
+        item = caller.search(item_name, candidates=caller.contents)
+        if not item:
+            return  # caller.search already sent a not-found message
+
+        slot_id = slot_override or item.attributes.get("wear_slot", default=None)
+        if not slot_id:
+            if is_builder:
+                available = ", ".join(
+                    body_parts_registry.slot_display_name(s) for s in caller.equip_slots
+                )
+                caller.msg(
+                    f"{item.get_display_name(caller)} has no wear_slot set. As a "
+                    f"builder you can force one with 'wear {item.key} = <slot>' "
+                    f"(available: {available}), but the real fix is setting the "
+                    f"item's own slot (itemedit {item.key}, or @set "
+                    f"{item.key}/wear_slot = <slot>)."
+                )
+            else:
+                caller.msg(f"{item.get_display_name(caller)} can't be worn.")
+            return
+
+        can_equip, reason = caller.can_equip_item(item, slot_id)
+        if not can_equip:
+            caller.msg(reason)
+            return
+
+        if caller.equip(item, slot_id):
+            caller.msg(
+                f"|gYou wear {item.get_display_name(caller)} on your "
+                f"{body_parts_registry.slot_display_name(slot_id)}.|n"
+            )
+            if caller.location:
+                caller.location.msg_contents(
+                    f"{caller.get_display_name(None)} wears {item.get_display_name(None)}.",
+                    exclude=caller,
+                )
+        else:
+            caller.msg(f"You can't wear {item.get_display_name(caller)} there.")
+
+
+class CmdRemove(Command):
+    """
+    Take off/unwield something you're wearing.
+
+    Usage:
+      remove <slot or item>
+
+    Accepts either a slot name (e.g. 'remove chest') or the item's
+    name (e.g. 'remove leather jerkin').
+    """
+
+    key = "remove"
+    aliases = ["unwear", "unwield"]
+    help_category = "General"
+
+    def func(self):
+        caller = self.caller
+
+        if not self.args or not self.args.strip():
+            caller.msg("Remove what? Usage: remove <slot or item>")
+            return
+
+        query = self.args.strip()
+        equipment = caller.equipment
+
+        slot_id = query if query in equipment else None
+        if slot_id is None:
+            query_lower = query.lower()
+            for candidate_slot, item in equipment.items():
+                if query_lower in item.get_display_name(caller).lower() or query_lower == item.key.lower():
+                    slot_id = candidate_slot
+                    break
+
+        if slot_id is None:
+            caller.msg(f"You aren't wearing anything matching '{query}'.")
+            return
+
+        item = caller.unequip(slot_id)
+        if item is None:
+            caller.msg(f"You aren't wearing anything on your {body_parts_registry.slot_display_name(slot_id)}.")
+            return
+
+        caller.msg(
+            f"|gYou remove {item.get_display_name(caller)} from your "
+            f"{body_parts_registry.slot_display_name(slot_id)}.|n"
+        )
+        if caller.location:
+            caller.location.msg_contents(
+                f"{caller.get_display_name(None)} removes {item.get_display_name(None)}.",
+                exclude=caller,
+            )
+
+
