@@ -30,20 +30,18 @@ Examples:
     @objedit #123
         -> opens the editor for existing object #123
 
-The typeclass of a newly-created object starts as Item. Typeclass
-selection will eventually happen from inside the object editor itself.
+The typeclass of a newly-created object starts as Item. Change it from
+inside the editor with choice "1" (Type) - see
+world/building_menus.py:_ObjEditMenu and Object.editor_type in
+typeclasses/objects.py.
 """
 
 from evennia.objects.models import ObjectDB
 from evennia.utils.create import create_object
 
 from world.object_schema import get_schema
-from world.building_menus import (
-    ItemBuildingMenu,
-    WeaponBuildingMenu,
-    ArmorBuildingMenu,
-    KeyBuildingMenu,
-)
+
+from world.building_menus import menu_class_for
 
 from typeclasses.items import Item, Weapon, Armor, Key
 from typeclasses.rooms import Room
@@ -80,36 +78,10 @@ CATEGORY_MAP = {
 }
 
 
-# --------------------------------------------------------------------
-# Building menu dispatch.
-#
-# Most-specific typeclasses must come first because Weapon and Armor
-# inherit from Item.
-#
-# Rooms intentionally do NOT appear here. @objedit is for everything
-# except Rooms. Rooms will eventually be handled by @roomedit.
-# --------------------------------------------------------------------
-
-MENU_DISPATCH = [
-    (Weapon, WeaponBuildingMenu),
-    (Armor, ArmorBuildingMenu),
-    (Item, ItemBuildingMenu),
-    (Key, KeyBuildingMenu),
-]
-
-
-def _menu_class_for(obj):
-    """
-    Return the building menu class for obj's typeclass.
-
-    Returns None if the object is not currently supported by @objedit.
-    """
-
-    for cls, menu_class in MENU_DISPATCH:
-        if isinstance(obj, cls):
-            return menu_class
-
-    return None
+# Building menu dispatch now lives in world/building_menus.py as
+# menu_class_for()/MENU_DISPATCH - it's shared with
+# _ObjEditMenu.close(), which needs the same lookup after a "1. Type"
+# change swaps an object's typeclass mid-session.
 
 
 def _render_detail(obj, looker):
@@ -557,7 +529,7 @@ class CmdObjEdit(Command):
         # Find the appropriate menu for the object's current typeclass.
         # ------------------------------------------------------------
 
-        menu_class = _menu_class_for(obj)
+        menu_class = menu_class_for(obj)
 
         if menu_class is None:
             caller.msg(

@@ -214,4 +214,44 @@ class Object(ObjectParent, DefaultObject):
 
     """
 
-    pass
+    @property
+    def editor_type(self):
+        """
+        Menu-facing typeclass switcher for @objedit (see choice "1" in
+        every world/building_menus._ObjEditMenu subclass). Lazily
+        imports the valid-type registry to avoid a circular import -
+        world/object_schema.py already imports typeclasses.items at
+        module load time, so importing object_schema back from here
+        at module load time would be circular; importing it inside the
+        property body (only run once the app is fully loaded) is not.
+        """
+
+        from world.object_schema import OBJEDIT_TYPES
+
+        current = type(self).__name__
+
+        lines = [f"Current type: {current}", "", "Available types:"]
+        lines.extend(f"  {name}" for name in OBJEDIT_TYPES)
+        lines.append("")
+        lines.append("Enter a type name to change this object's type.")
+
+        return "\n".join(lines)
+
+    @editor_type.setter
+    def editor_type(self, value):
+        from world.object_schema import OBJEDIT_TYPES
+
+        name = str(value).strip().lower()
+        new_cls = OBJEDIT_TYPES.get(name)
+
+        if new_cls is None or type(self) is new_cls:
+            # Unrecognized type name, or already that type: leave
+            # unchanged - same silent-ignore convention as the other
+            # validated setters in typeclasses/items.py.
+            return
+
+        self.swap_typeclass(
+            f"{new_cls.__module__}.{new_cls.__name__}",
+            clean_attributes=False,
+            run_start_hooks="all",
+        )

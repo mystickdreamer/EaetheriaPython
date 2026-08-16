@@ -560,6 +560,28 @@ OBJECT_SCHEMAS = {
 }
 
 
+def _build_objedit_types():
+    """
+    Lazily-built {name: typeclass} registry for @objedit's "1. Type"
+    choice (Object.editor_type in typeclasses/objects.py). A function
+    rather than a module-level dict so it can do the same local import
+    get_schema() below already does, keeping this file's only
+    typeclasses.items dependency at call-time rather than load-time.
+    """
+
+    from typeclasses.items import Item, Weapon, Armor, Key
+
+    return {
+        "item": Item,
+        "weapon": Weapon,
+        "armor": Armor,
+        "key": Key,
+    }
+
+
+OBJEDIT_TYPES = _build_objedit_types()
+
+
 def get_schema(obj):
     """
     Determine the appropriate schema for an actual Evennia object.
