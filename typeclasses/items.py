@@ -121,6 +121,7 @@ VALID_EQUIP_SLOTS = list(body_parts_registry.SLOT_DISPLAY_ORDER)
 # None means "not equippable" (Godot's EquipSlot.NONE).
 GODOT_EQUIP_SLOT_MAP = {
     "NONE": None,
+    "FLOATING": "floaty",
     "ARMOR": "torso",
     "WEAPON": "wielded",
     "RING": "left_ring",
@@ -129,6 +130,18 @@ GODOT_EQUIP_SLOT_MAP = {
     "OFFHAND": "offhand",
     "HEAD": "head",
     "FEET": "feet",
+    "EARS": "ears",
+    "NECK": "neck",
+    "WAIST": "waist",
+    "SHOULDERS": "shoulders",
+    "LEFT_WRIST": "left_wrist",
+    "RIGHT_WRIST": "right_wrist",
+    "LEFT_RING": "left_ring",
+    "RIGHT_RING": "right_ring",
+    "TAIL": "tail",
+    "WINGS": "wings",
+    "HORNS": "horns",
+    "SHELL": "shell",
 }
 
 DEFAULT_LIGHT_COLOR = (1.0, 0.85, 0.6)  # warm torchlight, matches the Godot default
