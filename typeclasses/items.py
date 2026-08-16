@@ -445,9 +445,24 @@ class Item(Object):
     del _choice_property, _bool_property, _int_property, _float_property, _text_property
 
     def get_display_name(self, looker=None, **kwargs):
-        """Shows unidentified_name instead of the true name until identified."""
+        """
+        Shows unidentified_name instead of the true name until
+        identified.
+
+        Builders/superusers see the dbref appended either way (e.g.
+        "sword(#123)"), matching Evennia's normal default behavior
+        (DefaultObject.get_extra_display_name_info - see
+        evennia/objects/objects.py) for perm(Builder)+ lookers. The
+        identified branch below gets this for free via
+        super().get_display_name(); the unidentified branch has to
+        add it explicitly since it returns early without calling
+        super() at all.
+        """
         if not self.db.identified and self.db.unidentified_name:
-            return self.db.unidentified_name
+            return (
+                self.db.unidentified_name
+                + self.get_extra_display_name_info(looker, **kwargs)
+            )
         return super().get_display_name(looker, **kwargs)
 
 

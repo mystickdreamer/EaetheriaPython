@@ -20,7 +20,7 @@ from commands.command import (
     CmdSheet, CmdRoll, CmdSkills, CmdPick, CmdDoorEdit, CmdUnlock, CmdLock,
     CmdWear, CmdRemove, CmdBody, CmdEquipment, CmdItemEdit,
 )
-from commands.object_builder import CmdOList, CmdObjEdit
+from commands.object_builder import CmdOList, CmdObjEdit, CmdRoomEdit
 
 
 class CharacterCmdSet(default_cmds.CharacterCmdSet):
@@ -54,6 +54,7 @@ class CharacterCmdSet(default_cmds.CharacterCmdSet):
         self.add(CmdItemEdit())
         self.add(CmdOList())
         self.add(CmdObjEdit())
+        self.add(CmdRoomEdit())
 
 
 class AccountCmdSet(default_cmds.AccountCmdSet):

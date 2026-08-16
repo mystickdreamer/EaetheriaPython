@@ -12,8 +12,10 @@ Commands:
     @objedit <name>                  - create a new Item and edit it
     @objedit #<dbref>               - edit an existing object
 
-@objedit deliberately does NOT edit Rooms. Rooms will eventually have
-their own @roomedit command.
+    @redit <name>                    - create a new Room and edit it
+    @redit #<dbref>                 - edit an existing Room
+
+@objedit deliberately does NOT edit Rooms - use @redit for those.
 
 A name passed to @objedit always means "create a new object".
 
@@ -41,7 +43,7 @@ from evennia.utils.create import create_object
 
 from world.object_schema import get_schema
 
-from world.building_menus import menu_class_for
+from world.building_menus import menu_class_for, RoomBuildingMenu
 
 from typeclasses.items import Item, Weapon, Armor, Key
 from typeclasses.rooms import Room
@@ -330,7 +332,7 @@ class CmdObjEdit(Command):
             -> edits existing object #123
 
     Rooms are deliberately excluded from @objedit. They will eventually
-    have their own @roomedit command.
+    have their own @redit command.
 
     Newly-created objects start as Item. The object editor will
     eventually provide the ability to change the typeclass from
@@ -514,13 +516,13 @@ class CmdObjEdit(Command):
         # This gives us a clean separation:
         #
         #     @objedit  -> objects
-        #     @roomedit -> rooms
+        #     @redit -> rooms
         # ------------------------------------------------------------
 
         if isinstance(obj, Room):
             caller.msg(
                 "|yRooms cannot be edited with @objedit.|n "
-                "Use @roomedit for rooms."
+                "Use @redit for rooms."
             )
 
             return
@@ -571,6 +573,228 @@ class CmdObjEdit(Command):
         # Some versions/configurations of the building_menu contrib
         # require an explicit call to open().
         # ------------------------------------------------------------
+
+        if hasattr(menu, "open") and callable(menu.open):
+            try:
+                menu.open()
+
+            except Exception as err:
+                caller.msg(
+                    f"|rFailed to display the editor: {err}|n"
+                )
+
+                from evennia.utils import logger
+                logger.log_trace()
+
+
+# ====================================================================
+# @redit
+# ====================================================================
+
+class CmdRoomEdit(Command):
+    """
+    Create or edit Rooms through a menu-driven editor.
+
+    Usage:
+
+        @redit <name>
+            Create a new Room with this name and open the editor.
+
+        @redit #<dbref>
+            Edit an existing Room.
+
+    IMPORTANT:
+
+        A name ALWAYS means "create a new Room".
+
+        A DBREF ALWAYS means "edit an existing Room".
+
+    Examples:
+
+        @redit tavern
+            -> creates a new Room named "tavern"
+
+        @redit #123
+            -> edits existing Room #123
+
+    This is the Room-only sibling of @objedit, which deliberately
+    excludes Rooms - see commands/object_builder.py:CmdObjEdit.
+
+    Unlike @objedit, there is no "change type" choice in this editor:
+    Room isn't built on the same typeclasses.objects.Object base as
+    Item/Weapon/Armor/Key, and rooms were never meant to switch type
+    the way those are.
+
+    A newly-created Room has no location of its own (Evennia default
+    for Room) - it isn't placed anywhere or connected to anything.
+    Link it in with exits once it's built.
+    """
+
+    key = "@redit"
+    aliases = ["redit"]
+
+    locks = "cmd:perm(Builder)"
+    help_category = "Building"
+
+    def parse(self):
+        self.target_str = (
+            self.args.strip()
+            if self.args
+            else ""
+        )
+
+    # ----------------------------------------------------------------
+    # Existing room lookup
+    # ----------------------------------------------------------------
+
+    def _find_existing_target(self):
+        """
+        Find an existing Room by explicit DBREF.
+
+        @redit #123
+
+        searches globally, same reasoning as CmdObjEdit._find_existing_
+        target: no name search here, so `@redit tavern` can never
+        accidentally re-open an existing room named "tavern" when the
+        builder meant to create a new one.
+        """
+
+        caller = self.caller
+
+        dbref_token = self.target_str.split()[0]
+
+        obj = caller.search(
+            dbref_token,
+            global_search=True,
+        )
+
+        if not obj:
+            return None
+
+        if not isinstance(obj, Room):
+            caller.msg(
+                f"{obj.get_display_name(caller)} isn't a Room. "
+                f"Use @objedit for non-Room objects."
+            )
+
+            return None
+
+        return obj
+
+    # ----------------------------------------------------------------
+    # New room creation
+    # ----------------------------------------------------------------
+
+    def _create_new_room(self):
+        """
+        Create a new Room for @redit <name>.
+
+        Unlike @objedit's new Items, a new Room has no location at
+        all (location=None, the normal state for a Room) - it isn't
+        placed inside the builder's inventory the way an Item is,
+        since a Room isn't something you carry.
+        """
+
+        caller = self.caller
+        name = self.target_str.strip()
+
+        if not name:
+            caller.msg(
+                "|rYou must provide a name for the new room.|n"
+            )
+
+            return None
+
+        try:
+            obj = create_object(
+                typeclass=Room,
+                key=name,
+            )
+
+        except Exception as err:
+            caller.msg(
+                f"|rFailed to create room: {err}|n"
+            )
+
+            from evennia.utils import logger
+            logger.log_trace()
+
+            return None
+
+        caller.msg(
+            f"|gCreated new Room|n "
+            f"|w{obj.key}|n "
+            f"({obj.dbref})."
+        )
+
+        return obj
+
+    # ----------------------------------------------------------------
+    # Main command
+    # ----------------------------------------------------------------
+
+    def func(self):
+        caller = self.caller
+
+        if not self.target_str:
+            caller.msg(
+                "Edit what? "
+                "Usage: @redit <name> or @redit #<dbref>"
+            )
+
+            return
+
+        # ------------------------------------------------------------
+        # DBREF = edit existing room.
+        #
+        #     @redit #123
+        # ------------------------------------------------------------
+
+        if self.target_str.startswith("#"):
+            obj = self._find_existing_target()
+
+            if not obj:
+                return
+
+        # ------------------------------------------------------------
+        # Name = create a brand-new Room.
+        #
+        #     @redit tavern
+        # ------------------------------------------------------------
+
+        else:
+            obj = self._create_new_room()
+
+            if not obj:
+                return
+
+        # ------------------------------------------------------------
+        # Show the schema-driven detail view before opening the menu.
+        # ------------------------------------------------------------
+
+        caller.msg(
+            _render_detail(obj, caller)
+        )
+
+        # ------------------------------------------------------------
+        # Open the building menu.
+        # ------------------------------------------------------------
+
+        try:
+            menu = RoomBuildingMenu(
+                caller,
+                obj,
+            )
+
+        except Exception as err:
+            caller.msg(
+                f"|rFailed to open the editor: {err}|n"
+            )
+
+            from evennia.utils import logger
+            logger.log_trace()
+
+            return
 
         if hasattr(menu, "open") and callable(menu.open):
             try:

@@ -22,6 +22,49 @@ class ObjectParent:
 
     """
 
+    def get_numbered_name(self, count, looker, **kwargs):
+        """
+        Same as the default, but guarantees a "(#dbref)" suffix for
+        Builder+ lookers (which includes superusers, since they pass
+        every permission check automatically) on the count==1 (i.e.
+        ungrouped/singular) case.
+
+        Written to build the suffix ourselves rather than relying on
+        DefaultObject.get_extra_display_name_info firing through this
+        call automatically - confirmed live that it wasn't, on this
+        install, for both `inventory` and a room's "things" listing
+        (both of which route through this method - see
+        evennia.utils.utils.group_objects_by_key_and_desc).
+
+        Stacked/grouped items (count > 1, e.g. "two brass keys") are
+        left alone: a single combined dbref wouldn't correctly
+        identify which of several distinct objects it belongs to, and
+        this method only has access to a count, not the actual list
+        of grouped objects, so there's no honest per-item dbref to
+        show here for that case.
+        """
+
+        result = super().get_numbered_name(count, looker, **kwargs)
+
+        is_builder = bool(
+            looker
+            and looker.locks.check_lockstring(looker, "dummy:perm(Builder)")
+        )
+
+        if not is_builder or count not in (0, 1):
+            return result
+
+        suffix = f"(#{self.id})"
+
+        if isinstance(result, tuple):
+            # return_string=False: (singular, plural) - only the
+            # singular form applies when count is 0 or 1.
+            singular, plural = result
+            return (f"{singular}{suffix}", plural)
+
+        # return_string=True (the default): a single resolved string.
+        return f"{result}{suffix}"
+
 
 class Object(ObjectParent, DefaultObject):
     """
@@ -218,34 +261,40 @@ class Object(ObjectParent, DefaultObject):
     def editor_type(self):
         """
         Menu-facing typeclass switcher for @objedit (see choice "1" in
-        every world/building_menus._ObjEditMenu subclass). Lazily
-        imports the valid-type registry to avoid a circular import -
-        world/object_schema.py already imports typeclasses.items at
-        module load time, so importing object_schema back from here
-        at module load time would be circular; importing it inside the
-        property body (only run once the app is fully loaded) is not.
+        every world/building_menus._ObjEditMenu subclass). Kept to a
+        single short line on purpose - this same text is what shows
+        next to choice "1" on the main @objedit menu (attr= choices
+        preview their current value there), not just when you've
+        actually selected "1", so a multi-line type list here would
+        clutter every object's main menu, not just the type-picker.
+
+        The (1=item 2=weapon ...) part doubles as the picker: the
+        setter below accepts either that number or the plain name.
         """
 
         from world.object_schema import OBJEDIT_TYPES
 
-        current = type(self).__name__
+        options = " ".join(
+            f"{i}={name}" for i, name in enumerate(OBJEDIT_TYPES, start=1)
+        )
 
-        lines = [f"Current type: {current}", "", "Available types:"]
-        lines.extend(f"  {name}" for name in OBJEDIT_TYPES)
-        lines.append("")
-        lines.append("Enter a type name to change this object's type.")
-
-        return "\n".join(lines)
+        return f"{type(self).__name__} ({options})"
 
     @editor_type.setter
     def editor_type(self, value):
         from world.object_schema import OBJEDIT_TYPES
 
-        name = str(value).strip().lower()
-        new_cls = OBJEDIT_TYPES.get(name)
+        text = str(value).strip()
+        types_by_name = OBJEDIT_TYPES
+        types_by_number = dict(enumerate(types_by_name.values(), start=1))
+
+        if text.isdigit():
+            new_cls = types_by_number.get(int(text))
+        else:
+            new_cls = types_by_name.get(text.lower())
 
         if new_cls is None or type(self) is new_cls:
-            # Unrecognized type name, or already that type: leave
+            # Unrecognized number/name, or already that type: leave
             # unchanged - same silent-ignore convention as the other
             # validated setters in typeclasses/items.py.
             return

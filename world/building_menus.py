@@ -303,29 +303,38 @@ class ArmorBuildingMenu(ItemBuildingMenu):
 
 class RoomBuildingMenu(building_menu.BuildingMenu):
     """
-    Building menu bound to a Room instance.
+    Building menu bound to a Room instance. Opened via `@redit <name>`
+    (create) or `@redit #<dbref>` (edit an existing Room) - see
+    CmdRoomEdit in commands/object_builder.py.
 
     Choices:
-        n  - name          the room's key/display name
-        d  - description    what `look` shows for the room
+        1 - name          the room's key/display name
+        2 - description   what `look` shows for the room
+        s - save & quit
+        q - quit
 
-    Kept intentionally small: Eaetheria has no room-specific game
-    mechanics defined yet (lighting, safe zones, terrain, weather,
-    ...) - same reasoning as the "no armor-specific fields yet" note
-    on ArmorBuildingMenu above and on ROOM_SCHEMA in
+    No "Type" choice here, unlike the @objedit menus: Room is
+    ObjectParent+DefaultRoom, not typeclasses.objects.Object, so it
+    doesn't inherit Object.editor_type - and per the original design,
+    rooms (and eventually mobs) are intentionally excluded from
+    typeclass-switching anyway.
+
+    Kept intentionally small beyond that: Eaetheria has no
+    room-specific game mechanics defined yet (lighting, safe zones,
+    terrain, weather, ...) - same reasoning as the "no armor-specific
+    fields yet" note on ArmorBuildingMenu above and on ROOM_SCHEMA in
     world/object_schema.py. Add choices here (and matching fields to
     ROOM_SCHEMA) once those mechanics actually exist, rather than
     inventing placeholders now.
-
-    Type q from inside any choice to return to this main menu (instead
-    of the contrib's default @).
     """
 
     keys_go_back = ["q"]
 
     def init(self, room):
-        self.add_choice("name", key="n", attr="key")
-        self.add_choice("description", key="d", attr="db.desc")
+        self.add_choice("name", key="1", attr="key")
+        self.add_choice("description", key="2", attr="db.desc")
+        self.add_choice_quit("save & quit", key="s")
+        self.add_choice_quit("quit", key="q")
 
 
 # ==========================================================================
