@@ -1,0 +1,1495 @@
+2026-08-15 00:56:34 [..] Loaded.
+2026-08-15 00:56:33 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 00:56:34 [..] Loaded.
+2026-08-15 00:56:34 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 00:56:34 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 00:56:34 [..] Webserver starting on 4005
+2026-08-15 00:56:34 [..] Initial setup: Creating objects (Account #1 and Limbo room) ...
+2026-08-15 00:56:34 [SS] Character Created: neriyan (Caller: neriyan(account 1), IP: None).
+2026-08-15 00:56:34 [..] Initial setup: Running at_initial_setup() hook.
+2026-08-15 00:56:34 [..] Initial setup: Gathering static resources using 'collectstatic'
+2026-08-15 00:56:34 [..] 0 static files copied to '/home/neriyan/EvenniaEaetheria/eaetheria/server/.static', 208 unmodified.
+2026-08-15 00:56:35 [..] Initial setup complete. Restarting Server once.
+2026-08-15 00:56:35 [..] Evennia Server successfully started.
+2026-08-15 00:56:36 [..] Server disconnected from the portal.
+2026-08-15 00:56:36 [..] Main loop terminated.
+2026-08-15 00:56:36 [..] Server Shut Down.
+2026-08-15 00:56:37 [..] Loaded.
+2026-08-15 00:56:36 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 00:56:37 [..] Loaded.
+2026-08-15 00:56:37 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 00:56:37 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 00:56:37 [..] Webserver starting on 4005
+2026-08-15 00:56:37 [..] Evennia Server successfully restarted in 'reset' mode.
+2026-08-15 00:56:49 [SS] Authentication Success: neriyan(account 1) (IP: 127.0.0.1).
+2026-08-15 00:56:49 [..] Logged in: neriyan(account 1) 127.0.0.1 (1 session(s) total)
+2026-08-15 01:05:01 [..] Server disconnected from the portal.
+2026-08-15 01:05:01 [..] Main loop terminated.
+2026-08-15 01:05:01 [..] Server Shut Down.
+2026-08-15 01:05:02 [..] Loaded.
+2026-08-15 01:05:02 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 01:05:02 [..] Loaded.
+2026-08-15 01:05:02 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 01:05:02 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 01:05:02 [..] Webserver starting on 4005
+2026-08-15 01:05:04 [..] Server successfully reloaded.
+2026-08-15 01:05:04 [EE] AMP caught exception (Cannot add "sex(17)": instance is on database "None", value is on database "default" (error logged on other side)):
+2026-08-15 01:05:04 [EE] Code<EXCEPTION> (local): Cannot add "sex(17)": instance is on database "None", value is on database "default"
+2026-08-15 01:05:04 [EE] Traceback: <class 'ValueError'>: Cannot add "sex(17)": instance is on database "None", value is on database "default"
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/twisted/internet/defer.py:216:maybeDeferred
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/amp_client.py:234:server_receive_adminportal2server
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/sessionhandler.py:411:portal_sessions_sync
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/serversession.py:123:at_sync
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/utils/idmapper/manager.py:33:get
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/manager.py:87:manager_method
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/query.py:635:get
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/query.py:372:__len__
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/query.py:2000:_fetch_all
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/query.py:128:__iter__
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/base.py:605:from_db
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/utils/idmapper/models.py:75:__call__
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/utils/idmapper/models.py:324:cache_instance
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/eaetheria/typeclasses/characters.py:147:at_init
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/eaetheria/typeclasses/characters.py:168:ensure_data_integrity
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/eaetheria/typeclasses/characters.py:165:_ensure
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/typeclasses/attributes.py:1335:add
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/typeclasses/attributes.py:781:create_attribute
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/typeclasses/attributes.py:1121:do_create_attribute
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/fields/related_descriptors.py:1229:add
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/fields/related_descriptors.py:1489:_add_items
+2026-08-15 01:05:04 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/fields/related_descriptors.py:1405:_get_target_ids
+2026-08-15 01:05:35 [..] Server disconnected from the portal.
+2026-08-15 01:05:35 [..] Main loop terminated.
+2026-08-15 01:05:35 [..] Server Shut Down.
+2026-08-15 01:05:36 [..] Loaded.
+2026-08-15 01:05:35 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 01:05:36 [..] Loaded.
+2026-08-15 01:05:36 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 01:05:36 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 01:05:36 [..] Webserver starting on 4005
+2026-08-15 01:05:36 [..] Server successfully reloaded.
+2026-08-15 01:05:36 [EE] AMP caught exception (Cannot add "sex(18)": instance is on database "None", value is on database "default" (error logged on other side)):
+2026-08-15 01:05:36 [EE] Code<EXCEPTION> (local): Cannot add "sex(18)": instance is on database "None", value is on database "default"
+2026-08-15 01:05:36 [EE] Traceback: <class 'ValueError'>: Cannot add "sex(18)": instance is on database "None", value is on database "default"
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/twisted/internet/defer.py:216:maybeDeferred
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/amp_client.py:234:server_receive_adminportal2server
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/sessionhandler.py:411:portal_sessions_sync
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/serversession.py:123:at_sync
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/utils/idmapper/manager.py:33:get
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/manager.py:87:manager_method
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/query.py:635:get
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/query.py:372:__len__
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/query.py:2000:_fetch_all
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/query.py:128:__iter__
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/base.py:605:from_db
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/utils/idmapper/models.py:75:__call__
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/utils/idmapper/models.py:324:cache_instance
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/eaetheria/typeclasses/characters.py:147:at_init
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/eaetheria/typeclasses/characters.py:168:ensure_data_integrity
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/eaetheria/typeclasses/characters.py:165:_ensure
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/typeclasses/attributes.py:1335:add
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/typeclasses/attributes.py:781:create_attribute
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/typeclasses/attributes.py:1121:do_create_attribute
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/fields/related_descriptors.py:1229:add
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/fields/related_descriptors.py:1489:_add_items
+2026-08-15 01:05:36 [EE] /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/django/db/models/fields/related_descriptors.py:1405:_get_target_ids
+2026-08-15 01:05:46 [..] Logged out: neriyan(account 1) 127.0.0.1 (0 sessions(s) remaining)
+2026-08-15 01:05:58 [SS] Authentication Success: neriyan(account 1) (IP: 127.0.0.1).
+2026-08-15 01:05:58 [..] Logged in: neriyan(account 1) 127.0.0.1 (1 session(s) total)
+2026-08-15 01:09:40 [..] Server disconnected from the portal.
+2026-08-15 01:09:40 [..] Main loop terminated.
+2026-08-15 01:09:40 [..] Server Shut Down.
+2026-08-15 01:09:41 [..] Loaded.
+2026-08-15 01:09:41 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 01:09:41 [..] Loaded.
+2026-08-15 01:09:41 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 01:09:41 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 01:09:41 [..] Webserver starting on 4005
+2026-08-15 01:09:42 [..] Server successfully reloaded.
+2026-08-15 01:13:30 [..] Server disconnected from the portal.
+2026-08-15 01:13:30 [..] Main loop terminated.
+2026-08-15 01:13:30 [..] Server Shut Down.
+2026-08-15 01:13:31 [..] Loaded.
+2026-08-15 01:13:30 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 01:13:31 [..] Loaded.
+2026-08-15 01:13:31 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 01:13:31 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 01:13:31 [..] Webserver starting on 4005
+2026-08-15 01:13:31 [..] Server successfully reloaded.
+2026-08-15 01:19:21 [..] Server disconnected from the portal.
+2026-08-15 01:19:21 [..] Main loop terminated.
+2026-08-15 01:19:21 [..] Server Shut Down.
+2026-08-15 01:19:22 [..] Loaded.
+2026-08-15 01:19:21 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 01:19:22 [..] Loaded.
+2026-08-15 01:19:22 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 01:19:22 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 01:19:22 [..] Webserver starting on 4005
+2026-08-15 01:19:22 [..] Server successfully reloaded.
+2026-08-15 01:52:25 [..] Server disconnected from the portal.
+2026-08-15 01:52:25 [..] Main loop terminated.
+2026-08-15 01:52:25 [..] Server Shut Down.
+2026-08-15 01:52:26 [..] Loaded.
+2026-08-15 01:52:26 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 01:52:26 [..] Loaded.
+2026-08-15 01:52:26 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 01:52:26 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 01:52:27 [..] Webserver starting on 4005
+2026-08-15 01:52:27 [..] Server successfully reloaded.
+2026-08-15 02:01:27 [WW] Warning: Idmapper flush called more than once in 5.0 min interval. Check memory usage.
+2026-08-15 02:05:54 [..] Server disconnected from the portal.
+2026-08-15 02:05:54 [..] Main loop terminated.
+2026-08-15 02:05:54 [..] Server Shut Down.
+2026-08-15 02:05:55 [..] Loaded.
+2026-08-15 02:05:54 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 02:05:55 [..] Loaded.
+2026-08-15 02:05:55 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 02:05:55 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 02:05:55 [..] Webserver starting on 4005
+2026-08-15 02:05:55 [..] Server successfully reloaded.
+2026-08-15 02:10:27 [EE] Overwriting existing registered function stopWordFilter
+2026-08-15 02:15:53 [EE] Could not load typeclass 'typeclass.exits.LockableExit'.
+2026-08-15 02:15:53 [EE] Could not load typeclass 'typeclass.exits.LockableExit'
+2026-08-15 02:15:53 [EE] Paths searched:
+2026-08-15 02:15:53 [EE]     typeclass.exits.LockableExit
+2026-08-15 02:15:53 [EE]     typeclasses.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [EE]     evennia.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [EE]     evennia.contrib.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [EE]     evennia.contrib.game_systems.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [EE]     evennia.contrib.base_systems.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [EE]     evennia.contrib.full_systems.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [EE]     evennia.contrib.tutorials.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [EE]     evennia.contrib.utils.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [!!] Traceback (most recent call last):
+2026-08-15 02:15:53 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdhandler.py", line 634, in _run_command
+2026-08-15 02:15:53 [!!]     _progressive_cmd_run(cmd, ret)
+2026-08-15 02:15:53 [!!]     ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+2026-08-15 02:15:53 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdhandler.py", line 230, in _progressive_cmd_run
+2026-08-15 02:15:53 [!!]     value = next(generator)
+2026-08-15 02:15:53 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/default/building.py", line 2408, in func
+2026-08-15 02:15:53 [!!]     obj.swap_typeclass(
+2026-08-15 02:15:53 [!!]     ~~~~~~~~~~~~~~~~~~^
+2026-08-15 02:15:53 [!!]         new_typeclass, clean_attributes=reset, clean_cmdsets=reset, run_start_hooks=hooks
+2026-08-15 02:15:53 [!!]         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-15 02:15:53 [!!]     )
+2026-08-15 02:15:53 [!!]     ^
+2026-08-15 02:15:53 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/typeclasses/models.py", line 640, in swap_typeclass
+2026-08-15 02:15:53 [!!]     new_typeclass = class_from_module(new_typeclass, defaultpaths=settings.TYPECLASS_PATHS)
+2026-08-15 02:15:53 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/utils/utils.py", line 1689, in class_from_module
+2026-08-15 02:15:53 [!!]     raise ImportError(err)
+2026-08-15 02:15:53 [!!] ImportError: 
+2026-08-15 02:15:53 [!!] Could not load typeclass 'typeclass.exits.LockableExit'
+2026-08-15 02:15:53 [!!] Paths searched:
+2026-08-15 02:15:53 [!!]     typeclass.exits.LockableExit
+2026-08-15 02:15:53 [!!]     typeclasses.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [!!]     evennia.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [!!]     evennia.contrib.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [!!]     evennia.contrib.game_systems.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [!!]     evennia.contrib.base_systems.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [!!]     evennia.contrib.full_systems.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [!!]     evennia.contrib.tutorials.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [!!]     evennia.contrib.utils.typeclass.exits.LockableExit
+2026-08-15 02:15:53 [EE] User input was: '@typeclass north = typeclass.exits.LockableExit
+2026-08-15 02:15:53 [EE] '.
+2026-08-15 02:42:38 [..] Server disconnected from the portal.
+2026-08-15 02:42:38 [..] Main loop terminated.
+2026-08-15 02:42:38 [..] Server Shut Down.
+2026-08-15 02:42:39 [..] Loaded.
+2026-08-15 02:42:38 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 02:42:39 [..] Loaded.
+2026-08-15 02:42:39 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 02:42:39 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 02:42:39 [..] Webserver starting on 4005
+2026-08-15 02:42:39 [..] Server successfully reloaded.
+2026-08-15 02:45:57 [..] Server disconnected from the portal.
+2026-08-15 02:45:57 [..] Main loop terminated.
+2026-08-15 02:45:57 [..] Server Shut Down.
+2026-08-15 02:45:58 [..] Loaded.
+2026-08-15 02:45:57 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 02:45:58 [..] Loaded.
+2026-08-15 02:45:58 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 02:45:58 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 02:45:58 [..] Webserver starting on 4005
+2026-08-15 02:45:58 [..] Server successfully reloaded.
+2026-08-15 02:51:52 [..] Server disconnected from the portal.
+2026-08-15 02:51:52 [..] Main loop terminated.
+2026-08-15 02:51:52 [..] Server Shut Down.
+2026-08-15 02:51:53 [..] Loaded.
+2026-08-15 02:51:52 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 02:51:53 [..] Loaded.
+2026-08-15 02:51:53 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 02:51:53 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 02:51:53 [..] Webserver starting on 4005
+2026-08-15 02:51:53 [..] Server successfully reloaded.
+2026-08-15 03:02:20 [..] Server disconnected from the portal.
+2026-08-15 03:02:20 [..] Main loop terminated.
+2026-08-15 03:02:20 [..] Server Shut Down.
+2026-08-15 03:02:21 [..] Loaded.
+2026-08-15 03:02:20 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 03:02:21 [..] Loaded.
+2026-08-15 03:02:21 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 03:02:21 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 03:02:21 [..] Webserver starting on 4005
+2026-08-15 03:02:21 [..] Server successfully reloaded.
+2026-08-15 03:11:21 [WW] Warning: Idmapper flush called more than once in 5.0 min interval. Check memory usage.
+2026-08-15 03:25:53 [..] Server disconnected from the portal.
+2026-08-15 03:25:53 [..] Main loop terminated.
+2026-08-15 03:25:53 [..] Server Shut Down.
+2026-08-15 03:25:54 [..] Loaded.
+2026-08-15 03:25:54 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 03:25:54 [..] Loaded.
+2026-08-15 03:25:54 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 03:25:54 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 03:25:54 [..] Webserver starting on 4005
+2026-08-15 03:25:54 [..] Server successfully reloaded.
+2026-08-15 03:34:54 [WW] Warning: Idmapper flush called more than once in 5.0 min interval. Check memory usage.
+2026-08-15 04:11:05 [EE] Overwriting existing registered function stopWordFilter
+2026-08-15 13:44:31 [..] Server disconnected from the portal.
+2026-08-15 13:44:31 [..] Main loop terminated.
+2026-08-15 13:44:31 [..] Server Shut Down.
+2026-08-15 13:44:32 [..] Loaded.
+2026-08-15 13:44:31 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 13:44:32 [..] Loaded.
+2026-08-15 13:44:32 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 13:44:32 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 13:44:32 [..] Webserver starting on 4005
+2026-08-15 13:44:32 [..] Server successfully reloaded.
+2026-08-15 13:53:32 [WW] Warning: Idmapper flush called more than once in 5.0 min interval. Check memory usage.
+2026-08-15 14:12:15 [..] Server disconnected from the portal.
+2026-08-15 14:12:15 [..] Main loop terminated.
+2026-08-15 14:12:15 [..] Server Shut Down.
+2026-08-15 14:12:16 [..] Loaded.
+2026-08-15 14:12:15 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 14:12:16 [..] Loaded.
+2026-08-15 14:12:16 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 14:12:16 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 14:12:16 [..] Webserver starting on 4005
+2026-08-15 14:12:16 [..] Server successfully reloaded.
+2026-08-15 14:21:16 [WW] Warning: Idmapper flush called more than once in 5.0 min interval. Check memory usage.
+2026-08-15 15:02:44 [..] Server disconnected from the portal.
+2026-08-15 15:02:44 [..] Main loop terminated.
+2026-08-15 15:02:44 [..] Server Shut Down.
+2026-08-15 15:02:45 [..] Loaded.
+2026-08-15 15:02:44 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 15:02:45 [..] Loaded.
+2026-08-15 15:02:45 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 15:02:45 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 15:02:45 [..] Webserver starting on 4005
+2026-08-15 15:02:46 [..] Server successfully reloaded.
+2026-08-15 15:03:42 [..] Server disconnected from the portal.
+2026-08-15 15:03:42 [..] Main loop terminated.
+2026-08-15 15:03:42 [..] Server Shut Down.
+2026-08-15 15:03:43 [..] Loaded.
+2026-08-15 15:03:42 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 15:03:43 [..] Loaded.
+2026-08-15 15:03:43 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 15:03:43 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 15:03:43 [..] Webserver starting on 4005
+2026-08-15 15:03:43 [..] Server successfully reloaded.
+2026-08-15 15:13:37 [..] Server disconnected from the portal.
+2026-08-15 15:13:37 [..] Main loop terminated.
+2026-08-15 15:13:37 [..] Server Shut Down.
+2026-08-15 15:13:38 [..] Loaded.
+2026-08-15 15:13:37 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 15:13:38 [..] Loaded.
+2026-08-15 15:13:38 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 15:13:38 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 15:13:38 [..] Webserver starting on 4005
+2026-08-15 15:13:38 [..] Server successfully reloaded.
+2026-08-15 15:22:38 [WW] Warning: Idmapper flush called more than once in 5.0 min interval. Check memory usage.
+2026-08-15 15:25:47 [..] Server disconnected from the portal.
+2026-08-15 15:25:47 [..] Main loop terminated.
+2026-08-15 15:25:47 [..] Server Shut Down.
+2026-08-15 15:25:48 [..] Loaded.
+2026-08-15 15:25:47 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 15:25:48 [..] Loaded.
+2026-08-15 15:25:48 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 15:25:48 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 15:25:48 [..] Webserver starting on 4005
+2026-08-15 15:25:48 [..] Server successfully reloaded.
+2026-08-15 15:26:27 [..] Server disconnected from the portal.
+2026-08-15 15:26:27 [..] Main loop terminated.
+2026-08-15 15:26:27 [..] Server Shut Down.
+2026-08-15 15:26:28 [..] Loaded.
+2026-08-15 15:26:27 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 15:26:28 [..] Loaded.
+2026-08-15 15:26:28 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 15:26:28 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 15:26:28 [..] Webserver starting on 4005
+2026-08-15 15:26:29 [..] Server successfully reloaded.
+2026-08-15 15:26:38 [!!] Traceback (most recent call last):
+2026-08-15 15:26:38 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdhandler.py", line 631, in _run_command
+2026-08-15 15:26:38 [!!]     ret = cmd.func()
+2026-08-15 15:26:38 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/command.py", line 430, in func
+2026-08-15 15:26:38 [!!]     lines.append(f"  {label:<14:} {item_str}")
+2026-08-15 15:26:38 [!!]                      ^^^^^^^^^^^^
+2026-08-15 15:26:38 [!!] ValueError: Unknown format code ':' for object of type 'str'
+2026-08-15 15:26:38 [EE] User input was: 'eq
+2026-08-15 15:26:38 [EE] '.
+2026-08-15 15:26:55 [..] Server disconnected from the portal.
+2026-08-15 15:26:55 [..] Main loop terminated.
+2026-08-15 15:26:55 [..] Server Shut Down.
+2026-08-15 15:26:56 [..] Loaded.
+2026-08-15 15:26:55 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 15:26:56 [..] Loaded.
+2026-08-15 15:26:56 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 15:26:56 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 15:26:56 [..] Webserver starting on 4005
+2026-08-15 15:26:56 [..] Server successfully reloaded.
+2026-08-15 15:30:52 [..] Server disconnected from the portal.
+2026-08-15 15:30:52 [..] Main loop terminated.
+2026-08-15 15:30:52 [..] Server Shut Down.
+2026-08-15 15:30:53 [..] Loaded.
+2026-08-15 15:30:53 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 15:30:53 [..] Loaded.
+2026-08-15 15:30:53 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 15:30:53 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 15:30:54 [..] Webserver starting on 4005
+2026-08-15 15:30:54 [..] Server successfully reloaded.
+2026-08-15 15:39:54 [WW] Warning: Idmapper flush called more than once in 5.0 min interval. Check memory usage.
+Removing stale pidfile /home/neriyan/EvenniaEaetheria/eaetheria/server/server.pid
+2026-08-15 17:10:58 [..] Loaded.
+2026-08-15 17:10:57 [!!] Removing stale pidfile /home/neriyan/EvenniaEaetheria/eaetheria/server/server.pid
+2026-08-15 17:10:57 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 17:10:58 [..] Loaded.
+2026-08-15 17:10:58 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 17:10:58 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 17:10:58 [..] Webserver starting on 4005
+2026-08-15 17:10:58 [..] Evennia Server successfully started.
+2026-08-15 17:11:11 [SS] Authentication Success: neriyan(account 1) (IP: 127.0.0.1).
+2026-08-15 17:11:11 [..] Logged in: neriyan(account 1) 127.0.0.1 (1 session(s) total)
+2026-08-15 17:45:03 [EE] Overwriting existing registered function stopWordFilter
+2026-08-15 18:49:19 [..] Server disconnected from the portal.
+2026-08-15 18:49:19 [..] Main loop terminated.
+2026-08-15 18:49:19 [..] Server Shut Down.
+2026-08-15 18:49:20 [..] Loaded.
+2026-08-15 18:49:19 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 18:49:20 [..] Loaded.
+2026-08-15 18:49:20 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 18:49:20 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 18:49:20 [..] Webserver starting on 4005
+2026-08-15 18:49:20 [..] Server successfully reloaded.
+2026-08-15 20:00:29 [..] Server disconnected from the portal.
+2026-08-15 20:00:29 [..] Main loop terminated.
+2026-08-15 20:00:29 [..] Server Shut Down.
+2026-08-15 20:00:30 [..] Loaded.
+2026-08-15 20:00:29 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 20:00:30 [..] Loaded.
+2026-08-15 20:00:30 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 20:00:30 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 20:00:30 [..] Webserver starting on 4005
+2026-08-15 20:00:30 [..] Server successfully reloaded.
+2026-08-15 20:32:37 [..] Server disconnected from the portal.
+2026-08-15 20:32:37 [..] Main loop terminated.
+2026-08-15 20:32:37 [..] Server Shut Down.
+2026-08-15 20:32:37 [..] Loaded.
+2026-08-15 20:32:37 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 20:32:37 [..] Loaded.
+2026-08-15 20:32:37 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 20:32:37 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 20:32:37 [..] Webserver starting on 4005
+2026-08-15 20:32:37 [..] Server successfully reloaded.
+2026-08-15 20:35:02 [..] Server disconnected from the portal.
+2026-08-15 20:35:02 [..] Main loop terminated.
+2026-08-15 20:35:02 [..] Server Shut Down.
+2026-08-15 20:35:03 [..] Loaded.
+2026-08-15 20:35:02 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 20:35:03 [..] Loaded.
+2026-08-15 20:35:03 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 20:35:03 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 20:35:03 [..] Webserver starting on 4005
+2026-08-15 20:35:03 [..] Server successfully reloaded.
+2026-08-15 20:35:03 [!!] Traceback (most recent call last):
+2026-08-15 20:35:03 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-15 20:35:03 [!!]     raise exc.with_traceback(tb)
+2026-08-15 20:35:03 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-15 20:35:03 [!!]     module = import_module(modpath, package="evennia")
+2026-08-15 20:35:03 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-15 20:35:03 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-15 20:35:03 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-15 20:35:03 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-15 20:35:03 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-15 20:35:03 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-15 20:35:03 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-15 20:35:03 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-15 20:35:03 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-15 20:35:03 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 19, in <module>
+2026-08-15 20:35:03 [!!]     from commands.command import (
+2026-08-15 20:35:03 [!!]     ...<2 lines>...
+2026-08-15 20:35:03 [!!]     )
+2026-08-15 20:35:03 [!!] ImportError: cannot import name 'CmdItemEdit' from 'commands.command' (/home/neriyan/EvenniaEaetheria/eaetheria/commands/command.py)
+2026-08-15 20:35:03 [EE] Traceback (most recent call last):
+2026-08-15 20:35:03 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-15 20:35:03 [EE]     raise exc.with_traceback(tb)
+2026-08-15 20:35:03 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-15 20:35:03 [EE]     module = import_module(modpath, package="evennia")
+2026-08-15 20:35:03 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-15 20:35:03 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-15 20:35:03 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-15 20:35:03 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-15 20:35:03 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-15 20:35:03 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-15 20:35:03 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-15 20:35:03 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-15 20:35:03 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-15 20:35:03 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 19, in <module>
+2026-08-15 20:35:03 [EE]     from commands.command import (
+2026-08-15 20:35:03 [EE]     ...<2 lines>...
+2026-08-15 20:35:03 [EE]     )
+2026-08-15 20:35:03 [EE] ImportError: cannot import name 'CmdItemEdit' from 'commands.command' (/home/neriyan/EvenniaEaetheria/eaetheria/commands/command.py)
+2026-08-15 20:35:03 [EE] Error loading cmdset 'commands.default_cmdsets.SessionCmdSet'
+2026-08-15 20:35:03 [EE] (Traceback was logged 26-08-15 20:35:03)
+2026-08-15 20:35:03 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.SessionCmdSet'.
+2026-08-15 20:35:03 [EE] Replacing with fallback 'evennia.commands.default.cmdset_session.SessionCmdSet'.
+2026-08-15 20:35:08 [!!] Traceback (most recent call last):
+2026-08-15 20:35:08 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-15 20:35:08 [!!]     raise exc.with_traceback(tb)
+2026-08-15 20:35:08 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-15 20:35:08 [!!]     module = import_module(modpath, package="evennia")
+2026-08-15 20:35:08 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-15 20:35:08 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-15 20:35:08 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-15 20:35:08 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-15 20:35:08 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-15 20:35:08 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-15 20:35:08 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-15 20:35:08 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-15 20:35:08 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-15 20:35:08 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 19, in <module>
+2026-08-15 20:35:08 [!!]     from commands.command import (
+2026-08-15 20:35:08 [!!]     ...<2 lines>...
+2026-08-15 20:35:08 [!!]     )
+2026-08-15 20:35:08 [!!] ImportError: cannot import name 'CmdItemEdit' from 'commands.command' (/home/neriyan/EvenniaEaetheria/eaetheria/commands/command.py)
+2026-08-15 20:35:08 [EE] Traceback (most recent call last):
+2026-08-15 20:35:08 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-15 20:35:08 [EE]     raise exc.with_traceback(tb)
+2026-08-15 20:35:08 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-15 20:35:08 [EE]     module = import_module(modpath, package="evennia")
+2026-08-15 20:35:08 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-15 20:35:08 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-15 20:35:08 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-15 20:35:08 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-15 20:35:08 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-15 20:35:08 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-15 20:35:08 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-15 20:35:08 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-15 20:35:08 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-15 20:35:08 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 19, in <module>
+2026-08-15 20:35:08 [EE]     from commands.command import (
+2026-08-15 20:35:08 [EE]     ...<2 lines>...
+2026-08-15 20:35:08 [EE]     )
+2026-08-15 20:35:08 [EE] ImportError: cannot import name 'CmdItemEdit' from 'commands.command' (/home/neriyan/EvenniaEaetheria/eaetheria/commands/command.py)
+2026-08-15 20:35:08 [EE] Error loading cmdset 'commands.default_cmdsets.AccountCmdSet'
+2026-08-15 20:35:08 [EE] (Traceback was logged 26-08-15 20:35:08)
+2026-08-15 20:35:08 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.AccountCmdSet'.
+2026-08-15 20:35:08 [EE] Replacing with fallback 'evennia.commands.default.cmdset_account.AccountCmdSet'.
+2026-08-15 20:35:08 [!!] Traceback (most recent call last):
+2026-08-15 20:35:08 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-15 20:35:08 [!!]     raise exc.with_traceback(tb)
+2026-08-15 20:35:08 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-15 20:35:08 [!!]     module = import_module(modpath, package="evennia")
+2026-08-15 20:35:08 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-15 20:35:08 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-15 20:35:08 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-15 20:35:08 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-15 20:35:08 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-15 20:35:08 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-15 20:35:08 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-15 20:35:08 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-15 20:35:08 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-15 20:35:08 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 19, in <module>
+2026-08-15 20:35:08 [!!]     from commands.command import (
+2026-08-15 20:35:08 [!!]     ...<2 lines>...
+2026-08-15 20:35:08 [!!]     )
+2026-08-15 20:35:08 [!!] ImportError: cannot import name 'CmdItemEdit' from 'commands.command' (/home/neriyan/EvenniaEaetheria/eaetheria/commands/command.py)
+2026-08-15 20:35:08 [EE] Traceback (most recent call last):
+2026-08-15 20:35:08 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-15 20:35:08 [EE]     raise exc.with_traceback(tb)
+2026-08-15 20:35:08 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-15 20:35:08 [EE]     module = import_module(modpath, package="evennia")
+2026-08-15 20:35:08 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-15 20:35:08 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-15 20:35:08 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-15 20:35:08 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-15 20:35:08 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-15 20:35:08 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-15 20:35:08 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-15 20:35:08 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-15 20:35:08 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-15 20:35:08 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 19, in <module>
+2026-08-15 20:35:08 [EE]     from commands.command import (
+2026-08-15 20:35:08 [EE]     ...<2 lines>...
+2026-08-15 20:35:08 [EE]     )
+2026-08-15 20:35:08 [EE] ImportError: cannot import name 'CmdItemEdit' from 'commands.command' (/home/neriyan/EvenniaEaetheria/eaetheria/commands/command.py)
+2026-08-15 20:35:08 [EE] Error loading cmdset 'commands.default_cmdsets.CharacterCmdSet'
+2026-08-15 20:35:08 [EE] (Traceback was logged 26-08-15 20:35:08)
+2026-08-15 20:35:08 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.CharacterCmdSet'.
+2026-08-15 20:35:08 [EE] Replacing with fallback 'evennia.commands.default.cmdset_character.CharacterCmdSet'.
+2026-08-15 20:36:36 [..] Server disconnected from the portal.
+2026-08-15 20:36:36 [..] Main loop terminated.
+2026-08-15 20:36:36 [..] Server Shut Down.
+2026-08-15 20:36:37 [..] Loaded.
+2026-08-15 20:36:36 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 20:36:37 [..] Loaded.
+2026-08-15 20:36:37 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 20:36:37 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 20:36:37 [..] Webserver starting on 4005
+2026-08-15 20:36:37 [..] Server successfully reloaded.
+2026-08-15 20:39:16 [..] Server disconnected from the portal.
+2026-08-15 20:39:16 [..] Main loop terminated.
+2026-08-15 20:39:16 [..] Server Shut Down.
+2026-08-15 20:39:17 [..] Loaded.
+2026-08-15 20:39:16 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 20:39:17 [..] Loaded.
+2026-08-15 20:39:17 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 20:39:17 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 20:39:17 [..] Webserver starting on 4005
+2026-08-15 20:39:17 [..] Server successfully reloaded.
+2026-08-15 20:40:03 [..] Server disconnected from the portal.
+2026-08-15 20:40:03 [..] Main loop terminated.
+2026-08-15 20:40:03 [..] Server Shut Down.
+2026-08-15 20:40:04 [..] Loaded.
+2026-08-15 20:40:03 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 20:40:04 [..] Loaded.
+2026-08-15 20:40:04 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 20:40:04 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 20:40:04 [..] Webserver starting on 4005
+2026-08-15 20:40:04 [..] Server successfully reloaded.
+2026-08-15 20:40:45 [..] Server disconnected from the portal.
+2026-08-15 20:40:45 [..] Main loop terminated.
+2026-08-15 20:40:45 [..] Server Shut Down.
+2026-08-15 20:40:46 [..] Loaded.
+2026-08-15 20:40:45 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 20:40:46 [..] Loaded.
+2026-08-15 20:40:46 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 20:40:46 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 20:40:46 [..] Webserver starting on 4005
+2026-08-15 20:40:46 [..] Server successfully reloaded.
+2026-08-15 20:44:29 [..] Server disconnected from the portal.
+2026-08-15 20:44:29 [..] Main loop terminated.
+2026-08-15 20:44:29 [..] Server Shut Down.
+2026-08-15 20:44:30 [..] Loaded.
+2026-08-15 20:44:29 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 20:44:30 [..] Loaded.
+2026-08-15 20:44:30 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 20:44:30 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 20:44:30 [..] Webserver starting on 4005
+2026-08-15 20:44:30 [..] Server successfully reloaded.
+2026-08-15 22:57:55 [..] Loaded.
+2026-08-15 22:57:54 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 22:57:55 [..] Loaded.
+2026-08-15 22:57:55 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 22:57:55 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 22:57:55 [..] Webserver starting on 4005
+2026-08-15 22:57:55 [..] Evennia Server successfully started.
+2026-08-15 22:58:08 [SS] Authentication Success: neriyan(account 1) (IP: 127.0.0.1).
+2026-08-15 22:58:08 [..] Logged in: neriyan(account 1) 127.0.0.1 (1 session(s) total)
+2026-08-15 23:33:06 [EE] Overwriting existing registered function stopWordFilter
+2026-08-15 23:49:00 [..] Server disconnected from the portal.
+2026-08-15 23:49:00 [..] Main loop terminated.
+2026-08-15 23:49:00 [..] Server Shut Down.
+2026-08-15 23:49:01 [..] Loaded.
+2026-08-15 23:49:00 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-15 23:49:01 [..] Loaded.
+2026-08-15 23:49:01 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-15 23:49:01 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-15 23:49:01 [..] Webserver starting on 4005
+2026-08-15 23:49:01 [..] Server successfully reloaded.
+2026-08-15 23:49:01 [!!] Traceback (most recent call last):
+2026-08-15 23:49:01 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-15 23:49:01 [!!]     module = import_module(modpath, package="evennia")
+2026-08-15 23:49:01 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-15 23:49:01 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-15 23:49:01 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-15 23:49:01 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-15 23:49:01 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-15 23:49:01 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-15 23:49:01 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-15 23:49:01 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-15 23:49:01 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-15 23:49:01 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-15 23:49:01 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-15 23:49:01 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 157
+2026-08-15 23:49:01 [!!]     f"{'Dbref':<8}{'Name':<30}{'Typeclass}"
+2026-08-15 23:49:01 [!!]                                ^
+2026-08-15 23:49:01 [!!] SyntaxError: unterminated string literal (detected at line 157)
+2026-08-15 23:49:01 [EE] Traceback (most recent call last):
+2026-08-15 23:49:01 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-15 23:49:01 [EE]     module = import_module(modpath, package="evennia")
+2026-08-15 23:49:01 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-15 23:49:01 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-15 23:49:01 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-15 23:49:01 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-15 23:49:01 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-15 23:49:01 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-15 23:49:01 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-15 23:49:01 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-15 23:49:01 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-15 23:49:01 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-15 23:49:01 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-15 23:49:01 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 157
+2026-08-15 23:49:01 [EE]     f"{'Dbref':<8}{'Name':<30}{'Typeclass}"
+2026-08-15 23:49:01 [EE]                                ^
+2026-08-15 23:49:01 [EE] SyntaxError: unterminated string literal (detected at line 157)
+2026-08-15 23:49:01 [EE] SyntaxError encountered when loading cmdset 'commands.default_cmdsets.SessionCmdSet'.
+2026-08-15 23:49:01 [EE] (Traceback was logged 26-08-15 23:49:01)
+2026-08-15 23:49:01 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.SessionCmdSet'.
+2026-08-15 23:49:01 [EE] Replacing with fallback 'evennia.commands.default.cmdset_session.SessionCmdSet'.
+2026-08-15 23:49:05 [!!] Traceback (most recent call last):
+2026-08-15 23:49:05 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-15 23:49:05 [!!]     module = import_module(modpath, package="evennia")
+2026-08-15 23:49:05 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-15 23:49:05 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-15 23:49:05 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-15 23:49:05 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-15 23:49:05 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-15 23:49:05 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-15 23:49:05 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-15 23:49:05 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-15 23:49:05 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-15 23:49:05 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-15 23:49:05 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-15 23:49:05 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 157
+2026-08-15 23:49:05 [!!]     f"{'Dbref':<8}{'Name':<30}{'Typeclass}"
+2026-08-15 23:49:05 [!!]                                ^
+2026-08-15 23:49:05 [!!] SyntaxError: unterminated string literal (detected at line 157)
+2026-08-15 23:49:05 [EE] Traceback (most recent call last):
+2026-08-15 23:49:05 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-15 23:49:05 [EE]     module = import_module(modpath, package="evennia")
+2026-08-15 23:49:05 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-15 23:49:05 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-15 23:49:05 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-15 23:49:05 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-15 23:49:05 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-15 23:49:05 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-15 23:49:05 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-15 23:49:05 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-15 23:49:05 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-15 23:49:05 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-15 23:49:05 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-15 23:49:05 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 157
+2026-08-15 23:49:05 [EE]     f"{'Dbref':<8}{'Name':<30}{'Typeclass}"
+2026-08-15 23:49:05 [EE]                                ^
+2026-08-15 23:49:05 [EE] SyntaxError: unterminated string literal (detected at line 157)
+2026-08-15 23:49:05 [EE] SyntaxError encountered when loading cmdset 'commands.default_cmdsets.AccountCmdSet'.
+2026-08-15 23:49:05 [EE] (Traceback was logged 26-08-15 23:49:05)
+2026-08-15 23:49:05 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.AccountCmdSet'.
+2026-08-15 23:49:05 [EE] Replacing with fallback 'evennia.commands.default.cmdset_account.AccountCmdSet'.
+2026-08-15 23:49:05 [!!] Traceback (most recent call last):
+2026-08-15 23:49:05 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-15 23:49:05 [!!]     module = import_module(modpath, package="evennia")
+2026-08-15 23:49:05 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-15 23:49:05 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-15 23:49:05 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-15 23:49:05 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-15 23:49:05 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-15 23:49:05 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-15 23:49:05 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-15 23:49:05 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-15 23:49:05 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-15 23:49:05 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-15 23:49:05 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-15 23:49:05 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 157
+2026-08-15 23:49:05 [!!]     f"{'Dbref':<8}{'Name':<30}{'Typeclass}"
+2026-08-15 23:49:05 [!!]                                ^
+2026-08-15 23:49:05 [!!] SyntaxError: unterminated string literal (detected at line 157)
+2026-08-15 23:49:05 [EE] Traceback (most recent call last):
+2026-08-15 23:49:05 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-15 23:49:05 [EE]     module = import_module(modpath, package="evennia")
+2026-08-15 23:49:05 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-15 23:49:05 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-15 23:49:05 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-15 23:49:05 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-15 23:49:05 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-15 23:49:05 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-15 23:49:05 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-15 23:49:05 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-15 23:49:05 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-15 23:49:05 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-15 23:49:05 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-15 23:49:05 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 157
+2026-08-15 23:49:05 [EE]     f"{'Dbref':<8}{'Name':<30}{'Typeclass}"
+2026-08-15 23:49:05 [EE]                                ^
+2026-08-15 23:49:05 [EE] SyntaxError: unterminated string literal (detected at line 157)
+2026-08-15 23:49:05 [EE] SyntaxError encountered when loading cmdset 'commands.default_cmdsets.CharacterCmdSet'.
+2026-08-15 23:49:05 [EE] (Traceback was logged 26-08-15 23:49:05)
+2026-08-15 23:49:05 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.CharacterCmdSet'.
+2026-08-15 23:49:05 [EE] Replacing with fallback 'evennia.commands.default.cmdset_character.CharacterCmdSet'.
+2026-08-15 23:58:01 [WW] Warning: Idmapper flush called more than once in 5.0 min interval. Check memory usage.
+2026-08-16 00:28:44 [..] Logged out: neriyan(account 1) 127.0.0.1 (0 sessions(s) remaining)
+2026-08-16 00:28:47 [..] Received SIGTERM, shutting down.
+2026-08-16 00:28:47 [..] Server disconnected from the portal.
+2026-08-16 00:28:47 [..] Main loop terminated.
+2026-08-16 00:28:47 [..] Server Shut Down.
+2026-08-16 00:42:31 [..] Loaded.
+2026-08-16 00:42:30 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-16 00:42:31 [..] Loaded.
+2026-08-16 00:42:31 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-16 00:42:31 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-16 00:42:31 [..] Webserver starting on 4005
+2026-08-16 00:42:31 [..] Evennia Server successfully started.
+2026-08-16 00:42:46 [SS] Authentication Success: neriyan(account 1) (IP: 127.0.0.1).
+2026-08-16 00:42:46 [..] Logged in: neriyan(account 1) 127.0.0.1 (1 session(s) total)
+2026-08-16 00:51:31 [WW] Warning: Idmapper flush called more than once in 5.0 min interval. Check memory usage.
+2026-08-16 01:12:14 [..] Server disconnected from the portal.
+2026-08-16 01:12:14 [..] Main loop terminated.
+2026-08-16 01:12:14 [..] Server Shut Down.
+2026-08-16 01:12:15 [..] Loaded.
+2026-08-16 01:12:14 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-16 01:12:15 [..] Loaded.
+2026-08-16 01:12:15 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-16 01:12:15 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-16 01:12:15 [..] Webserver starting on 4005
+2026-08-16 01:12:15 [..] Server successfully reloaded.
+2026-08-16 01:12:36 [!!] Traceback (most recent call last):
+2026-08-16 01:12:36 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 583, in func
+2026-08-16 01:12:36 [!!]     menu = menu_class(
+2026-08-16 01:12:36 [!!]         caller,
+2026-08-16 01:12:36 [!!]         obj,
+2026-08-16 01:12:36 [!!]     )
+2026-08-16 01:12:36 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/contrib/base_systems/building_menu/building_menu.py", line 619, in __init__
+2026-08-16 01:12:36 [!!]     self.init(obj)
+2026-08-16 01:12:36 [!!]     ~~~~~~~~~^^^^^
+2026-08-16 01:12:36 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py", line 853, in init
+2026-08-16 01:12:36 [!!]     schema = draft.get_schema()
+2026-08-16 01:12:36 [!!]              ^^^^^^^^^^^^^^^^
+2026-08-16 01:12:36 [!!] AttributeError: 'Item' object has no attribute 'get_schema'
+2026-08-16 01:14:12 [..] Server disconnected from the portal.
+2026-08-16 01:14:12 [..] Main loop terminated.
+2026-08-16 01:14:12 [..] Server Shut Down.
+2026-08-16 01:14:13 [..] Loaded.
+2026-08-16 01:14:12 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-16 01:14:13 [..] Loaded.
+2026-08-16 01:14:13 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-16 01:14:13 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-16 01:14:13 [..] Webserver starting on 4005
+2026-08-16 01:14:13 [..] Server successfully reloaded.
+2026-08-16 01:23:13 [WW] Warning: Idmapper flush called more than once in 5.0 min interval. Check memory usage.
+2026-08-16 01:31:27 [..] Server disconnected from the portal.
+2026-08-16 01:31:27 [..] Main loop terminated.
+2026-08-16 01:31:27 [..] Server Shut Down.
+2026-08-16 01:31:28 [..] Loaded.
+2026-08-16 01:31:27 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-16 01:31:28 [..] Loaded.
+2026-08-16 01:31:28 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-16 01:31:28 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-16 01:31:28 [..] Webserver starting on 4005
+2026-08-16 01:31:28 [..] Server successfully reloaded.
+2026-08-16 01:31:28 [!!] Traceback (most recent call last):
+2026-08-16 01:31:28 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:31:28 [!!]     raise exc.with_traceback(tb)
+2026-08-16 01:31:28 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:31:28 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 01:31:28 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:31:28 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:31:28 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:31:28 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:31:28 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:31:28 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:31:28 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:31:28 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:31:28 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:31:28 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:31:28 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:31:28 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:31:28 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:31:28 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:31:28 [EE] Traceback (most recent call last):
+2026-08-16 01:31:28 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:31:28 [EE]     raise exc.with_traceback(tb)
+2026-08-16 01:31:28 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:31:28 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 01:31:28 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:31:28 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:31:28 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:31:28 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:31:28 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:31:28 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:31:28 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:31:28 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:31:28 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:31:28 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:31:28 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:31:28 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:31:28 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:31:28 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:31:28 [EE] Error loading cmdset 'commands.default_cmdsets.SessionCmdSet'
+2026-08-16 01:31:28 [EE] (Traceback was logged 26-08-16 01:31:28)
+2026-08-16 01:31:28 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.SessionCmdSet'.
+2026-08-16 01:31:28 [EE] Replacing with fallback 'evennia.commands.default.cmdset_session.SessionCmdSet'.
+2026-08-16 01:31:36 [!!] Traceback (most recent call last):
+2026-08-16 01:31:36 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:31:36 [!!]     raise exc.with_traceback(tb)
+2026-08-16 01:31:36 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:31:36 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 01:31:36 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:31:36 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:31:36 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:31:36 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:31:36 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:31:36 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:31:36 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:31:36 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:31:36 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:31:36 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:31:36 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:31:36 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:31:36 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:31:36 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:31:36 [EE] Traceback (most recent call last):
+2026-08-16 01:31:36 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:31:36 [EE]     raise exc.with_traceback(tb)
+2026-08-16 01:31:36 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:31:36 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 01:31:36 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:31:36 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:31:36 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:31:36 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:31:36 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:31:36 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:31:36 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:31:36 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:31:36 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:31:36 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:31:36 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:31:36 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:31:36 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:31:36 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:31:36 [EE] Error loading cmdset 'commands.default_cmdsets.AccountCmdSet'
+2026-08-16 01:31:36 [EE] (Traceback was logged 26-08-16 01:31:36)
+2026-08-16 01:31:36 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.AccountCmdSet'.
+2026-08-16 01:31:36 [EE] Replacing with fallback 'evennia.commands.default.cmdset_account.AccountCmdSet'.
+2026-08-16 01:31:36 [!!] Traceback (most recent call last):
+2026-08-16 01:31:36 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:31:36 [!!]     raise exc.with_traceback(tb)
+2026-08-16 01:31:36 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:31:36 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 01:31:36 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:31:36 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:31:36 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:31:36 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:31:36 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:31:36 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:31:36 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:31:36 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:31:36 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:31:36 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:31:36 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:31:36 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:31:36 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:31:36 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:31:36 [EE] Traceback (most recent call last):
+2026-08-16 01:31:36 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:31:36 [EE]     raise exc.with_traceback(tb)
+2026-08-16 01:31:36 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:31:36 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 01:31:36 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:31:36 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:31:36 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:31:36 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:31:36 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:31:36 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:31:36 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:31:36 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:31:36 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:31:36 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:31:36 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:31:36 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:31:36 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:31:36 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:31:36 [EE] Error loading cmdset 'commands.default_cmdsets.CharacterCmdSet'
+2026-08-16 01:31:36 [EE] (Traceback was logged 26-08-16 01:31:36)
+2026-08-16 01:31:36 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.CharacterCmdSet'.
+2026-08-16 01:31:36 [EE] Replacing with fallback 'evennia.commands.default.cmdset_character.CharacterCmdSet'.
+2026-08-16 01:38:06 [..] Server disconnected from the portal.
+2026-08-16 01:38:06 [..] Main loop terminated.
+2026-08-16 01:38:06 [..] Server Shut Down.
+2026-08-16 01:38:07 [..] Loaded.
+2026-08-16 01:38:06 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-16 01:38:07 [..] Loaded.
+2026-08-16 01:38:07 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-16 01:38:07 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-16 01:38:07 [..] Webserver starting on 4005
+2026-08-16 01:38:07 [..] Server successfully reloaded.
+2026-08-16 01:38:07 [!!] Traceback (most recent call last):
+2026-08-16 01:38:07 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:38:07 [!!]     raise exc.with_traceback(tb)
+2026-08-16 01:38:07 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:38:07 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 01:38:07 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:38:07 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:38:07 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:38:07 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:38:07 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:38:07 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:38:07 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:38:07 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:38:07 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:38:07 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:38:07 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:38:07 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:38:07 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:38:07 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:38:07 [EE] Traceback (most recent call last):
+2026-08-16 01:38:07 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:38:07 [EE]     raise exc.with_traceback(tb)
+2026-08-16 01:38:07 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:38:07 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 01:38:07 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:38:07 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:38:07 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:38:07 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:38:07 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:38:07 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:38:07 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:38:07 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:38:07 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:38:07 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:38:07 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:38:07 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:38:07 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:38:07 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:38:07 [EE] Error loading cmdset 'commands.default_cmdsets.SessionCmdSet'
+2026-08-16 01:38:07 [EE] (Traceback was logged 26-08-16 01:38:07)
+2026-08-16 01:38:07 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.SessionCmdSet'.
+2026-08-16 01:38:07 [EE] Replacing with fallback 'evennia.commands.default.cmdset_session.SessionCmdSet'.
+2026-08-16 01:38:11 [!!] Traceback (most recent call last):
+2026-08-16 01:38:11 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:38:11 [!!]     raise exc.with_traceback(tb)
+2026-08-16 01:38:11 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:38:11 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 01:38:11 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:38:11 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:38:11 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:38:11 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:38:11 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:38:11 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:38:11 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:38:11 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:38:11 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:38:11 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:38:11 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:38:11 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:38:11 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:38:11 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:38:11 [EE] Traceback (most recent call last):
+2026-08-16 01:38:11 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:38:11 [EE]     raise exc.with_traceback(tb)
+2026-08-16 01:38:11 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:38:11 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 01:38:11 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:38:11 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:38:11 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:38:11 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:38:11 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:38:11 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:38:11 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:38:11 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:38:11 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:38:11 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:38:11 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:38:11 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:38:11 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:38:11 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:38:11 [EE] Error loading cmdset 'commands.default_cmdsets.AccountCmdSet'
+2026-08-16 01:38:11 [EE] (Traceback was logged 26-08-16 01:38:11)
+2026-08-16 01:38:11 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.AccountCmdSet'.
+2026-08-16 01:38:11 [EE] Replacing with fallback 'evennia.commands.default.cmdset_account.AccountCmdSet'.
+2026-08-16 01:38:11 [!!] Traceback (most recent call last):
+2026-08-16 01:38:11 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:38:11 [!!]     raise exc.with_traceback(tb)
+2026-08-16 01:38:11 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:38:11 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 01:38:11 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:38:11 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:38:11 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:38:11 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:38:11 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:38:11 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:38:11 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:38:11 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:38:11 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:38:11 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:38:11 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:38:11 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:38:11 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:38:11 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:38:11 [EE] Traceback (most recent call last):
+2026-08-16 01:38:11 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:38:11 [EE]     raise exc.with_traceback(tb)
+2026-08-16 01:38:11 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:38:11 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 01:38:11 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:38:11 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:38:11 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:38:11 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:38:11 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:38:11 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:38:11 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:38:11 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:38:11 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:38:11 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:38:11 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:38:11 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:38:11 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:38:11 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:38:11 [EE] Error loading cmdset 'commands.default_cmdsets.CharacterCmdSet'
+2026-08-16 01:38:11 [EE] (Traceback was logged 26-08-16 01:38:11)
+2026-08-16 01:38:11 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.CharacterCmdSet'.
+2026-08-16 01:38:11 [EE] Replacing with fallback 'evennia.commands.default.cmdset_character.CharacterCmdSet'.
+2026-08-16 01:38:22 [..] Logged out: neriyan(account 1) 127.0.0.1 (0 sessions(s) remaining) (quit)
+2026-08-16 01:38:28 [!!] Traceback (most recent call last):
+2026-08-16 01:38:28 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:38:28 [!!]     raise exc.with_traceback(tb)
+2026-08-16 01:38:28 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:38:28 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 01:38:28 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:38:28 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:38:28 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:38:28 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:38:28 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:38:28 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:38:28 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:38:28 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:38:28 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:38:28 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:38:28 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:38:28 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:38:28 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:38:28 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:38:28 [EE] Traceback (most recent call last):
+2026-08-16 01:38:28 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:38:28 [EE]     raise exc.with_traceback(tb)
+2026-08-16 01:38:28 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:38:28 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 01:38:28 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:38:28 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:38:28 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:38:28 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:38:28 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:38:28 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:38:28 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:38:28 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:38:28 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:38:28 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:38:28 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:38:28 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:38:28 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:38:28 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:38:28 [EE] Error loading cmdset 'commands.default_cmdsets.UnloggedinCmdSet'
+2026-08-16 01:38:28 [EE] (Traceback was logged 26-08-16 01:38:28)
+2026-08-16 01:38:28 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.UnloggedinCmdSet'.
+2026-08-16 01:38:28 [EE] Replacing with fallback 'evennia.commands.default.cmdset_unloggedin.UnloggedinCmdSet'.
+2026-08-16 01:38:33 [SS] Authentication Success: neriyan(account 1) (IP: 127.0.0.1).
+2026-08-16 01:38:33 [!!] Traceback (most recent call last):
+2026-08-16 01:38:33 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:38:33 [!!]     raise exc.with_traceback(tb)
+2026-08-16 01:38:33 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:38:33 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 01:38:33 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:38:33 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:38:33 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:38:33 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:38:33 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:38:33 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:38:33 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:38:33 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:38:33 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:38:33 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:38:33 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:38:33 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:38:33 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:38:33 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:38:33 [EE] Traceback (most recent call last):
+2026-08-16 01:38:33 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 01:38:33 [EE]     raise exc.with_traceback(tb)
+2026-08-16 01:38:33 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 01:38:33 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 01:38:33 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 01:38:33 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 01:38:33 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 01:38:33 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 01:38:33 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 01:38:33 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 01:38:33 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 01:38:33 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 01:38:33 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 01:38:33 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 01:38:33 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 01:38:33 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 01:38:33 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 01:38:33 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 01:38:33 [EE] Error loading cmdset 'commands.default_cmdsets.SessionCmdSet'
+2026-08-16 01:38:33 [EE] (Traceback was logged 26-08-16 01:38:33)
+2026-08-16 01:38:33 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.SessionCmdSet'.
+2026-08-16 01:38:33 [EE] Replacing with fallback 'evennia.commands.default.cmdset_session.SessionCmdSet'.
+2026-08-16 01:38:33 [..] Logged in: neriyan(account 1) 127.0.0.1 (1 session(s) total)
+2026-08-16 01:47:07 [WW] Warning: Idmapper flush called more than once in 5.0 min interval. Check memory usage.
+2026-08-16 02:00:39 [..] Server disconnected from the portal.
+2026-08-16 02:00:39 [..] Main loop terminated.
+2026-08-16 02:00:39 [..] Server Shut Down.
+2026-08-16 02:00:40 [..] Loaded.
+2026-08-16 02:00:39 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-16 02:00:40 [..] Loaded.
+2026-08-16 02:00:40 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-16 02:00:40 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-16 02:00:40 [..] Webserver starting on 4005
+2026-08-16 02:00:40 [..] Server successfully reloaded.
+2026-08-16 02:00:40 [!!] Traceback (most recent call last):
+2026-08-16 02:00:40 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:00:40 [!!]     raise exc.with_traceback(tb)
+2026-08-16 02:00:40 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:00:40 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 02:00:40 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:00:40 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:00:40 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:00:40 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:00:40 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:00:40 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:00:40 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:00:40 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:00:40 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:00:40 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:00:40 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:00:40 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:00:40 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:00:40 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:00:40 [EE] Traceback (most recent call last):
+2026-08-16 02:00:40 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:00:40 [EE]     raise exc.with_traceback(tb)
+2026-08-16 02:00:40 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:00:40 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 02:00:40 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:00:40 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:00:40 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:00:40 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:00:40 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:00:40 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:00:40 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:00:40 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:00:40 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:00:40 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:00:40 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:00:40 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:00:40 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:00:40 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:00:40 [EE] Error loading cmdset 'commands.default_cmdsets.SessionCmdSet'
+2026-08-16 02:00:40 [EE] (Traceback was logged 26-08-16 02:00:40)
+2026-08-16 02:00:40 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.SessionCmdSet'.
+2026-08-16 02:00:40 [EE] Replacing with fallback 'evennia.commands.default.cmdset_session.SessionCmdSet'.
+2026-08-16 02:00:48 [!!] Traceback (most recent call last):
+2026-08-16 02:00:48 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:00:48 [!!]     raise exc.with_traceback(tb)
+2026-08-16 02:00:48 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:00:48 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 02:00:48 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:00:48 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:00:48 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:00:48 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:00:48 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:00:48 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:00:48 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:00:48 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:00:48 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:00:48 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:00:48 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:00:48 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:00:48 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:00:48 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:00:48 [EE] Traceback (most recent call last):
+2026-08-16 02:00:48 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:00:48 [EE]     raise exc.with_traceback(tb)
+2026-08-16 02:00:48 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:00:48 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 02:00:48 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:00:48 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:00:48 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:00:48 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:00:48 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:00:48 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:00:48 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:00:48 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:00:48 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:00:48 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:00:48 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:00:48 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:00:48 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:00:48 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:00:48 [EE] Error loading cmdset 'commands.default_cmdsets.AccountCmdSet'
+2026-08-16 02:00:48 [EE] (Traceback was logged 26-08-16 02:00:48)
+2026-08-16 02:00:48 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.AccountCmdSet'.
+2026-08-16 02:00:48 [EE] Replacing with fallback 'evennia.commands.default.cmdset_account.AccountCmdSet'.
+2026-08-16 02:00:48 [!!] Traceback (most recent call last):
+2026-08-16 02:00:48 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:00:48 [!!]     raise exc.with_traceback(tb)
+2026-08-16 02:00:48 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:00:48 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 02:00:48 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:00:48 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:00:48 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:00:48 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:00:48 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:00:48 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:00:48 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:00:48 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:00:48 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:00:48 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:00:48 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:00:48 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:00:48 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:00:48 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:00:48 [EE] Traceback (most recent call last):
+2026-08-16 02:00:48 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:00:48 [EE]     raise exc.with_traceback(tb)
+2026-08-16 02:00:48 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:00:48 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 02:00:48 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:00:48 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:00:48 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:00:48 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:00:48 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:00:48 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:00:48 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:00:48 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:00:48 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:00:48 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:00:48 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:00:48 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:00:48 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:00:48 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:00:48 [EE] Error loading cmdset 'commands.default_cmdsets.CharacterCmdSet'
+2026-08-16 02:00:48 [EE] (Traceback was logged 26-08-16 02:00:48)
+2026-08-16 02:00:48 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.CharacterCmdSet'.
+2026-08-16 02:00:48 [EE] Replacing with fallback 'evennia.commands.default.cmdset_character.CharacterCmdSet'.
+2026-08-16 02:09:21 [..] Server disconnected from the portal.
+2026-08-16 02:09:21 [..] Main loop terminated.
+2026-08-16 02:09:21 [..] Server Shut Down.
+2026-08-16 02:09:22 [..] Loaded.
+2026-08-16 02:09:21 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-16 02:09:22 [..] Loaded.
+2026-08-16 02:09:22 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-16 02:09:22 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-16 02:09:22 [..] Webserver starting on 4005
+2026-08-16 02:09:22 [..] Server successfully reloaded.
+2026-08-16 02:09:22 [!!] Traceback (most recent call last):
+2026-08-16 02:09:22 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:09:22 [!!]     raise exc.with_traceback(tb)
+2026-08-16 02:09:22 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:09:22 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 02:09:22 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:09:22 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:09:22 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:09:22 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:09:22 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:09:22 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:09:22 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:09:22 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:09:22 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:09:22 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:09:22 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:09:22 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:09:22 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:09:22 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:09:22 [EE] Traceback (most recent call last):
+2026-08-16 02:09:22 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:09:22 [EE]     raise exc.with_traceback(tb)
+2026-08-16 02:09:22 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:09:22 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 02:09:22 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:09:22 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:09:22 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:09:22 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:09:22 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:09:22 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:09:22 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:09:22 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:09:22 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:09:22 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:09:22 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:09:22 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:09:22 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:09:22 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:09:22 [EE] Error loading cmdset 'commands.default_cmdsets.SessionCmdSet'
+2026-08-16 02:09:22 [EE] (Traceback was logged 26-08-16 02:09:22)
+2026-08-16 02:09:22 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.SessionCmdSet'.
+2026-08-16 02:09:22 [EE] Replacing with fallback 'evennia.commands.default.cmdset_session.SessionCmdSet'.
+2026-08-16 02:09:50 [..] Server disconnected from the portal.
+2026-08-16 02:09:50 [..] Main loop terminated.
+2026-08-16 02:09:50 [..] Server Shut Down.
+2026-08-16 02:10:03 [..] Loaded.
+2026-08-16 02:10:02 [..] Loading /home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/server/server.py...
+2026-08-16 02:10:03 [..] Loaded.
+2026-08-16 02:10:03 [..] twistd 24.11.0 (/home/neriyan/EvenniaEaetheria/evenv/bin/python3 3.14.4) starting up.
+2026-08-16 02:10:03 [..] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-08-16 02:10:03 [..] Webserver starting on 4005
+2026-08-16 02:10:03 [..] Evennia Server successfully started.
+2026-08-16 02:10:09 [!!] Traceback (most recent call last):
+2026-08-16 02:10:09 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:10:09 [!!]     raise exc.with_traceback(tb)
+2026-08-16 02:10:09 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:10:09 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 02:10:09 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:10:09 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:10:09 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:10:09 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:10:09 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:10:09 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:10:09 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:10:09 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:10:09 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:10:09 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:10:09 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:10:09 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:10:09 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:10:09 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:10:09 [EE] Traceback (most recent call last):
+2026-08-16 02:10:09 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:10:09 [EE]     raise exc.with_traceback(tb)
+2026-08-16 02:10:09 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:10:09 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 02:10:09 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:10:09 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:10:09 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:10:09 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:10:09 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:10:09 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:10:09 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:10:09 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:10:09 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:10:09 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:10:09 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:10:09 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:10:09 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:10:09 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:10:09 [EE] Error loading cmdset 'commands.default_cmdsets.UnloggedinCmdSet'
+2026-08-16 02:10:09 [EE] (Traceback was logged 26-08-16 02:10:09)
+2026-08-16 02:10:09 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.UnloggedinCmdSet'.
+2026-08-16 02:10:09 [EE] Replacing with fallback 'evennia.commands.default.cmdset_unloggedin.UnloggedinCmdSet'.
+2026-08-16 02:10:15 [SS] Authentication Success: neriyan(account 1) (IP: 127.0.0.1).
+2026-08-16 02:10:15 [!!] Traceback (most recent call last):
+2026-08-16 02:10:15 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:10:15 [!!]     raise exc.with_traceback(tb)
+2026-08-16 02:10:15 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:10:15 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 02:10:15 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:10:15 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:10:15 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:10:15 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:10:15 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:10:15 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:10:15 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:10:15 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:10:15 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:10:15 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:10:15 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:10:15 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:10:15 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:10:15 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:10:15 [EE] Traceback (most recent call last):
+2026-08-16 02:10:15 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:10:15 [EE]     raise exc.with_traceback(tb)
+2026-08-16 02:10:15 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:10:15 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 02:10:15 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:10:15 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:10:15 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:10:15 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:10:15 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:10:15 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:10:15 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:10:15 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:10:15 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:10:15 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:10:15 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:10:15 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:10:15 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:10:15 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:10:15 [EE] Error loading cmdset 'commands.default_cmdsets.SessionCmdSet'
+2026-08-16 02:10:15 [EE] (Traceback was logged 26-08-16 02:10:15)
+2026-08-16 02:10:15 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.SessionCmdSet'.
+2026-08-16 02:10:15 [EE] Replacing with fallback 'evennia.commands.default.cmdset_session.SessionCmdSet'.
+2026-08-16 02:10:15 [..] Logged in: neriyan(account 1) 127.0.0.1 (1 session(s) total)
+2026-08-16 02:11:46 [!!] Traceback (most recent call last):
+2026-08-16 02:11:46 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:11:46 [!!]     raise exc.with_traceback(tb)
+2026-08-16 02:11:46 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:11:46 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 02:11:46 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:11:46 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:11:46 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:11:46 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:11:46 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:11:46 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:11:46 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:11:46 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:11:46 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:11:46 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:11:46 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:11:46 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:11:46 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:11:46 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:11:46 [EE] Traceback (most recent call last):
+2026-08-16 02:11:46 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:11:46 [EE]     raise exc.with_traceback(tb)
+2026-08-16 02:11:46 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:11:46 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 02:11:46 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:11:46 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:11:46 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:11:46 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:11:46 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:11:46 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:11:46 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:11:46 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:11:46 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:11:46 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:11:46 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:11:46 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:11:46 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:11:46 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:11:46 [EE] Error loading cmdset 'commands.default_cmdsets.AccountCmdSet'
+2026-08-16 02:11:46 [EE] (Traceback was logged 26-08-16 02:11:46)
+2026-08-16 02:11:46 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.AccountCmdSet'.
+2026-08-16 02:11:46 [EE] Replacing with fallback 'evennia.commands.default.cmdset_account.AccountCmdSet'.
+2026-08-16 02:11:46 [!!] Traceback (most recent call last):
+2026-08-16 02:11:46 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:11:46 [!!]     raise exc.with_traceback(tb)
+2026-08-16 02:11:46 [!!]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:11:46 [!!]     module = import_module(modpath, package="evennia")
+2026-08-16 02:11:46 [!!]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:11:46 [!!]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:11:46 [!!]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:11:46 [!!]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:11:46 [!!]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:11:46 [!!]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:11:46 [!!]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:11:46 [!!]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:11:46 [!!]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:11:46 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:11:46 [!!]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:11:46 [!!]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:11:46 [!!]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:11:46 [!!] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:11:46 [EE] Traceback (most recent call last):
+2026-08-16 02:11:46 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 176, in import_cmdset
+2026-08-16 02:11:46 [EE]     raise exc.with_traceback(tb)
+2026-08-16 02:11:46 [EE]   File "/home/neriyan/EvenniaEaetheria/evenv/lib/python3.14/site-packages/evennia/commands/cmdsethandler.py", line 171, in import_cmdset
+2026-08-16 02:11:46 [EE]     module = import_module(modpath, package="evennia")
+2026-08-16 02:11:46 [EE]   File "/usr/lib/python3.14/importlib/__init__.py", line 88, in import_module
+2026-08-16 02:11:46 [EE]     return _bootstrap._gcd_import(name[level:], package, level)
+2026-08-16 02:11:46 [EE]            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 02:11:46 [EE]   File "<frozen importlib._bootstrap>", line 1406, in _gcd_import
+2026-08-16 02:11:46 [EE]   File "<frozen importlib._bootstrap>", line 1371, in _find_and_load
+2026-08-16 02:11:46 [EE]   File "<frozen importlib._bootstrap>", line 1342, in _find_and_load_unlocked
+2026-08-16 02:11:46 [EE]   File "<frozen importlib._bootstrap>", line 938, in _load_unlocked
+2026-08-16 02:11:46 [EE]   File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+2026-08-16 02:11:46 [EE]   File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+2026-08-16 02:11:46 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/default_cmdsets.py", line 23, in <module>
+2026-08-16 02:11:46 [EE]     from commands.object_builder import CmdOList, CmdObjEdit
+2026-08-16 02:11:46 [EE]   File "/home/neriyan/EvenniaEaetheria/eaetheria/commands/object_builder.py", line 42, in <module>
+2026-08-16 02:11:46 [EE]     from world.building_menus import ObjectBuildingMenu
+2026-08-16 02:11:46 [EE] ImportError: cannot import name 'ObjectBuildingMenu' from 'world.building_menus' (/home/neriyan/EvenniaEaetheria/eaetheria/world/building_menus.py)
+2026-08-16 02:11:46 [EE] Error loading cmdset 'commands.default_cmdsets.CharacterCmdSet'
+2026-08-16 02:11:46 [EE] (Traceback was logged 26-08-16 02:11:46)
+2026-08-16 02:11:46 [EE] Error encountered for cmdset at path 'commands.default_cmdsets.CharacterCmdSet'.
+2026-08-16 02:11:46 [EE] Replacing with fallback 'evennia.commands.default.cmdset_character.CharacterCmdSet'.
