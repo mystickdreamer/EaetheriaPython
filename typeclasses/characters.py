@@ -45,6 +45,8 @@ from world.skills import (
     canonical_skill_name,
     default_skills_dict,
 )
+from world import immortal_data
+from world.immortal_data import DEFAULT_BAMF_IN, DEFAULT_BAMF_OUT
 
 # Encumbrance tuning (mirrors the constants at the top of EntityStats.gd)
 ENCUMBRANCE_OVERAGE_CAP = 50.0
@@ -139,6 +141,12 @@ class Character(ObjectParent, DefaultCharacter):
         # derived from race (see equip_slots property below).
         self.db.equipment = {}
 
+        # ===== Immortal/staff flavor (see world/immortal_data.py) =====
+        # Harmless to store on every character - only ever surfaced
+        # through CmdImm, which is locked to Builder+.
+        self.db.bamf_in = DEFAULT_BAMF_IN
+        self.db.bamf_out = DEFAULT_BAMF_OUT
+
         # Apply race defaults (vision, size, languages, flat_bonuses,
         # innate_perks, can_fly, ignores_size_restrictions) then derive
         # max_weight.
@@ -211,6 +219,9 @@ class Character(ObjectParent, DefaultCharacter):
         _ensure("active_modifiers", {})
         _ensure("body_part_damage", {})
         _ensure("equipment", {})
+
+        _ensure("bamf_in", DEFAULT_BAMF_IN)
+        _ensure("bamf_out", DEFAULT_BAMF_OUT)
 
         # If skills existed but a newer skill was added to world/skills.py
         # since this character was created, backfill just the missing
@@ -948,6 +959,93 @@ class Character(ObjectParent, DefaultCharacter):
         if property_name == "might":
             self.recalculate_max_weight()
         return True
+
+    # ==================================================================
+    # Immortal/staff (bamf messages, tier info - see CmdImm)
+    # ==================================================================
+    @property
+    def bamf_in(self):
+        return self.attributes.get("bamf_in", default=DEFAULT_BAMF_IN)
+
+    @bamf_in.setter
+    def bamf_in(self, value):
+        self.attributes.add("bamf_in", value)
+
+    @property
+    def bamf_out(self):
+        return self.attributes.get("bamf_out", default=DEFAULT_BAMF_OUT)
+
+    @bamf_out.setter
+    def bamf_out(self, value):
+        self.attributes.add("bamf_out", value)
+
+    def get_bamf_message(self, direction):
+        """
+        Returns the rendered (name-substituted) bamf-in or bamf-out
+        message. `direction` is "in" or "out".
+        """
+        template = self.bamf_in if direction == "in" else self.bamf_out
+        try:
+            return template.format(name=self.get_display_name(None))
+        except (KeyError, IndexError):
+            # A malformed custom template (stray {something}) shouldn't
+            # ever crash a teleport - fall back to the raw text.
+            return template
+
+    def announce_move_from(self, destination, msg=None, mapping=None, move_type="move", **kwargs):
+        """
+        Evennia calls this on an object right before it leaves its
+        current location, as part of move_to(). Evennia's default
+        teleport command (@tel/teleport - inherited automatically via
+        default_cmds.CharacterCmdSet, no custom command needed here)
+        tags its moves with move_type="teleport" specifically so
+        typeclasses can hook this. When that's the case, and nothing
+        upstream already forced a specific msg, show this character's
+        bamf-out message to the room being left instead of Evennia's
+        default departure text.
+
+        NOTE: signature/behavior of announce_move_from() is part of
+        Evennia's DefaultObject and can shift slightly between
+        versions - if bamf messages stop firing after an Evennia
+        upgrade, check this override against the installed version's
+        source first.
+        """
+        if move_type == "teleport" and msg is None and self.location:
+            self.location.msg_contents(
+                self.get_bamf_message("out"), exclude=self, from_obj=self,
+            )
+            return
+        super().announce_move_from(
+            destination, msg=msg, mapping=mapping, move_type=move_type, **kwargs
+        )
+
+    def announce_move_to(self, source_location, msg=None, mapping=None, move_type="move", **kwargs):
+        """
+        Mirrors announce_move_from() above, but fires in the
+        destination room right after arrival.
+        """
+        if move_type == "teleport" and msg is None and self.location:
+            self.location.msg_contents(
+                self.get_bamf_message("in"), exclude=self, from_obj=self,
+            )
+            return
+        super().announce_move_to(
+            source_location, msg=msg, mapping=mapping, move_type=move_type, **kwargs
+        )
+
+    def highest_staff_permission(self):
+        """
+        Returns the highest staff permission tier (see
+        world/immortal_data.PERMISSION_ORDER) this character holds,
+        checking both the Character object's own permissions and
+        those of the Account currently puppeting it (permissions are
+        usually granted on the Account) - or None if neither has any
+        tier listed there.
+        """
+        perms = set(self.permissions.all())
+        if self.account:
+            perms |= set(self.account.permissions.all())
+        return immortal_data.highest_permission(perms)
 
     # ==================================================================
     # Dice checks

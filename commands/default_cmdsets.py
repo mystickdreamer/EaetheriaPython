@@ -18,7 +18,7 @@ from evennia import default_cmds
 
 from commands.command import (
     CmdSheet, CmdRoll, CmdSkills, CmdPick, CmdDoorEdit, CmdUnlock, CmdLock,
-    CmdWear, CmdRemove, CmdBody, CmdEquipment, CmdItemEdit,
+    CmdWear, CmdRemove, CmdBody, CmdEquipment, CmdItemEdit, CmdImm,
 )
 from commands.object_builder import CmdOList, CmdObjEdit, CmdRoomEdit
 
@@ -52,6 +52,7 @@ class CharacterCmdSet(default_cmds.CharacterCmdSet):
         self.add(CmdBody())
         self.add(CmdEquipment())
         self.add(CmdItemEdit())
+        self.add(CmdImm())
         self.add(CmdOList())
         self.add(CmdObjEdit())
         self.add(CmdRoomEdit())

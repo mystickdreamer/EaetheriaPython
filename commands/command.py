@@ -16,6 +16,7 @@ from typeclasses.exits import LockableExit, VALID_ATTRIBUTES
 from typeclasses.items import Item, Weapon, Armor
 from world.skills import ALL_SKILLS
 from world import body_parts as body_parts_registry
+from world import immortal_data
 
 # from evennia import default_cmds
 
@@ -400,6 +401,10 @@ class CmdSheet(Command):
         #sheet.extend(format_body_lines(caller))
         #sheet.append("|y" + "=" * 78 + "|n")
 
+        # ----- Immortal reminder (staff only) -----
+        if immortal_data.is_immortal(caller.highest_staff_permission()):
+            sheet.append("Type IMM to view immortal information." + "|n")
+
         caller.msg("\n".join(sheet))
 
 
@@ -459,6 +464,133 @@ class CmdEquipment(Command):
         lines.append(" |xType 'body' to see your body parts.|n")
         lines.append("|y" + "=" * 78 + "|n")
 
+        caller.msg("\n".join(lines))
+
+
+class CmdImm(Command):
+    """
+    View and edit your immortal/staff information.
+
+    Usage:
+      imm
+      imm bamfin <message>
+      imm bamfout <message>
+      imm bamfin reset
+      imm bamfout reset
+
+    Shows your current permission tier, the staff commands that tier
+    unlocks, and your bamf-in/bamf-out flavor messages - shown
+    automatically to a room whenever you use Evennia's teleport
+    command (@tel/teleport) instead of the default arrive/leave text.
+
+    Bamf messages accept {name} as a placeholder for your own display
+    name, e.g.:
+
+      imm bamfin *poof* {name} appears in a puff of orange smoke!
+
+    Builder permission or higher is required to use this command at
+    all - if you can't see 'imm' in your command list, you don't have
+    it.
+    """
+
+    key = "imm"
+    locks = "cmd:perm(Builder)"
+    help_category = "Immortal"
+
+    def func(self):
+        caller = self.caller
+        args = self.args.strip() if self.args else ""
+
+        if not args:
+            self._display(caller)
+            return
+
+        parts = args.split(None, 1)
+        verb = parts[0].lower()
+        rest = parts[1].strip() if len(parts) > 1 else ""
+
+        if verb == "bamfin":
+            self._set_bamf(caller, "in", rest)
+        elif verb == "bamfout":
+            self._set_bamf(caller, "out", rest)
+        else:
+            caller.msg(
+                "Usage: imm | imm bamfin <message> | imm bamfout <message> "
+                "| imm bamfin reset | imm bamfout reset"
+            )
+
+    def _set_bamf(self, caller, direction, rest):
+        default = (
+            immortal_data.DEFAULT_BAMF_IN if direction == "in"
+            else immortal_data.DEFAULT_BAMF_OUT
+        )
+        label = "bamf-in" if direction == "in" else "bamf-out"
+
+        if not rest:
+            caller.msg(
+                f"Set what? Usage: imm bamf{direction} <message>, or "
+                f"imm bamf{direction} reset to restore the default."
+            )
+            return
+
+        if rest.lower() == "reset":
+            value = default
+        else:
+            value = rest
+
+        if direction == "in":
+            caller.bamf_in = value
+        else:
+            caller.bamf_out = value
+
+        caller.msg(f"Your {label} message is now: {value}")
+
+    def _display(self, caller):
+        # Defensive self-heal, same pattern as CmdSheet - catches
+        # characters created before bamf_in/bamf_out existed.
+        if caller.ensure_data_integrity():
+            caller.msg("|x(imm: found and repaired missing character data)|n")
+
+        tier = caller.highest_staff_permission()
+
+        lines = []
+        lines.append("|y" + "=" * 78 + "|n")
+        lines.append(f"|w{'IMMORTAL INFORMATION':^78}|n")
+        lines.append("|y" + "=" * 78 + "|n")
+
+        if not tier:
+            lines.append(
+                " You don't currently hold a recognized staff permission tier."
+            )
+            lines.append("|y" + "=" * 78 + "|n")
+            caller.msg("\n".join(lines))
+            return
+
+        tier_info = immortal_data.get_tier_info(tier)
+        lines.append(f" Permission tier: |w{tier}|n")
+        if tier_info.get("description"):
+            lines.append(f" {tier_info['description']}")
+
+        lines.append("|y" + "-" * 78 + "|n")
+
+        commands = immortal_data.commands_available_at(tier)
+        lines.append("|c" + f"{'COMMANDS AVAILABLE':^78}" + "|n")
+        if commands:
+            lines.append(" " + ", ".join(commands))
+        else:
+            lines.append(" (none registered for this tier yet)")
+
+        lines.append("|y" + "-" * 78 + "|n")
+
+        lines.append("|c" + f"{'BAMF MESSAGES':^78}" + "|n")
+        lines.append(f" Bamf-in:  |w{caller.bamf_in}|n")
+        lines.append(f" Bamf-out: |w{caller.bamf_out}|n")
+        lines.append(
+            " |x(edit with 'imm bamfin <message>' / 'imm bamfout <message>', "
+            "'reset' to restore defaults; {name} is a placeholder)|n"
+        )
+
+        lines.append("|y" + "=" * 78 + "|n")
         caller.msg("\n".join(lines))
 
 
