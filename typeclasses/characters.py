@@ -147,6 +147,12 @@ class Character(ObjectParent, DefaultCharacter):
         self.db.bamf_in = DEFAULT_BAMF_IN
         self.db.bamf_out = DEFAULT_BAMF_OUT
 
+        # Off by default even for Builder+ - holylight is a deliberate
+        # switch (see CmdHolylight), not something tied automatically
+        # to permission level. Read by ObjectParent.get_extra_display_
+        # name_info()/get_numbered_name() in typeclasses/objects.py.
+        self.db.holylight = False
+
         # Apply race defaults (vision, size, languages, flat_bonuses,
         # innate_perks, can_fly, ignores_size_restrictions) then derive
         # max_weight.
@@ -222,6 +228,7 @@ class Character(ObjectParent, DefaultCharacter):
 
         _ensure("bamf_in", DEFAULT_BAMF_IN)
         _ensure("bamf_out", DEFAULT_BAMF_OUT)
+        _ensure("holylight", False)
 
         # If skills existed but a newer skill was added to world/skills.py
         # since this character was created, backfill just the missing
@@ -978,6 +985,14 @@ class Character(ObjectParent, DefaultCharacter):
     @bamf_out.setter
     def bamf_out(self, value):
         self.attributes.add("bamf_out", value)
+
+    @property
+    def holylight(self):
+        return bool(self.attributes.get("holylight", default=False))
+
+    @holylight.setter
+    def holylight(self, value):
+        self.attributes.add("holylight", bool(value))
 
     def get_bamf_message(self, direction):
         """

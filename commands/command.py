@@ -594,6 +594,60 @@ class CmdImm(Command):
         caller.msg("\n".join(lines))
 
 
+class CmdHolylight(Command):
+    """
+    Toggle holylight.
+
+    Usage:
+      holylight
+      holylight on
+      holylight off
+
+    Off, you see the game exactly like a player does - no dbrefs on
+    rooms, exits, items, or characters. On, every name gets its
+    "(#dbref)" shown, the way it needs to for building/debugging.
+
+    With no argument, toggles your current state. Off by default even
+    for Builder+ characters - holylight is a deliberate switch, not
+    something tied automatically to permission level, so staff can
+    walk the game world as a player would without losing builder
+    access.
+
+    Builder permission or higher is required to use this command at
+    all - if you can't see 'holylight' in your command list, you
+    don't have it.
+    """
+
+    key = "holylight"
+    locks = "cmd:perm(Builder)"
+    help_category = "Immortal"
+
+    def func(self):
+        caller = self.caller
+
+        # Defensive self-heal, same pattern as CmdImm/CmdSheet - catches
+        # characters created before the holylight field existed.
+        if caller.ensure_data_integrity():
+            caller.msg("|x(holylight: found and repaired missing character data)|n")
+
+        arg = self.args.strip().lower() if self.args else ""
+
+        if arg in ("on", "off"):
+            new_state = arg == "on"
+        elif arg:
+            caller.msg("Usage: holylight | holylight on | holylight off")
+            return
+        else:
+            new_state = not caller.holylight
+
+        caller.holylight = new_state
+
+        if new_state:
+            caller.msg("|wHolylight ON|n - you now see dbrefs on everything.")
+        else:
+            caller.msg("|xHolylight off|n - you see the game like a player again.")
+
+
 class CmdRoll(Command):
     """
     Roll an attribute + skill check via the exploding d10 dice pool.

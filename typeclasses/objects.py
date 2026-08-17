@@ -11,6 +11,29 @@ with a location in the game world (like Characters, Rooms, Exits).
 from evennia.objects.objects import DefaultObject
 
 
+def _holylight_active(looker):
+    """
+    True if `looker` is Builder+ AND currently has holylight toggled
+    on (see the `holylight` property on typeclasses.characters.Character
+    and CmdHolylight in commands/command.py).
+
+    Builder+ is checked here in addition to the toggle itself - not
+    because holylight could ever be True without it (CmdHolylight is
+    locked to Builder+, so nothing else sets the attribute), but so
+    this function is safe to trust on its own as the single gate for
+    "should this looker see dbrefs", without every caller needing to
+    separately re-derive permission. Centralized here since both
+    get_extra_display_name_info() and get_numbered_name() below need
+    the identical check and previously duplicated it.
+    """
+    if not looker:
+        return False
+    is_builder = looker.locks.check_lockstring(looker, "dummy:perm(Builder)")
+    if not is_builder:
+        return False
+    return bool(looker.attributes.get("holylight", default=False))
+
+
 class ObjectParent:
     """
     This is a mixin that can be used to override *all* entities inheriting at
@@ -22,16 +45,34 @@ class ObjectParent:
 
     """
 
+    def get_extra_display_name_info(self, looker=None, **kwargs):
+        """
+        Same "(#dbref)" suffix Evennia's default get_display_name()
+        shows for Builder+ lookers, except gated on holylight instead
+        of on raw permission alone. This is the hook Evennia's own
+        get_display_name() calls internally (so overriding it here
+        covers Room/Exit/Character names, room headers, and 'look
+        <target>' for free), and it's also called explicitly by
+        Item.get_display_name()'s unidentified-name branch
+        (typeclasses/items.py) - one override point covers both.
+
+        With holylight off, a Builder+ character sees this exactly
+        like a player would - no numbers anywhere. On, they see
+        dbrefs everywhere this hook is used.
+        """
+        if _holylight_active(looker):
+            return f"(#{self.id})"
+        return ""
+
     def get_numbered_name(self, count, looker, **kwargs):
         """
-        Same as the default, but guarantees a "(#dbref)" suffix for
-        Builder+ lookers (which includes superusers, since they pass
-        every permission check automatically) on the count==1 (i.e.
-        ungrouped/singular) case.
+        Same as the default, but guarantees a "(#dbref)" suffix when
+        holylight is active (see _holylight_active() above) on the
+        count==1 (i.e. ungrouped/singular) case.
 
         Written to build the suffix ourselves rather than relying on
-        DefaultObject.get_extra_display_name_info firing through this
-        call automatically - confirmed live that it wasn't, on this
+        get_extra_display_name_info() firing through this call
+        automatically - confirmed live that it wasn't, on this
         install, for both `inventory` and a room's "things" listing
         (both of which route through this method - see
         evennia.utils.utils.group_objects_by_key_and_desc).
@@ -46,12 +87,7 @@ class ObjectParent:
 
         result = super().get_numbered_name(count, looker, **kwargs)
 
-        is_builder = bool(
-            looker
-            and looker.locks.check_lockstring(looker, "dummy:perm(Builder)")
-        )
-
-        if not is_builder or count not in (0, 1):
+        if not _holylight_active(looker) or count not in (0, 1):
             return result
 
         suffix = f"(#{self.id})"

@@ -462,11 +462,11 @@ class Item(Object):
         Shows unidentified_name instead of the true name until
         identified.
 
-        Builders/superusers see the dbref appended either way (e.g.
-        "sword(#123)"), matching Evennia's normal default behavior
-        (DefaultObject.get_extra_display_name_info - see
-        evennia/objects/objects.py) for perm(Builder)+ lookers. The
-        identified branch below gets this for free via
+        Lookers with holylight on see the dbref appended either way
+        (e.g. "sword(#123)"), via ObjectParent.get_extra_display_name_
+        info (typeclasses/objects.py), which gates on the looker's
+        holylight toggle - see CmdHolylight in commands/command.py.
+        The identified branch below gets this for free via
         super().get_display_name(); the unidentified branch has to
         add it explicitly since it returns early without calling
         super() at all.
