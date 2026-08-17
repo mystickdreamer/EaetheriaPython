@@ -17,6 +17,7 @@ from typeclasses.items import Item, Weapon, Armor
 from world.skills import ALL_SKILLS
 from world import body_parts as body_parts_registry
 from world import immortal_data
+from world.languages import canonical_language_name, garble_text
 
 # from evennia import default_cmds
 
@@ -310,7 +311,13 @@ class CmdSheet(Command):
             f" Combat Speed: |w{caller.combat_speed}|n   "
             f"Weight: |w{caller.weight}/{caller.max_weight}|n"
         )
-        sheet.append(f" XP: |w{caller.xp}|n")
+        # xp itself stays a float (see EXPLORATION_XP_REWARD in
+        # typeclasses/characters.py) so tiny fractional rewards can
+        # accumulate - the sheet just displays the whole-number part.
+        # int() truncates rather than rounds, so this never shows a
+        # whole point the character can't actually spend yet (e.g.
+        # 5.99 displays as 5, not 6).
+        sheet.append(f" XP: |w{int(caller.xp)}|n")
         sheet.append("|y" + "-" * 78 + "|n")
 
         # ----- Attributes (base + any active modifier total) -----
@@ -762,6 +769,275 @@ class CmdSkills(Command):
             lines.append("")
 
         caller.msg("\n".join(lines).rstrip())
+
+
+class CmdSay(Command):
+    """
+    Speak out loud in the language you're currently speaking.
+
+    Usage:
+      say <message>
+
+    Listeners who know the language you're speaking (see 'speak' to
+    change it, 'sheet' to see which ones you know) hear you clearly.
+    Everyone else hears your words garbled into nonsense - the same
+    garbled shape every time for a given word in a given language, so
+    a language you hear often enough can start to feel familiar even
+    before you actually learn it (see world/languages.py).
+
+    This overrides Evennia's default `say` (same key, so it replaces
+    rather than stacks - see CharacterCmdSet.at_cmdset_creation() in
+    commands/default_cmdsets.py) specifically to add that garbling;
+    aliases (' and ") match Evennia's original for the same typing
+    shortcut.
+    """
+
+    key = "say"
+    aliases = ["'", '"']
+    help_category = "General"
+
+    def func(self):
+        caller = self.caller
+        message = self.args.strip() if self.args else ""
+
+        if not message:
+            caller.msg("Say what?")
+            return
+
+        if not caller.location:
+            caller.msg("You have no location to speak into.")
+            return
+
+        caller.ensure_data_integrity()
+
+        language = caller.speaking_language
+        canonical = canonical_language_name(language) or language
+
+        caller.msg(f'You say, in {canonical}, "{message}"')
+
+        for listener in caller.location.contents:
+            if listener is caller:
+                continue
+
+            knows_it = (
+                hasattr(listener, "knows_language")
+                and listener.knows_language(canonical)
+            )
+            heard = message if knows_it else garble_text(message, canonical)
+
+            listener.msg(
+                f'{caller.get_display_name(listener)} says, in {canonical}, "{heard}"'
+            )
+
+
+class CmdSpeak(Command):
+    """
+    Switch which language 'say' speaks in.
+
+    Usage:
+      speak <language>
+      speak
+
+    With no argument, shows the language you're currently speaking
+    and the full list of languages you know. You can only switch to a
+    language you actually know - see world/races.py for which
+    languages each race starts with.
+    """
+
+    key = "speak"
+    help_category = "General"
+
+    def func(self):
+        caller = self.caller
+        caller.ensure_data_integrity()
+
+        arg = self.args.strip() if self.args else ""
+
+        if not arg:
+            caller.msg(
+                f"You are currently speaking |w{caller.speaking_language}|n.\n"
+                f"Languages known: |w{', '.join(caller.languages) or 'none'}|n"
+            )
+            return
+
+        canonical = canonical_language_name(arg)
+        if canonical is None:
+            caller.msg(f"'{arg}' isn't a recognized language.")
+            return
+
+        if not caller.knows_language(canonical):
+            caller.msg(f"You don't know {canonical}.")
+            return
+
+        caller.speaking_language = canonical
+        caller.msg(f"You are now speaking |w{canonical}|n.")
+
+
+MEMORIZE_REQUIRED_SUCCESSES = 3  # balance number - easy to retune
+
+
+def _render_memorized_locations(caller):
+    """
+    Shared "MEMORIZED LOCATIONS" box used by both `memorize` (no-arg
+    form) and `locations`, so there's a single place to change the
+    display instead of two copies drifting apart.
+    """
+    locations = caller.memorized_locations
+    capacity = caller.get_memorized_location_capacity()
+
+    lines = [
+        "|y" + "=" * 60 + "|n",
+        f"|w{'MEMORIZED LOCATIONS':^60}|n",
+        "|y" + "=" * 60 + "|n",
+    ]
+
+    if locations:
+        for index, name in enumerate(locations, start=1):
+            lines.append(f" {index}. {name}")
+    else:
+        lines.append(" You have no memorized locations.")
+
+    lines.append("|y" + "-" * 60 + "|n")
+    lines.append(
+        f" {len(locations)} / {capacity} memorized location(s)"
+    )
+    lines.append("|y" + "=" * 60 + "|n")
+
+    return "\n".join(lines)
+
+
+class CmdMemorize(Command):
+    """
+    Memorize the current location as a permanent teleport destination.
+
+    Usage:
+    memorize
+    memorize <location name>
+
+    With no argument, displays your current memorized locations and 
+    explains how to memorize the current room.
+
+    Memorizing a location requires an Intelligence/Arcana skill check 
+    with 3 required successes.
+    """
+
+    key = "memorize"
+    help_category = "Magick"
+
+    def func(self):
+        caller = self.caller
+        name = self.args.strip() if self.args else ""
+
+        if not name:
+            caller.msg(_render_memorized_locations(caller))
+            caller.msg(
+                "\nTo memorize this location, use: |wmemorize <name>|n"
+            )
+            return
+        
+        if caller.location is None:
+            caller.msg("You aren't currently in a location that can be memorized.")
+            return
+        
+        caller.ensure_data_integrity()
+
+        capacity = caller.get_memorized_location_capacity()
+        locations = caller.memorized_locations
+
+        if len(locations) >= capacity:
+            caller.msg(
+                f"You cannot memorize another location. "
+                f"You have reached your Intelligence-based limit of "
+                f"{capacity} memorized location(s)."
+            )
+            return
+        
+
+        if caller.has_memorized_location(name):
+            caller.msg(
+                f"You already have a memorized location named |w{name}|n. "
+                f"Forget it first if you want to use that name again."
+            )
+            return
+
+        result = caller.perform_skill_check(
+            "intelligence",
+            "Arcana",
+            MEMORIZE_REQUIRED_SUCCESSES,
+        )
+
+        if result.tier < ResultTier.SUCCESS:
+            caller.msg(
+                f"|rYou fail to memorize this location as "
+                f"'{name}'.|n"
+            )
+            return
+
+        room_id = caller.location.id
+
+        if caller.memorize_location(name, room_id):
+            caller.msg(
+                f"|gYou successfully memorize this location as "
+                f"'{name}'.|n"
+            )
+        else:
+            #This should only happen if the charter's data changed
+            #between the capacity/name checks and the save.
+            caller.msg(
+                "|rYou were unable to save that memorized location.|n"
+            )
+
+
+class CmdLocations(Command):
+    """
+    Display your permanent memorized teleport locations.
+
+    Usage:
+        locations
+    """
+
+    key = "locations"
+    help_category = "Magick"
+
+    def func(self):
+        caller = self.caller
+        caller.ensure_data_integrity()
+        caller.msg(_render_memorized_locations(caller))
+
+
+class CmdForget(Command):
+    """
+    Forget a permanent memorized teleport location/
+
+    Usage:
+        forget <location name>
+    """
+
+    key = "forget"
+    help_category = "Magick"
+
+    def func(self):
+        caller = self.caller
+        name = self.args.strip() if self.args else ""
+
+        if not name:
+            caller.msg("Usage: forget <location name>")
+            return
+
+        caller.ensure_data_integrity()
+
+        if not caller.has_memorized_location(name):
+            caller.msg(
+                f"You don't have a memorized location named |w{name}|n."
+            )
+            return
+        caller.forget_memorized_location(name)
+
+        caller.msg(
+            f"|gYou forget the memorized location '{name}'.|n"
+        )
+
+        
 
 
 class CmdPick(Command):

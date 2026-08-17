@@ -52,6 +52,12 @@ from world.immortal_data import DEFAULT_BAMF_IN, DEFAULT_BAMF_OUT
 ENCUMBRANCE_OVERAGE_CAP = 50.0
 MIN_SPEED_FLOOR = 20.0
 
+# XP awarded the first time a character ever enters a given room - see
+# at_post_move() below. Small and fractional on purpose (xp is a float
+# specifically to let rewards like this actually accumulate instead of
+# rounding to 0) - easy to retune.
+EXPLORATION_XP_REWARD = 0.01
+
 ATTRIBUTE_NAMES = (
     "might", "agility", "endurance",
     "intelligence", "cunning", "willpower",
@@ -86,6 +92,14 @@ class Character(ObjectParent, DefaultCharacter):
 
         # ===== Languages =====
         self.db.languages = []
+        # Which known language speech (see CmdSay) is currently sent
+        # in. Not touched by apply_race_defaults() below (that method
+        # mirrors EntityStats.apply_race_defaults() 1:1 - see its
+        # docstring), so this stays a plain hardcoded default rather
+        # than something derived from race data. "Common" is safe as
+        # a default because every race in world/races.py starts with
+        # it. Change with 'speak <language>' (commands/command.py).
+        self.db.speaking_language = "Common"
 
         # ===== Movement =====
         self.db.base_speed = 300.0
@@ -114,8 +128,21 @@ class Character(ObjectParent, DefaultCharacter):
         # ===== Skills (flat dict, see module docstring) =====
         self.db.skills = default_skills_dict()
 
+        # ===== Memorized Teleport Locations =====
+        # Player defined name -> Eaetheria room database ID
+        self.db.memorized_locations = {}
+
         # ===== Progression =====
-        self.db.xp = 0
+        # Float, not int - lets small fractional rewards (see
+        # EXPLORATION_XP_REWARD / at_post_move() below) actually
+        # accumulate instead of rounding away to 0.
+        self.db.xp = 0.0
+
+        # room_id -> True for every room this character has ever
+        # entered - see at_post_move() below. Dict-of-True, same shape
+        # as Room.db.room_flags/Character.db.perks elsewhere in this
+        # file: O(1) "have I been here" checks.
+        self.db.explored_rooms = {}
 
         # ===== Conditions (status effects: tag -> stacks) =====
         self.db.conditions = {}
@@ -201,6 +228,7 @@ class Character(ObjectParent, DefaultCharacter):
         _ensure("size_category", SIZE_MEDIUM)
 
         _ensure("languages", [])
+        _ensure("speaking_language", "Common")
         _ensure("base_speed", 300.0)
 
         for attr_name in ATTRIBUTE_NAMES:
@@ -216,7 +244,9 @@ class Character(ObjectParent, DefaultCharacter):
         _ensure("max_weight", 0)
 
         _ensure("skills", default_skills_dict())
-        _ensure("xp", 0)
+        _ensure("memorized_locations", {})
+        _ensure("xp", 0.0)
+        _ensure("explored_rooms", {})
         _ensure("conditions", {})
         _ensure("can_fly", False)
         _ensure("ignores_size_restrictions", False)
@@ -480,6 +510,22 @@ class Character(ObjectParent, DefaultCharacter):
         if language_name not in languages:
             languages.append(language_name)
             self.attributes.add("languages", languages)
+
+    @property
+    def speaking_language(self):
+        """
+        The language `say` (CmdSay in commands/command.py) currently
+        speaks in. Plain accessor, no validation here - CmdSpeak is
+        what checks the character actually knows a language before
+        switching to it (same split as most Character properties:
+        `race`'s setter is likewise a plain passthrough, with
+        whatever command sets it doing the validation).
+        """
+        return self.attributes.get("speaking_language", default="Common")
+
+    @speaking_language.setter
+    def speaking_language(self, value):
+        self.attributes.add("speaking_language", value)
 
     # ==================================================================
     # Attributes
@@ -759,6 +805,76 @@ class Character(ObjectParent, DefaultCharacter):
     def get_attribute_total(self, attribute_name):
         """For attributes/vitals (direct properties, e.g. 'might', 'max_hp')."""
         return getattr(self, attribute_name) + self.get_modifier_total(attribute_name)
+
+    @property
+    def memorized_locations(self):
+        """
+        Permanent teleport destinations memorized by this character
+
+        Stored as:
+            player-defined location name -> Evennia room database ID
+
+        The room ID is intentionally never exposed to the player
+        """
+        return dict(self.attributes.get("memorized_locations", default={}))
+
+    def get_memorized_location_capacity(self):
+        """
+        Return the number of permanent locations this character
+        can memorize. Intelligence determines capacity.
+        """
+        return max(1, self.get_attribute_total("intelligence"))
+
+    def has_memorized_location(self, name):
+        """Return True if a location with this name is already memoriezed"""
+        name_key = name.casefold()
+        return any(
+            stored_name.casefold() == name_key
+            for stored_name in self.memorized_locations
+        )
+
+    def get_memorized_location(self, name):
+        """
+        Return the room database ID for a memorized location, or None 
+        if the character has no location with that name
+        """
+        name_key = name.casefold()
+        for stored_name, room_id in self.memorized_locations.items():
+            if stored_name.casefold() == name_key:
+                return room_id
+        return None
+
+    def memorize_location(self, name, room_id):
+        """
+        Permanently memorize a room under the supplied player-defined name.
+        Returns True on success, False if the name already exists or the 
+        character is already at capacity
+        """
+        locations = self.memorized_locations
+
+        if self.has_memorized_location(name):
+            return False
+        if len(locations) >= self.get_memorized_location_capacity():
+            return False
+        locations[name] = int(room_id)
+        self.attributes.add("memorized_locations", locations)
+        return True
+
+    def forget_memorized_location(self, name):
+        """
+        Forget a memorized location by name.
+
+        Name matrching is case-insensitive. Returns True if a location was removed, otherwise False.
+        """
+        locations = self.memorized_locations
+        name_key = name.casefold()
+
+        for stored_name in list(locations):
+            if stored_name.casefold() == name_key:
+                del locations[stored_name]
+                self.attributes.add("memorized_locations", locations)
+                return True
+        return False
 
     # ==================================================================
     # Conditions (status effects)
@@ -1046,6 +1162,50 @@ class Character(ObjectParent, DefaultCharacter):
             return
         super().announce_move_to(
             source_location, msg=msg, mapping=mapping, move_type=move_type, **kwargs
+        )
+
+    def at_post_move(self, source_location, **kwargs):
+        """
+        Evennia calls this right after this character successfully
+        arrives somewhere via move_to() - covers ordinary movement
+        through an exit as well as teleports, since both end in the
+        same "now standing in a new room" state. Separate from
+        announce_move_from()/announce_move_to() above: those are
+        about what OTHER people in the room see (bamf messages);
+        this is about this character's own progression, and Evennia
+        already calls it at exactly the right moment for that.
+
+        Awards EXPLORATION_XP_REWARD once per room, ever, the first
+        time this character sets foot in it. Revisiting doesn't pay
+        out again - self.db.explored_rooms is the record of what's
+        already been paid.
+
+        Only Rooms count - moving into a container/inventory (a
+        Character, an open chest, etc.) is technically a move_to()
+        too, and shouldn't grant exploration XP. is_typeclass() is
+        used here (rather than importing typeclasses.rooms.Room) to
+        avoid a characters.py <-> rooms.py import between typeclass
+        modules for one check.
+        """
+        super().at_post_move(source_location, **kwargs)
+
+        destination = self.location
+        if destination is None:
+            return
+        if not destination.is_typeclass("typeclasses.rooms.Room", exact=False):
+            return
+
+        room_id = destination.id
+        explored = self.attributes.get("explored_rooms", default={})
+        if room_id in explored:
+            return
+
+        explored[room_id] = True
+        self.attributes.add("explored_rooms", explored)
+
+        self.xp += EXPLORATION_XP_REWARD
+        self.msg(
+            f"|c(You have explored a new location. Gained a small amount of XP.)|n"
         )
 
     def highest_staff_permission(self):

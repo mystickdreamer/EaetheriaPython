@@ -17,7 +17,8 @@ own cmdsets by inheriting from them or directly from `evennia.CmdSet`.
 from evennia import default_cmds
 
 from commands.command import (
-    CmdSheet, CmdRoll, CmdSkills, CmdPick, CmdDoorEdit, CmdUnlock, CmdLock,
+    CmdSheet, CmdRoll, CmdSkills, CmdMemorize, CmdLocations, CmdForget, 
+    CmdPick, CmdSpeak, CmdDoorEdit, CmdUnlock, CmdLock,
     CmdWear, CmdRemove, CmdBody, CmdEquipment, CmdItemEdit, CmdImm,
     CmdHolylight,
 )
@@ -44,12 +45,16 @@ class CharacterCmdSet(default_cmds.CharacterCmdSet):
         self.add(CmdSheet())
         self.add(CmdRoll())
         self.add(CmdSkills())
+        self.add(CmdMemorize())
+        self.add(CmdLocations())
+        self.add(CmdForget())
         self.add(CmdPick())
         self.add(CmdUnlock())
         self.add(CmdLock())
         self.add(CmdDoorEdit())
         self.add(CmdWear())
         self.add(CmdRemove())
+        self.add(CmdSpeak())
         self.add(CmdBody())
         self.add(CmdEquipment())
         self.add(CmdItemEdit())
