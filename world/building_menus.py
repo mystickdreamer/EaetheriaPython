@@ -310,6 +310,8 @@ class RoomBuildingMenu(building_menu.BuildingMenu):
     Choices:
         1 - name          the room's key/display name
         2 - description   what `look` shows for the room
+        3 - sector        terrain classification (see world/sectors.py)
+        4 - flags         toggle ROOM_* flags (see world/room_flags.py)
         s - save & quit
         q - quit
 
@@ -319,13 +321,12 @@ class RoomBuildingMenu(building_menu.BuildingMenu):
     rooms (and eventually mobs) are intentionally excluded from
     typeclass-switching anyway.
 
-    Kept intentionally small beyond that: Eaetheria has no
-    room-specific game mechanics defined yet (lighting, safe zones,
-    terrain, weather, ...) - same reasoning as the "no armor-specific
-    fields yet" note on ArmorBuildingMenu above and on ROOM_SCHEMA in
-    world/object_schema.py. Add choices here (and matching fields to
-    ROOM_SCHEMA) once those mechanics actually exist, rather than
-    inventing placeholders now.
+    sector/flags are classification/metadata only for now - nothing
+    in the engine yet reads them to change behavior (see the module
+    docstrings on world/sectors.py and world/room_flags.py). Kept
+    otherwise small for the same reason as the "no armor-specific
+    fields yet" note on ArmorBuildingMenu above: don't invent
+    mechanics the game doesn't use yet.
     """
 
     keys_go_back = ["q"]
@@ -333,6 +334,8 @@ class RoomBuildingMenu(building_menu.BuildingMenu):
     def init(self, room):
         self.add_choice("name", key="1", attr="key")
         self.add_choice("description", key="2", attr="db.desc")
+        self.add_choice("sector", key="3", attr="sector")
+        self.add_choice("flags", key="4", attr="flags_command")
         self.add_choice_quit("save & quit", key="s")
         self.add_choice_quit("quit", key="q")
 

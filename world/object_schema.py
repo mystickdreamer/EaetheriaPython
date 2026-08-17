@@ -14,6 +14,7 @@ to hard-code every field into every command.
 """
 
 from world.skills import ALL_SKILLS
+from world.sectors import ALL_SECTORS, DEFAULT_SECTOR
 from typeclasses.items import (
     ITEM_TYPES,
     WEAPON_TYPES,
@@ -32,6 +33,7 @@ class FieldType:
     BOOLEAN = "boolean"
     CHOICE = "choice"
     STAT_BONUSES = "stat_bonuses"
+    FLAGS = "flags"
 
 
 class ObjectField:
@@ -487,13 +489,16 @@ ARMOR_SCHEMA = ObjectSchema(
 # Room Schema
 # ==========================================================================
 #
-# Intentionally minimal - Eaetheria has no room-specific game
-# mechanics defined yet (lighting, safe zones, terrain, weather,
-# ...), so this only covers the two fields every Evennia Room
-# already has (key/desc). Same reasoning as the "no armor-specific
-# fields yet" note on ARMOR_SCHEMA above: we don't want the
-# builder inventing rules the game doesn't use. Extend this once
-# real room mechanics exist.
+# key/desc are the two fields every Evennia Room already has.
+# room_flags/sector are classification/metadata only for now (see
+# world/room_flags.py and world/sectors.py) - nothing in the engine
+# yet reads them to actually change behavior (no combat, NPCs, or
+# magick system exists to consult PEACEFUL/NOMOB/NOMAGIC; no movement
+# system exists to consult sector). Same reasoning as the "no
+# armor-specific fields yet" note on ARMOR_SCHEMA above: we don't want
+# the builder inventing rules the game doesn't use - these are here so
+# builders can start tagging rooms now, with enforcement to follow
+# once the systems that would enforce them exist.
 
 ROOM_SCHEMA = ObjectSchema(
     "room",
@@ -517,6 +522,29 @@ ROOM_SCHEMA.add_field(
         FieldType.TEXT,
         "What `look` shows for the room.",
         category="general",
+    )
+)
+
+ROOM_SCHEMA.add_field(
+    ObjectField(
+        "sector",
+        "Sector",
+        FieldType.CHOICE,
+        "Terrain classification for this room.",
+        choices=ALL_SECTORS,
+        default=DEFAULT_SECTOR,
+        category="terrain",
+    )
+)
+
+ROOM_SCHEMA.add_field(
+    ObjectField(
+        "flags",
+        "Flags",
+        FieldType.FLAGS,
+        "Currently-set ROOM_* flags - see 'help room flags'.",
+        default=[],
+        category="flags",
     )
 )
 

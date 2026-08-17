@@ -756,6 +756,13 @@ class CmdRoomEdit(Command):
             if not obj:
                 return
 
+            # Defensive self-heal, same pattern as CmdImm/CmdHolylight -
+            # catches rooms created before room_flags/sector existed.
+            if obj.ensure_data_integrity():
+                caller.msg(
+                    "|x(@redit: found and repaired missing room data)|n"
+                )
+
         # ------------------------------------------------------------
         # Name = create a brand-new Room.
         #
