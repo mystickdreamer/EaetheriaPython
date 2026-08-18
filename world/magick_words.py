@@ -192,9 +192,9 @@ MAGICK_WORDS = {
         "description": "Pure thermal energy independent of flame.",
     },
 
-    "VARESH": {
-        "word": "Varesh",
-        "pronunciation": "VAIR-esh",
+    "Fusa": {
+        "word": "Fusa",
+        "pronunciation": "Fu-sa",
         "meaning": "Force",
         "skill": "Evocation",
         "category": "concept",

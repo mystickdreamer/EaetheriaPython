@@ -1700,3 +1700,122 @@ class CmdRemove(Command):
             )
 
 
+# ========================================================================================
+# TEST COMMANDS
+# ========================================================================================
+class CmdTestMagickVocabulary(Command):
+    """
+    Temporary diagnostic command for testing Magick vocabulary access.
+    """
+
+    key = "test magick vocabulary"
+    help_category = "Magick"
+
+    def func(self):
+        from world.spell_rules import known_words_by_category
+
+        caller = self.caller
+        caller.ensure_data_integrity()
+
+        caller.msg("|y=== KNOWN MAGICK VOCABULARY TEST ===|n")
+
+        for category in ("concept", "effect", "modifier"):
+            words = known_words_by_category(
+                caller,
+                category,
+            )
+
+            caller.msg(
+                f"|w{category.title()}:|n {words}"
+            )
+
+class CmdTestSkill(Command):
+    """
+    Development command for directly setting skill ranks.
+
+    Usage:
+        testskill <skill> <rank>
+        testskill <skill>
+
+    Examples:
+        testskill Evocation 5
+        testskill Arcana 3
+        testskill Evocation
+    """
+
+    key = "testskill"
+    aliases = ["test skill"]
+    locks = "cmd:perm(Admin)"
+    help_category = "Admin"
+
+    def func(self):
+        caller = self.caller
+
+        if not self.args:
+            caller.msg(
+                "|rUsage: testskill <skill> <rank>|n"
+            )
+            caller.msg(
+                "Example: testskill Evocation 5"
+            )
+            return
+
+        parts = self.args.split()
+
+        # --------------------------------------------------------------
+        # Display current rank
+        # --------------------------------------------------------------
+        if len(parts) == 1:
+            skill_name = parts[0]
+
+            try:
+                current = caller.get_skill(skill_name)
+            except Exception:
+                caller.msg(
+                    f"|rUnknown skill: {skill_name}|n"
+                )
+                return
+
+            caller.msg(
+                f"|w{skill_name}:|n {current}"
+            )
+            return
+
+        # --------------------------------------------------------------
+        # Set rank
+        # --------------------------------------------------------------
+        skill_name = " ".join(parts[:-1])
+        rank_text = parts[-1]
+
+        try:
+            rank = int(rank_text)
+        except ValueError:
+            caller.msg(
+                "|rSkill rank must be a whole number.|n"
+            )
+            return
+
+        if rank < 0:
+            caller.msg(
+                "|rSkill rank cannot be negative.|n"
+            )
+            return
+
+        try:
+            caller.set_skill(skill_name, rank)
+        except ValueError:
+            caller.msg(
+                f"|rUnknown skill: {skill_name}|n"
+            )
+            return
+
+        canonical = skill_name
+
+        # Get the canonical name back from the character system.
+        from world.skills import canonical_skill_name
+
+        canonical = canonical_skill_name(skill_name)
+
+        caller.msg(
+            f"|gSet {canonical} skill to {rank}.|n"
+        )
