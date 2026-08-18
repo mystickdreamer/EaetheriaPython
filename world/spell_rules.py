@@ -52,6 +52,10 @@ def _get_character_skill(character, skill_name):
 
     Character skill storage is kept behind this helper so the spell
     system does not need to know the exact character implementation.
+
+    Goes through Character.get_skill() (typeclasses/characters.py),
+    which is the actual public accessor - characters do not expose a
+    bare `.skills` dict attribute.
     """
     if character is None:
         return 0
@@ -61,10 +65,10 @@ def _get_character_skill(character, skill_name):
     if canonical is None:
         return 0
 
-    skills = getattr(character, "skills", None)
+    get_skill = getattr(character, "get_skill", None)
 
-    if isinstance(skills, dict):
-        return skills.get(canonical, 0)
+    if callable(get_skill):
+        return get_skill(canonical)
 
     return 0
 
@@ -121,6 +125,22 @@ def known_words_by_category(character, category):
             result.append(word_id)
 
     return result
+
+
+def get_known_words_for_category(character, category):
+    """
+    Public API for the spell-crafting menu (and anything else outside
+    this module).
+
+    Callers should use this instead of reaching into
+    known_magick_words / MAGICK_WORDS / category strings themselves -
+    it's the one place that knows how "does this character know a
+    word in this category" is actually answered. Currently a thin
+    wrapper around known_words_by_category(), kept separate so the
+    internal name/shape of that function can change without breaking
+    callers like world/spell_menu.py.
+    """
+    return known_words_by_category(character, category)
 
 
 def validate_recipe(recipe, character=None):

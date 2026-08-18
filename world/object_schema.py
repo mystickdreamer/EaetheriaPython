@@ -502,6 +502,22 @@ ARMOR_SCHEMA = ObjectSchema(
 
 
 # ==========================================================================
+# Altar Schema
+# ==========================================================================
+#
+# No altar-specific fields are defined yet - an Altar dropped in a
+# room is what CmdCraftSpell checks for (isinstance, not a field), so
+# there's nothing here to expose yet beyond the base Item fields.
+# Same "don't invent unused fields" reasoning as ARMOR_SCHEMA above.
+
+ALTAR_SCHEMA = ObjectSchema(
+    "altar",
+    "Altar",
+    parent=ITEM_SCHEMA,
+)
+
+
+# ==========================================================================
 # Room Schema
 # ==========================================================================
 #
@@ -626,6 +642,7 @@ OBJECT_SCHEMAS = {
     "item": ITEM_SCHEMA,
     "weapon": WEAPON_SCHEMA,
     "armor": ARMOR_SCHEMA,
+    "altar": ALTAR_SCHEMA,
     "room": ROOM_SCHEMA,
     "key": KEY_SCHEMA,
 }
@@ -640,12 +657,13 @@ def _build_objedit_types():
     typeclasses.items dependency at call-time rather than load-time.
     """
 
-    from typeclasses.items import Item, Weapon, Armor, Key
+    from typeclasses.items import Item, Weapon, Armor, Altar, Key
 
     return {
         "item": Item,
         "weapon": Weapon,
         "armor": Armor,
+        "altar": Altar,
         "key": Key,
     }
 
@@ -658,7 +676,7 @@ def get_schema(obj):
     Determine the appropriate schema for an actual Evennia object.
     """
 
-    from typeclasses.items import Item, Weapon, Armor, Key
+    from typeclasses.items import Item, Weapon, Armor, Altar, Key
     from typeclasses.rooms import Room
 
     if isinstance(obj, Weapon):
@@ -666,6 +684,9 @@ def get_schema(obj):
 
     if isinstance(obj, Armor):
         return ARMOR_SCHEMA
+
+    if isinstance(obj, Altar):
+        return ALTAR_SCHEMA
 
     if isinstance(obj, Item):
         return ITEM_SCHEMA

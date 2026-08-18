@@ -320,26 +320,3 @@ class SpellRecipe:
             modifiers=data.get("modifiers", []),
             ritual=bool(data.get("ritual", False)),
         )
-
-    def known_words_by_category(character, category):
-        """
-        Return the character's known Magick words belonging to a category.
-
-        Returns a list of canonical word IDs.
-        """
-
-        category = category.strip().lower()
-        known_words = _known_magick_words(character)
-
-        result = []
-
-        for word_id in known_words:
-            data = get_word_data(word_id)
-
-            if not data:
-                continue
-
-            if data.get("category", "").lower() == category:
-                result.append(word_id)
-
-        return result

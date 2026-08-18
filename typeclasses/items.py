@@ -562,3 +562,24 @@ class Armor(Item):
         super().at_object_creation()
         self.db.item_type = ITEM_TYPE_ARMOR
         self.db.wear_slot = "torso"
+
+
+class Altar(Item):
+    """
+    Convenience subtype - a droppable, non-equippable object that
+    marks a room as able to host spell-crafting. `craft spell` (see
+    CmdCraftSpell, commands/command.py) checks the caller's location
+    for an Altar among its contents before opening the crafting menu;
+    the check is a plain isinstance(Altar) scan, so identity is the
+    typeclass itself rather than a separate is_altar flag - same
+    pattern as Weapon/Armor/Key each being their own subtype instead
+    of a boolean on Item.
+    """
+
+    def at_object_creation(self):
+        super().at_object_creation()
+        self.db.item_type = ITEM_TYPE_MISC
+        self.db.wear_slot = None
+        # Altars are large fixtures, not stackable inventory clutter -
+        # each one dropped in the world is its own object.
+        self.db.stackable = False

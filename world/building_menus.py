@@ -73,16 +73,32 @@ class _ObjEditMenu(building_menu.BuildingMenu):
     Shared base for the Item/Weapon/Armor/Key menus opened by
     @objedit. See the module-level comment above for the overall
     design (numbered choices, "1. Type", s/q to close).
-    """
 
-    keys_go_back = ["q"]
+    Bug note (found live, not just from the "not smoke-tested"
+    caveat above): this class used to set `keys_go_back = ["q"]` on
+    top of also binding a "quit" choice to key="q" via
+    add_choice_quit. That doesn't work - the contrib's CmdNoMatch
+    checks `raw_string in self.menu.keys_go_back` BEFORE it checks
+    for a matching choice key, so "q" was always swallowed by the
+    go-back branch and the actual quit choice (on_enter=menu_quit,
+    which removes BuildingMenuCmdSet) was unreachable. At the top of
+    the menu (no keys, no parents) the go-back branch just calls
+    self.menu.display() again - which is exactly the "closing"
+    message appears, but the cmdset is never actually removed, and
+    'q' just redisplays the menu" symptom. "s" (save & quit) was
+    unaffected since it isn't in keys_go_back.
+
+    Fix: leave keys_go_back at the contrib's own default (["@"]),
+    which no choice here uses, so "q" reaches the real quit choice
+    instead of being intercepted.
+    """
 
     def init(self, obj):
         self._opened_as = type(obj)
         self.add_choice("type", key="1", attr="editor_type")
         self.init_fields(obj)
-        self.add_choice_quit("save & quit", key="s")
-        self.add_choice_quit("quit", key="q")
+        self.add_choice_quit("save & quit", key="s", aliases=["save"])
+        self.add_choice_quit("quit", key="q", aliases=["quit", "exit"])
 
     def init_fields(self, obj):
         """Subclasses add their own numbered choices here, starting at 2."""
@@ -129,11 +145,12 @@ class ExitBuildingMenu(building_menu.BuildingMenu):
         m - locked message   text shown to someone who tries to traverse while locked
         i - key id           the tag a matching Key item must have to lock/unlock this door
 
-    Type q from inside any choice to return to this main menu (instead
-    of the contrib's default @).
+    Type @ from inside any choice to return to this main menu (the
+    contrib's default go-back key - left un-overridden here, since
+    "q" is already spoken for by the auto-added "quit the menu"
+    choice below; see the module-level note on _ObjEditMenu.close()
+    for why those two can't share a key).
     """
-
-    keys_go_back = ["q"]
 
     def init(self, exit_obj):
         self.add_choice(
@@ -266,6 +283,17 @@ class ItemBuildingMenu(_ObjEditMenu):
         self.add_choice("bonuses", key="23", attr="stat_bonuses_command")
 
 
+class AltarBuildingMenu(ItemBuildingMenu):
+    """
+    ItemBuildingMenu with no additional fields - Altar uses the same
+    attributes as the base Item, just different at_object_creation
+    defaults (non-equippable, non-stackable). Kept as its own class
+    (rather than reusing ItemBuildingMenu directly) for the same
+    reason as ArmorBuildingMenu: @objedit dispatches on typeclass, and
+    a header/title reading "Altar" is easy to add here later.
+    """
+
+
 class WeaponBuildingMenu(ItemBuildingMenu):
     """
     ItemBuildingMenu plus a dedicated combat section for the fields
@@ -334,9 +362,12 @@ class RoomBuildingMenu(building_menu.BuildingMenu):
     otherwise small for the same reason as the "no armor-specific
     fields yet" note on ArmorBuildingMenu above: don't invent
     mechanics the game doesn't use yet.
-    """
 
-    keys_go_back = ["q"]
+    Go-back key inside a field edit is "@" (the contrib default,
+    left un-overridden) rather than "q" - see the bug note on
+    _ObjEditMenu.__doc__ above for why "q" can't do double duty as
+    both go-back and the "quit" choice below.
+    """
 
     def init(self, room):
         self.add_choice("name", key="1", attr="key")
@@ -345,8 +376,8 @@ class RoomBuildingMenu(building_menu.BuildingMenu):
         self.add_choice("flags", key="4", attr="flags_command")
         self.add_choice("is magick location", key="5", attr="is_magick_location")
         self.add_choice("magick words", key="6", attr="magick_words_command")
-        self.add_choice_quit("save & quit", key="s")
-        self.add_choice_quit("quit", key="q")
+        self.add_choice_quit("save & quit", key="s", aliases=["save"])
+        self.add_choice_quit("quit", key="q", aliases=["quit", "exit"])
 
 
 # ==========================================================================
@@ -384,11 +415,12 @@ class KeyBuildingMenu(_ObjEditMenu):
 # @objedit never touches Rooms (see commands/object_builder.py).
 # --------------------------------------------------------------------
 
-from typeclasses.items import Item, Weapon, Armor, Key  # noqa: E402
+from typeclasses.items import Item, Weapon, Armor, Altar, Key  # noqa: E402
 
 MENU_DISPATCH = [
     (Weapon, WeaponBuildingMenu),
     (Armor, ArmorBuildingMenu),
+    (Altar, AltarBuildingMenu),
     (Item, ItemBuildingMenu),
     (Key, KeyBuildingMenu),
 ]

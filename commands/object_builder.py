@@ -45,7 +45,7 @@ from world.object_schema import get_schema
 
 from world.building_menus import menu_class_for, RoomBuildingMenu
 
-from typeclasses.items import Item, Weapon, Armor, Key
+from typeclasses.items import Item, Weapon, Armor, Altar, Key
 from typeclasses.rooms import Room
 
 from commands.command import Command
@@ -71,6 +71,9 @@ CATEGORY_MAP = {
 
     "armor": ("typeclasses.items", Armor),
     "armors": ("typeclasses.items", Armor),
+
+    "altar": ("typeclasses.items", Altar),
+    "altars": ("typeclasses.items", Altar),
 
     "room": ("typeclasses.rooms", Room),
     "rooms": ("typeclasses.rooms", Room),
@@ -173,6 +176,7 @@ class CmdOList(Command):
         item
         weapon
         armor
+        altar
         room
         key
 

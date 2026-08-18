@@ -6,6 +6,7 @@ Commands describe the input the account can do to the game.
 """
 
 from evennia.commands.command import Command as BaseCommand
+from evennia.utils.evmenu import EvMenu
 
 from world.skills import SKILL_CATEGORIES, canonical_skill_name
 from world.dice import ResultTier
@@ -13,7 +14,7 @@ from world.building_menus import (
     ExitBuildingMenu, ItemBuildingMenu, WeaponBuildingMenu, ArmorBuildingMenu,
 )
 from typeclasses.exits import LockableExit, VALID_ATTRIBUTES
-from typeclasses.items import Item, Weapon, Armor
+from typeclasses.items import Item, Weapon, Armor, Altar
 from world.skills import ALL_SKILLS
 from world import body_parts as body_parts_registry
 from world import immortal_data
@@ -1241,6 +1242,53 @@ class CmdMagickWords(Command):
 
         lines.append("|y" + "=" * 60 + "|n")
         caller.msg("\n".join(lines))
+
+
+class CmdCraftSpell(Command):
+    """
+    Open the spell-crafting altar to construct a new Magick spell.
+
+    Usage:
+      craft spell
+
+    Walks you through choosing a primary Magick skill, a
+    delivery/target type, and building the spell up from Magick words
+    you've actually learned (see 'study' and 'magick words'). Only
+    words and skills you already know appear in the menu - if you
+    haven't learned it, it isn't offered.
+
+    Requires an Altar (see @objedit) present in the room - you can't
+    craft a spell without one to work at.
+
+    This spell is under construction while you're in the menu. Saving
+    stores it as a draft; naming the finished spell, the creation
+    roll, and permanently learning it are handled by a later stage of
+    this system.
+    """
+
+    key = "craft spell"
+    aliases = ["craft magick", "altar"]
+    help_category = "Magick"
+
+    def func(self):
+        caller = self.caller
+
+        location = caller.location
+        has_altar = location is not None and any(
+            isinstance(obj, Altar) for obj in location.contents
+        )
+        if not has_altar:
+            caller.msg("You need to be at an altar to craft Magick.")
+            return
+
+        caller.ensure_data_integrity()
+
+        EvMenu(
+            caller,
+            "world.spell_menu",
+            startnode="node_main",
+            cmd_on_exit=None,
+        )
 
 
 class CmdPick(Command):
