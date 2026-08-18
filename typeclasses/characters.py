@@ -28,6 +28,7 @@ from evennia.objects.objects import DefaultCharacter
 from .objects import ObjectParent
 from world import body_parts as body_parts_registry
 from world import dice
+from world import magick_words as magick_words_registry
 from world import perks as perks_registry
 from world.races import (
     DEFAULT_RACE,
@@ -131,6 +132,23 @@ class Character(ObjectParent, DefaultCharacter):
         # ===== Memorized Teleport Locations =====
         # Player defined name -> Eaetheria room database ID
         self.db.memorized_locations = {}
+
+        # ===== Magick words =====
+        # Word ids (world/magick_words.py) this character has actually
+        # learned - see CmdStudy in commands/command.py. Meeting a
+        # word's min_skill only means the character COULD learn it;
+        # it doesn't put the word here by itself (design doc: two
+        # characters at the same skill rank can know different words).
+        self.db.known_magick_words = []
+        # Whether this character offers their known words up for
+        # others to 'study' them as a teacher (design doc's "NPC
+        # teachers" source). Off by default so two ordinary players
+        # can't just study each other to instantly copy vocabulary -
+        # a builder/staff member flips this on for a dedicated teacher
+        # NPC (once mobs have their own typeclass) or a player can be
+        # granted it as a background/perk-driven ability later. Same
+        # "deliberate opt-in switch" shape as Character.holylight.
+        self.db.teaches_magick_words = False
 
         # ===== Progression =====
         # Float, not int - lets small fractional rewards (see
@@ -245,6 +263,8 @@ class Character(ObjectParent, DefaultCharacter):
 
         _ensure("skills", default_skills_dict())
         _ensure("memorized_locations", {})
+        _ensure("known_magick_words", [])
+        _ensure("teaches_magick_words", False)
         _ensure("xp", 0.0)
         _ensure("explored_rooms", {})
         _ensure("conditions", {})
@@ -875,6 +895,62 @@ class Character(ObjectParent, DefaultCharacter):
                 self.attributes.add("memorized_locations", locations)
                 return True
         return False
+
+    # ==================================================================
+    # Magick words - see world/magick_words.py and CmdStudy/CmdMagickWords
+    # in commands/command.py
+    # ==================================================================
+    @property
+    def known_magick_words(self):
+        """Word ids (world/magick_words.py) this character has learned."""
+        return list(self.attributes.get("known_magick_words", default=[]))
+
+    @property
+    def teaches_magick_words(self):
+        """Whether other characters can 'study' this one as a teacher."""
+        return bool(self.attributes.get("teaches_magick_words", default=False))
+
+    @teaches_magick_words.setter
+    def teaches_magick_words(self, value):
+        self.attributes.add("teaches_magick_words", bool(value))
+
+    def knows_magick_word(self, word_id):
+        """Whether this character has already learned word_id (case-insensitive)."""
+        canonical = magick_words_registry.canonical_word_id(word_id)
+        if canonical is None:
+            return False
+        return canonical in self.attributes.get("known_magick_words", default=[])
+
+    def understands_magick_word(self, word_id):
+        """
+        Whether this character's skill rank meets word_id's min_skill
+        requirement - i.e. whether they're even capable of learning
+        it, independent of whether they've actually learned it yet.
+        False for an unrecognized word id.
+        """
+        word_data = magick_words_registry.get_word_data(word_id)
+        if word_data is None:
+            return False
+        return self.get_skill(word_data["skill"]) >= word_data["min_skill"]
+
+    def learn_magick_word(self, word_id):
+        """
+        Add a Magick word to this character's known vocabulary.
+        Returns True if it was newly learned, False if word_id is
+        unrecognized or already known. Does NOT check
+        understands_magick_word()/min_skill itself - that gate (plus
+        the learning roll) belongs to the caller (see CmdStudy), same
+        split as memorize_location() not checking capacity itself.
+        """
+        canonical = magick_words_registry.canonical_word_id(word_id)
+        if canonical is None:
+            return False
+        known = self.attributes.get("known_magick_words", default=[])
+        if canonical in known:
+            return False
+        known.append(canonical)
+        self.attributes.add("known_magick_words", known)
+        return True
 
     # ==================================================================
     # Conditions (status effects)

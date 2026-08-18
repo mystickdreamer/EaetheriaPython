@@ -9,6 +9,7 @@ resources/items/itemdata.gd - for anything wearable/wieldable).
 
 from typeclasses.objects import Object
 from world import body_parts as body_parts_registry
+from world.magick_words import canonical_word_id as canonical_magick_word_id
 from world.races import SIZE_MEDIUM
 from world.skills import canonical_skill_name
 
@@ -233,6 +234,13 @@ class Item(Object):
         self.db.is_magick = False
         self.db.is_enchantable = False
         self.db.enchanting_mana_limit = 0
+        # Word ids (world/magick_words.py) this object can teach a
+        # character who successfully 'study's it - see CmdStudy in
+        # commands/command.py. Only meaningful when is_magick is True,
+        # but left independent of it here (same "don't couple two
+        # separate .db fields" approach as everywhere else in this
+        # class) - CmdStudy is what actually enforces the gate.
+        self.db.magick_words = []
 
         # ===== Tool info =====
         self.db.is_thief_tools = False
@@ -446,6 +454,65 @@ class Item(Object):
     is_magick = _bool_property("is_magick")
     is_enchantable = _bool_property("is_enchantable")
     enchanting_mana_limit = _int_property("enchanting_mana_limit")
+
+    def add_magick_word(self, word_id):
+        """
+        Add one Magick word id (world/magick_words.py) this object
+        can teach via 'study'. Returns True if word_id is a
+        recognized word (whether or not it was already present),
+        False if it isn't recognized at all.
+        """
+        canonical = canonical_magick_word_id(word_id)
+        if canonical is None:
+            return False
+        words = list(self.db.magick_words or [])
+        if canonical not in words:
+            words.append(canonical)
+            self.db.magick_words = words
+        return True
+
+    def remove_magick_word(self, word_id):
+        """Remove one Magick word id from this object, if present."""
+        canonical = canonical_magick_word_id(word_id)
+        if canonical is None:
+            return
+        words = list(self.db.magick_words or [])
+        if canonical in words:
+            words.remove(canonical)
+            self.db.magick_words = words
+
+    @property
+    def magick_words(self):
+        return list(self.db.magick_words or [])
+
+    @property
+    def magick_words_command(self):
+        """
+        Menu-facing view of magick_words, mirroring
+        stat_bonuses_command's pattern below: a formatted summary of
+        the current list plus the syntax used to edit it one word at
+        a time. world.building_menus.ItemBuildingMenu's "magick
+        words" choice binds to this via attr=.
+        """
+        words = self.db.magick_words or []
+        body = "  (none set)" if not words else "\n".join(f"  {w}" for w in words)
+        return (
+            f"Magick words this object teaches via 'study':\n{body}\n\n"
+            "Type a word id to add it (e.g. 'IGNASH'), or 'remove <word "
+            "id>' to delete one (e.g. 'remove IGNASH'). Must be a "
+            "recognized id from world/magick_words.py."
+        )
+
+    @magick_words_command.setter
+    def magick_words_command(self, value):
+        text = str(value).strip()
+        if not text:
+            return
+        parts = text.split()
+        if parts[0].lower() == "remove" and len(parts) >= 2:
+            self.remove_magick_word(parts[1])
+            return
+        self.add_magick_word(parts[0])
 
     # --- Tool info ---
     is_thief_tools = _bool_property("is_thief_tools")

@@ -17,6 +17,7 @@ from typeclasses.items import Item, Weapon, Armor
 from world.skills import ALL_SKILLS
 from world import body_parts as body_parts_registry
 from world import immortal_data
+from world import magick_words as magick_words_registry
 from world.languages import canonical_language_name, garble_text
 
 # from evennia import default_cmds
@@ -1037,7 +1038,209 @@ class CmdForget(Command):
             f"|gYou forget the memorized location '{name}'.|n"
         )
 
-        
+
+# Balance numbers, tunable - the design doc is explicit that word
+# complexity values are examples to be balanced later. Reusing a
+# word's own `complexity` as its learning roll's required successes
+# keeps this to a single number per word instead of a second parallel
+# "how hard is this to learn" value that could drift out of sync.
+STUDY_ATTRIBUTE = "intelligence"
+
+# Recognized as "study the room itself" rather than a search term.
+STUDY_ROOM_KEYWORDS = ("here", "room")
+
+
+def _study_source_words(obj, caller):
+    """
+    Return the list of Magick word ids `obj` can teach via 'study',
+    and a short label describing it for messages. Three kinds of
+    source, each gated the same way (a bool flag + a magick_words
+    list), so CmdStudy.func() doesn't need to care which one it got:
+
+      - a Character (PC or, once mobs have their own typeclass, an
+        NPC) willing to teach - gated on teaches_magick_words,
+        offering what THEY know (known_magick_words)
+      - a Room studied via 'study here'/'study room' - gated on
+        is_magick_location, offering its own magick_words list
+      - anything else (an Item, typically) - gated on is_magick,
+        offering its own magick_words list
+    """
+    if hasattr(obj, "known_magick_words"):
+        label = obj.get_display_name(caller)
+        if not obj.attributes.get("teaches_magick_words", default=False):
+            return [], label
+        return obj.known_magick_words, label
+
+    if hasattr(obj, "is_magick_location"):
+        if not obj.is_magick_location:
+            return [], "here"
+        return obj.magick_words, "here"
+
+    label = obj.get_display_name(caller)
+    if not obj.attributes.get("is_magick", default=False):
+        return [], label
+    return obj.attributes.get("magick_words", default=[]), label
+
+
+class CmdStudy(Command):
+    """
+    Attempt to learn a Magick word from a magical source.
+
+    Usage:
+      study <object>
+      study <character>
+      study here
+
+    Three kinds of source:
+
+      - An object (see itemedit's "is magick"/"magick words" fields) -
+        study checks your inventory and the room for a name match.
+      - A willing teacher - another character (a future NPC, or a
+        player who's been granted the ability) who has
+        teaches_magick_words switched on. Studying them offers up
+        whatever Magick words THEY already know that you don't.
+      - The room itself ('study here'/'study room') - for ambient
+        magic, ancient inscriptions, and ritual sites that aren't a
+        discrete object (see @redit's "is magick location"/"magick
+        words" fields).
+
+    For the first unknown word found at that source:
+
+      - If your rank in the word's associated Magick skill is below
+        that word's minimum requirement, you sense Magick but don't
+        yet understand it. No roll is made, and nothing is learned -
+        raise the skill and try again.
+      - Otherwise, you attempt a learning roll: Intelligence + the
+        word's Magick skill, against a number of required successes
+        equal to the word's complexity. Success permanently adds the
+        word to your known Magick vocabulary (see 'magick words').
+        Failure teaches you nothing this time, but you're free to
+        study the same source again.
+
+    Meeting a word's skill requirement means you're ABLE to learn it -
+    it does not teach it to you automatically. Two characters at the
+    same skill rank can know entirely different words.
+    """
+
+    key = "study"
+    help_category = "Magick"
+
+    def func(self):
+        caller = self.caller
+        name = self.args.strip() if self.args else ""
+
+        if not name:
+            caller.msg(
+                "Usage: study <object> | study <character> | study here"
+            )
+            return
+
+        caller.ensure_data_integrity()
+
+        if name.lower() in STUDY_ROOM_KEYWORDS:
+            if caller.location is None:
+                caller.msg("You have nowhere to study.")
+                return
+            obj = caller.location
+        else:
+            candidates = list(caller.contents)
+            if caller.location:
+                candidates += list(caller.location.contents)
+
+            obj = caller.search(name, candidates=candidates)
+            if not obj:
+                return  # caller.search already sent a not-found message
+
+            if obj is caller:
+                caller.msg("You can't study yourself.")
+                return
+
+        word_ids, source_label = _study_source_words(obj, caller)
+
+        unknown_word_id = next(
+            (word_id for word_id in word_ids if not caller.knows_magick_word(word_id)),
+            None,
+        )
+
+        if unknown_word_id is None:
+            if word_ids:
+                caller.msg(f"You've already learned everything {source_label} has to teach you.")
+            elif hasattr(obj, "known_magick_words"):
+                caller.msg(f"{source_label} has nothing to teach you right now.")
+            elif hasattr(obj, "is_magick_location"):
+                caller.msg("You study your surroundings, but sense nothing here worth learning.")
+            else:
+                caller.msg(f"You find nothing magical about {source_label}.")
+            return
+
+        word_data = magick_words_registry.get_word_data(unknown_word_id)
+
+        if not caller.understands_magick_word(unknown_word_id):
+            caller.msg(
+                f"You sense Magick within {source_label}, but you "
+                f"don't yet understand it. (Requires {word_data['skill']} "
+                f"{word_data['min_skill']}.)"
+            )
+            return
+
+        result = caller.perform_skill_check(
+            STUDY_ATTRIBUTE,
+            word_data["skill"],
+            word_data["complexity"],
+        )
+
+        if result.tier < ResultTier.SUCCESS:
+            caller.msg(
+                f"|rYou study {source_label} intently, but the "
+                f"meaning slips away from you. (Try again.)|n"
+            )
+            return
+
+        caller.learn_magick_word(unknown_word_id)
+        caller.msg(
+            f"|gSomething clicks into place. You have learned the Magick word "
+            f"{word_data['word']} ({word_data['pronunciation']}) - {word_data['meaning']}.|n"
+        )
+
+
+class CmdMagickWords(Command):
+    """
+    List the Magick words you've learned.
+
+    Usage:
+      magick words
+    """
+
+    key = "magick words"
+    aliases = ["vocabulary"]
+    help_category = "Magick"
+
+    def func(self):
+        caller = self.caller
+        caller.ensure_data_integrity()
+
+        known = caller.known_magick_words
+
+        lines = [
+            "|y" + "=" * 60 + "|n",
+            f"|w{'KNOWN MAGICK WORDS':^60}|n",
+            "|y" + "=" * 60 + "|n",
+        ]
+
+        if not known:
+            lines.append(" You don't know any Magick words yet.")
+        else:
+            for word_id in known:
+                word_data = magick_words_registry.get_word_data(word_id)
+                if word_data is None:
+                    continue  # stale/removed word id - skip rather than crash
+                lines.append(
+                    f" {word_data['word']} ({word_data['pronunciation']}) - "
+                    f"{word_data['meaning']}  |c[{word_data['skill']}]|n"
+                )
+
+        lines.append("|y" + "=" * 60 + "|n")
+        caller.msg("\n".join(lines))
 
 
 class CmdPick(Command):

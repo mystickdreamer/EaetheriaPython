@@ -220,11 +220,14 @@ class ItemBuildingMenu(_ObjEditMenu):
         15 - is magick
         16 - is enchantable
         17 - enchanting mana limit
-        18 - is thief tools
-        19 - thief tools bonus dice
-        20 - light radius (tiles)
-        21 - light energy
-        22 - bonuses              stat/skill bonuses granted while worn
+        18 - magick words         word ids (world/magick_words.py) this
+                                   object teaches via 'study' - only
+                                   meaningful when is magick is set
+        19 - is thief tools
+        20 - thief tools bonus dice
+        21 - light radius (tiles)
+        22 - light energy
+        23 - bonuses              stat/skill bonuses granted while worn
         s  - save & quit
         q  - quit
 
@@ -248,10 +251,11 @@ class ItemBuildingMenu(_ObjEditMenu):
         self.add_choice("is magick", key="15", attr="is_magick")
         self.add_choice("is enchantable", key="16", attr="is_enchantable")
         self.add_choice("enchanting mana limit", key="17", attr="enchanting_mana_limit")
-        self.add_choice("is thief tools", key="18", attr="is_thief_tools")
-        self.add_choice("thief tools bonus dice", key="19", attr="thief_tools_bonus_dice")
-        self.add_choice("light radius (tiles)", key="20", attr="light_radius_tiles")
-        self.add_choice("light energy", key="21", attr="light_energy")
+        self.add_choice("magick words", key="18", attr="magick_words_command")
+        self.add_choice("is thief tools", key="19", attr="is_thief_tools")
+        self.add_choice("thief tools bonus dice", key="20", attr="thief_tools_bonus_dice")
+        self.add_choice("light radius (tiles)", key="21", attr="light_radius_tiles")
+        self.add_choice("light energy", key="22", attr="light_energy")
         # Entering this choice shows Item.stat_bonuses_command's getter
         # (a formatted summary of the dict) and re-renders it fresh
         # after every edit, since attr= choices always redisplay via
@@ -259,7 +263,7 @@ class ItemBuildingMenu(_ObjEditMenu):
         # or "remove OneHand" goes through that property's setter,
         # which mutates the dict through add_stat_bonus()/
         # remove_stat_bonus() - see typeclasses/items.py.
-        self.add_choice("bonuses", key="22", attr="stat_bonuses_command")
+        self.add_choice("bonuses", key="23", attr="stat_bonuses_command")
 
 
 class WeaponBuildingMenu(ItemBuildingMenu):
@@ -270,15 +274,15 @@ class WeaponBuildingMenu(ItemBuildingMenu):
     an object's type to Weapon from choice 1.
 
     Adds:
-        23 - weapon type   AXE/BOW/CHAINED/CROSSBOW/BLUNT/SLASHING/
+        24 - weapon type   AXE/BOW/CHAINED/CROSSBOW/BLUNT/SLASHING/
                             PIERCING/UNARMED/NONE
-        24 - stamina cost  0 falls back to caller's default
+        25 - stamina cost  0 falls back to caller's default
     """
 
     def init_fields(self, item):
         super().init_fields(item)
-        self.add_choice("weapon type", key="23", attr="weapon_type")
-        self.add_choice("stamina cost", key="24", attr="stamina_cost")
+        self.add_choice("weapon type", key="24", attr="weapon_type")
+        self.add_choice("stamina cost", key="25", attr="stamina_cost")
 
 
 class ArmorBuildingMenu(ItemBuildingMenu):
@@ -312,6 +316,9 @@ class RoomBuildingMenu(building_menu.BuildingMenu):
         2 - description   what `look` shows for the room
         3 - sector        terrain classification (see world/sectors.py)
         4 - flags         toggle ROOM_* flags (see world/room_flags.py)
+        5 - is magick location   whether 'study here' works at all
+        6 - magick words         word ids this location teaches via
+                                  'study here' (see world/magick_words.py)
         s - save & quit
         q - quit
 
@@ -336,6 +343,8 @@ class RoomBuildingMenu(building_menu.BuildingMenu):
         self.add_choice("description", key="2", attr="db.desc")
         self.add_choice("sector", key="3", attr="sector")
         self.add_choice("flags", key="4", attr="flags_command")
+        self.add_choice("is magick location", key="5", attr="is_magick_location")
+        self.add_choice("magick words", key="6", attr="magick_words_command")
         self.add_choice_quit("save & quit", key="s")
         self.add_choice_quit("quit", key="q")
 

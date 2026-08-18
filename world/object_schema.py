@@ -369,6 +369,22 @@ ITEM_SCHEMA.add_field(
     )
 )
 
+ITEM_SCHEMA.add_field(
+    ObjectField(
+        "magick_words",
+        "Magick Words",
+        FieldType.TEXT,
+        (
+            "Word ids (world/magick_words.py) this object teaches via "
+            "'study'. Only meaningful when is_magick is set. Edit via "
+            "@objedit's 'magick words' choice, not directly - it's a "
+            "list, not a single text field."
+        ),
+        default=[],
+        category="magick",
+    )
+)
+
 
 # --------------------------------------------------------------------------
 # Tools
@@ -545,6 +561,33 @@ ROOM_SCHEMA.add_field(
         "Currently-set ROOM_* flags - see 'help room flags'.",
         default=[],
         category="flags",
+    )
+)
+
+ROOM_SCHEMA.add_field(
+    ObjectField(
+        "is_magick_location",
+        "Magick Location",
+        FieldType.BOOLEAN,
+        "Whether this room itself teaches Magick words via 'study here'.",
+        default=False,
+        category="magick",
+    )
+)
+
+ROOM_SCHEMA.add_field(
+    ObjectField(
+        "magick_words",
+        "Magick Words",
+        FieldType.TEXT,
+        (
+            "Word ids (world/magick_words.py) this room teaches via "
+            "'study here'. Only meaningful when is_magick_location is "
+            "set. Edit via @redit's 'magick words' choice, not "
+            "directly - it's a list, not a single text field."
+        ),
+        default=[],
+        category="magick",
     )
 )
 

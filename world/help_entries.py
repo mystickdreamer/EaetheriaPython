@@ -139,6 +139,9 @@ HELP_ENTRY_DICTS = [
             - |cis_magick|n (bool)
             - |cis_enchantable|n (bool)
             - |cenchanting_mana_limit|n (int)
+            - |cmagick_words|n (list) - word ids (world/magick_words.py)
+              this object teaches via |wstudy|n; only meaningful when
+              is_magick is set
 
             ## Tool info
 

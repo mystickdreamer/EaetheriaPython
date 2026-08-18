@@ -8,6 +8,7 @@ from evennia.objects.objects import DefaultRoom
 
 from .objects import ObjectParent
 from world import room_flags as room_flags_registry
+from world.magick_words import canonical_word_id as canonical_magick_word_id
 from world.sectors import DEFAULT_SECTOR, is_valid_sector, sector_display_name
 
 
@@ -35,6 +36,16 @@ class Room(ObjectParent, DefaultRoom):
         # ===== Sector (single value; see world/sectors.py) =====
         self.db.sector = DEFAULT_SECTOR
 
+        # ===== Magick =====
+        # Ambient Magick words this location itself teaches via
+        # 'study here'/'study room' - for ancient inscriptions,
+        # ritual sites, magical locations etc. that aren't a discrete
+        # object a player could pick up. Same shape/gate as
+        # typeclasses.items.Item's is_magick/magick_words - see
+        # CmdStudy in commands/command.py.
+        self.db.is_magick_location = False
+        self.db.magick_words = []
+
     def ensure_data_integrity(self):
         """
         Self-healing check, same pattern/contract as
@@ -54,6 +65,14 @@ class Room(ObjectParent, DefaultRoom):
 
         if not self.attributes.has("sector"):
             self.attributes.add("sector", DEFAULT_SECTOR)
+            healed = True
+
+        if not self.attributes.has("is_magick_location"):
+            self.attributes.add("is_magick_location", False)
+            healed = True
+
+        if not self.attributes.has("magick_words"):
+            self.attributes.add("magick_words", [])
             healed = True
 
         return healed
@@ -154,3 +173,70 @@ class Room(ObjectParent, DefaultRoom):
     def sector_display(self):
         """Human-readable sector name - read-only, for detail dumps."""
         return sector_display_name(self.sector)
+
+    # ==================================================================
+    # Magick (ambient words - see world/magick_words.py and CmdStudy
+    # in commands/command.py). Mirrors typeclasses.items.Item's
+    # is_magick/magick_words + magick_words_command exactly - same
+    # gate, same menu-facing edit syntax - just scoped to a Room
+    # instead of an Item.
+    # ==================================================================
+    @property
+    def is_magick_location(self):
+        return bool(self.db.is_magick_location)
+
+    @is_magick_location.setter
+    def is_magick_location(self, value):
+        self.db.is_magick_location = bool(value)
+
+    @property
+    def magick_words(self):
+        return list(self.db.magick_words or [])
+
+    def add_magick_word(self, word_id):
+        canonical = canonical_magick_word_id(word_id)
+        if canonical is None:
+            return False
+        words = list(self.db.magick_words or [])
+        if canonical not in words:
+            words.append(canonical)
+            self.db.magick_words = words
+        return True
+
+    def remove_magick_word(self, word_id):
+        canonical = canonical_magick_word_id(word_id)
+        if canonical is None:
+            return
+        words = list(self.db.magick_words or [])
+        if canonical in words:
+            words.remove(canonical)
+            self.db.magick_words = words
+
+    @property
+    def magick_words_command(self):
+        """
+        Menu-facing view/editor for magick_words, identical in shape
+        to Item.magick_words_command - RoomBuildingMenu's "magick
+        words" choice binds to this via attr=.
+        """
+        words = self.db.magick_words or []
+        body = "  (none set)" if not words else "\n".join(f"  {w}" for w in words)
+        return (
+            f"Magick words this location teaches via 'study here':\n{body}\n\n"
+            "Type a word id to add it (e.g. 'IGNASH'), or 'remove <word "
+            "id>' to delete one. Must be a recognized id from "
+            "world/magick_words.py. Remember to also toggle 'is magick "
+            "location' on, or 'study here' will treat this room as "
+            "non-magical regardless of this list."
+        )
+
+    @magick_words_command.setter
+    def magick_words_command(self, value):
+        text = str(value).strip()
+        if not text:
+            return
+        parts = text.split()
+        if parts[0].lower() == "remove" and len(parts) >= 2:
+            self.remove_magick_word(parts[1])
+            return
+        self.add_magick_word(parts[0])

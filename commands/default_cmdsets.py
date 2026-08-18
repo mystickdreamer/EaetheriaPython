@@ -20,7 +20,7 @@ from commands.command import (
     CmdSheet, CmdRoll, CmdSkills, CmdMemorize, CmdLocations, CmdForget, 
     CmdPick, CmdSpeak, CmdDoorEdit, CmdUnlock, CmdLock,
     CmdWear, CmdRemove, CmdBody, CmdEquipment, CmdItemEdit, CmdImm,
-    CmdHolylight,
+    CmdHolylight, CmdStudy, CmdMagickWords,
 )
 from commands.object_builder import CmdOList, CmdObjEdit, CmdRoomEdit
 
@@ -63,6 +63,8 @@ class CharacterCmdSet(default_cmds.CharacterCmdSet):
         self.add(CmdOList())
         self.add(CmdObjEdit())
         self.add(CmdRoomEdit())
+        self.add(CmdStudy())
+        self.add(CmdMagickWords())
 
 
 class AccountCmdSet(default_cmds.AccountCmdSet):
