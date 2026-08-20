@@ -138,6 +138,33 @@ ITEM_SCHEMA = ObjectSchema(
 # Identity
 # --------------------------------------------------------------------------
 
+# key/desc mirror ROOM_SCHEMA's own "key"/"Name" and "desc"/"Description"
+# fields below - every object has these at the Evennia level (self.key,
+# self.db.desc), so they belong here as universal fields rather than
+# being invented separately by world/oedit_menu.py. Added for oedit's
+# rewrite of @objedit; the old building_menus.ItemBuildingMenu never
+# exposed either one (name changes went through @name, description
+# through @desc), which is exactly the gap oedit closes.
+ITEM_SCHEMA.add_field(
+    ObjectField(
+        "key",
+        "Name",
+        FieldType.TEXT,
+        "The object's display name.",
+        category="identity",
+    )
+)
+
+ITEM_SCHEMA.add_field(
+    ObjectField(
+        "desc",
+        "Description",
+        FieldType.TEXT,
+        "What `look` shows for this object.",
+        category="identity",
+    )
+)
+
 ITEM_SCHEMA.add_field(
     ObjectField(
         "item_id",
@@ -387,46 +414,8 @@ ITEM_SCHEMA.add_field(
 
 
 # --------------------------------------------------------------------------
-# Tools
-# --------------------------------------------------------------------------
-
-ITEM_SCHEMA.add_field(
-    ObjectField(
-        "is_thief_tools",
-        "Thief Tools",
-        FieldType.BOOLEAN,
-        "Whether this item functions as thief's tools.",
-        default=False,
-        category="tools",
-    )
-)
-
-ITEM_SCHEMA.add_field(
-    ObjectField(
-        "thief_tools_bonus_dice",
-        "Thief Tools Bonus Dice",
-        FieldType.INTEGER,
-        "Bonus dice granted when using these thief tools.",
-        default=2,
-        category="tools",
-    )
-)
-
-
-# --------------------------------------------------------------------------
 # Light
 # --------------------------------------------------------------------------
-
-ITEM_SCHEMA.add_field(
-    ObjectField(
-        "light_radius_tiles",
-        "Light Radius",
-        FieldType.FLOAT,
-        "Radius of light emitted by the item in tiles.",
-        default=0.0,
-        category="light",
-    )
-)
 
 ITEM_SCHEMA.add_field(
     ObjectField(
@@ -514,6 +503,35 @@ ALTAR_SCHEMA = ObjectSchema(
     "altar",
     "Altar",
     parent=ITEM_SCHEMA,
+)
+
+
+# ==========================================================================
+# Thieves Tool Schema
+# ==========================================================================
+#
+# Was previously a pair of universal fields on every Item
+# (is_thief_tools bool + thief_tools_bonus_dice int) - promoted to its
+# own typeclass (typeclasses/items.py:ThievesTool) for the same reason
+# Weapon/Armor/Altar/Key are typeclasses rather than flags: being a
+# thieves' tools kit is an item's whole identity, not an orthogonal
+# capability like is_magick.
+
+THIEVES_TOOL_SCHEMA = ObjectSchema(
+    "thievestool",
+    "Thieves Tool",
+    parent=ITEM_SCHEMA,
+)
+
+THIEVES_TOOL_SCHEMA.add_field(
+    ObjectField(
+        "thief_tools_bonus_dice",
+        "Thief Tool Bonus",
+        FieldType.INTEGER,
+        "Bonus dice granted when using these thief tools.",
+        default=2,
+        category="tools",
+    )
 )
 
 
@@ -643,6 +661,7 @@ OBJECT_SCHEMAS = {
     "weapon": WEAPON_SCHEMA,
     "armor": ARMOR_SCHEMA,
     "altar": ALTAR_SCHEMA,
+    "thievestool": THIEVES_TOOL_SCHEMA,
     "room": ROOM_SCHEMA,
     "key": KEY_SCHEMA,
 }
@@ -650,20 +669,21 @@ OBJECT_SCHEMAS = {
 
 def _build_objedit_types():
     """
-    Lazily-built {name: typeclass} registry for @objedit's "1. Type"
+    Lazily-built {name: typeclass} registry for @oedit's "1. Typeclass"
     choice (Object.editor_type in typeclasses/objects.py). A function
     rather than a module-level dict so it can do the same local import
     get_schema() below already does, keeping this file's only
     typeclasses.items dependency at call-time rather than load-time.
     """
 
-    from typeclasses.items import Item, Weapon, Armor, Altar, Key
+    from typeclasses.items import Item, Weapon, Armor, Altar, ThievesTool, Key
 
     return {
         "item": Item,
         "weapon": Weapon,
         "armor": Armor,
         "altar": Altar,
+        "thievestool": ThievesTool,
         "key": Key,
     }
 
@@ -676,7 +696,7 @@ def get_schema(obj):
     Determine the appropriate schema for an actual Evennia object.
     """
 
-    from typeclasses.items import Item, Weapon, Armor, Altar, Key
+    from typeclasses.items import Item, Weapon, Armor, Altar, ThievesTool, Key
     from typeclasses.rooms import Room
 
     if isinstance(obj, Weapon):
@@ -687,6 +707,9 @@ def get_schema(obj):
 
     if isinstance(obj, Altar):
         return ALTAR_SCHEMA
+
+    if isinstance(obj, ThievesTool):
+        return THIEVES_TOOL_SCHEMA
 
     if isinstance(obj, Item):
         return ITEM_SCHEMA

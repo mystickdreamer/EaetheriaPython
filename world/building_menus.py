@@ -26,6 +26,20 @@ lives in ordinary Python properties on LockableExit itself (see
 typeclasses/exits.py) - code that *was* unit-tested. This menu just
 points attr= at those properties, the same way Evennia's own
 building_menu examples point attr="key" at DefaultObject.key.
+
+SUPERSEDED - Item-family editing:
+
+_ObjEditMenu and its Item/Weapon/Armor/Altar/Key subclasses below
+(plus MENU_DISPATCH/menu_class_for) are no longer used by any command.
+@oedit (commands/object_builder.py:CmdOEdit) replaced them with a
+from-scratch EvMenu in world/oedit_menu.py, to fix a real bug in this
+contrib (`q` getting swallowed by keys_go_back - see the old class'
+close() method below) and the fragile close-then-reopen-a-new-
+BuildingMenu-subclass handling of typeclass switches. They're left in
+this file for reference rather than deleted outright, but treat them
+as dead code. RoomBuildingMenu and ExitBuildingMenu below are
+unrelated and still power @redit/doedit - only the Item-family classes
+are superseded.
 """
 
 from evennia.contrib.base_systems import building_menu
@@ -95,10 +109,16 @@ class _ObjEditMenu(building_menu.BuildingMenu):
 
     def init(self, obj):
         self._opened_as = type(obj)
+
+
         self.add_choice("type", key="1", attr="editor_type")
+
+
         self.init_fields(obj)
+
+
         self.add_choice_quit("save & quit", key="s", aliases=["save"])
-        self.add_choice_quit("quit", key="q", aliases=["quit", "exit"])
+        #self.add_choice_quit("quit", key="q", aliases=["quit", "exit"])
 
     def init_fields(self, obj):
         """Subclasses add their own numbered choices here, starting at 2."""
@@ -106,6 +126,7 @@ class _ObjEditMenu(building_menu.BuildingMenu):
 
     def close(self):
         obj = self.obj
+        self.caller.msg("|rDEBUG: _ObjEditMenu.close() was called|n")  # debug
         changed = type(obj) is not self._opened_as
         super().close()
 
@@ -269,10 +290,12 @@ class ItemBuildingMenu(_ObjEditMenu):
         self.add_choice("is enchantable", key="16", attr="is_enchantable")
         self.add_choice("enchanting mana limit", key="17", attr="enchanting_mana_limit")
         self.add_choice("magick words", key="18", attr="magick_words_command")
-        self.add_choice("is thief tools", key="19", attr="is_thief_tools")
-        self.add_choice("thief tools bonus dice", key="20", attr="thief_tools_bonus_dice")
-        self.add_choice("light radius (tiles)", key="21", attr="light_radius_tiles")
-        self.add_choice("light energy", key="22", attr="light_energy")
+        # is_thief_tools/thief_tools_bonus_dice and light_radius_tiles
+        # were removed from Item entirely (see object_schema.py's
+        # THIEVES_TOOL_SCHEMA comment and typeclasses/items.py's
+        # ThievesTool) - dead choices removed here to match; this
+        # class is superseded/unused regardless (see module docstring).
+        self.add_choice("light energy", key="19", attr="light_energy")
         # Entering this choice shows Item.stat_bonuses_command's getter
         # (a formatted summary of the dict) and re-renders it fresh
         # after every edit, since attr= choices always redisplay via

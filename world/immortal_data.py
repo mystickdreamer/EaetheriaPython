@@ -15,8 +15,8 @@ so the Evennia default applies) is, low to high:
 "Immortal" isn't an Evennia permission string of its own - it's used
 here (and by CmdImm in commands/command.py) as shorthand for "Builder
 or higher", matching every other staff-only command already in the
-codebase (@objedit, @olist, @redit, itemedit, doedit all lock at
-perm(Builder)).
+codebase (@ocreate, @oedit, @olist, @redit, itemedit, doedit all lock
+at perm(Builder)).
 
 NOTE on bamf messages: DEFAULT_BAMF_IN/DEFAULT_BAMF_OUT are used both as
 the character's starting values (typeclasses/characters.py) and as
@@ -47,7 +47,7 @@ TIER_INFO = {
         "description": (
             "World-building access: create and edit rooms, items, and exits."
         ),
-        "commands": ["@objedit", "@olist", "@redit", "itemedit", "doedit"],
+        "commands": ["@ocreate", "@oedit", "@olist", "@redit", "itemedit", "doedit"],
     },
     "Admin": {
         "description": (

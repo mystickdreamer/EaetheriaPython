@@ -1257,7 +1257,7 @@ class CmdCraftSpell(Command):
     words and skills you already know appear in the menu - if you
     haven't learned it, it isn't offered.
 
-    Requires an Altar (see @objedit) present in the room - you can't
+    Requires an Altar (see @ocreate/@oedit) present in the room - you can't
     craft a spell without one to work at.
 
     This spell is under construction while you're in the menu. Saving

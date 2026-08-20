@@ -81,6 +81,7 @@ ITEM_TYPE_ARMOR = "ARMOR"
 ITEM_TYPE_FOOD = "FOOD"
 ITEM_TYPE_POTION = "POTION"
 ITEM_TYPE_MATERIAL = "MATERIAL"
+ITEM_TYPE_TOOL = "TOOL"
 ITEM_TYPE_MISC = "MISC"
 ITEM_TYPES = [
     ITEM_TYPE_WEAPON, ITEM_TYPE_ARMOR, ITEM_TYPE_FOOD,
@@ -242,12 +243,7 @@ class Item(Object):
         # class) - CmdStudy is what actually enforces the gate.
         self.db.magick_words = []
 
-        # ===== Tool info =====
-        self.db.is_thief_tools = False
-        self.db.thief_tools_bonus_dice = 2
-
         # ===== Light source =====
-        self.db.light_radius_tiles = 0.0  # 0 = doesn't emit light
         self.db.light_energy = 1.0
         self.db.light_color = DEFAULT_LIGHT_COLOR
 
@@ -514,12 +510,7 @@ class Item(Object):
             return
         self.add_magick_word(parts[0])
 
-    # --- Tool info ---
-    is_thief_tools = _bool_property("is_thief_tools")
-    thief_tools_bonus_dice = _int_property("thief_tools_bonus_dice")
-
     # --- Light source ---
-    light_radius_tiles = _float_property("light_radius_tiles")
     light_energy = _float_property("light_energy")
 
     del _choice_property, _bool_property, _int_property, _float_property, _text_property
@@ -562,6 +553,42 @@ class Armor(Item):
         super().at_object_creation()
         self.db.item_type = ITEM_TYPE_ARMOR
         self.db.wear_slot = "torso"
+
+
+class ThievesTool(Item):
+    """
+    A lockpicking/trap-disarming kit - its own subtype rather than an
+    is_thief_tools bool + bonus-dice pair on every Item, matching the
+    same reasoning Altar's docstring below gives for Weapon/Armor/Key:
+    identity is the typeclass itself, not a flag. Unlike is_magick/
+    is_enchantable (genuinely orthogonal capabilities any item could
+    have - a magic sword, a magic ring), being a thieves' tools kit is
+    an item's whole reason to exist, so it belongs here instead.
+    """
+
+    def at_object_creation(self):
+        super().at_object_creation()
+        self.db.item_type = ITEM_TYPE_TOOL
+        self.db.wear_slot = None
+        self.db.thief_tools_bonus_dice = 2
+
+    # Item's own _int_property/_bool_property/etc. helpers (see
+    # Item.at_object_creation's neighbors above) are local to Item's
+    # class body and deleted once it finishes defining - not reachable
+    # here, so this is written out by hand instead. Same coercion
+    # rules as Item's other integer fields: silently ignore anything
+    # that doesn't parse as an int, clamp to non-negative.
+    @property
+    def thief_tools_bonus_dice(self):
+        return self.db.thief_tools_bonus_dice
+
+    @thief_tools_bonus_dice.setter
+    def thief_tools_bonus_dice(self, value):
+        try:
+            parsed = int(str(value).strip())
+        except (TypeError, ValueError):
+            return
+        self.db.thief_tools_bonus_dice = max(0, parsed)
 
 
 class Altar(Item):

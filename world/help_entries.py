@@ -57,14 +57,15 @@ HELP_ENTRY_DICTS = [
 
                 @olist [<category>] [<search>]   - browse a table
                 @olist #<dbref>                    - full field dump
-                @objedit <object>                  - open the editor
-                @objedit <object> = item|weapon|armor|room
+                @ocreate <name>                    - create a new Item
+                @oedit #<dbref>                    - open the editor
 
-            The `=` form on |wobjedit|n sets an object's typeclass
-            first (so you can turn a freshly-created plain Object into
-            an Item/Weapon/Armor/Room, then edit it, in one command)
-            before opening the same menu |witemedit|n would. See
-            |whelp objedit|n and |whelp olist|n for details.
+            |w@oedit|n always takes a DBREF and only edits - it never
+            creates. Create with |w@ocreate <name>|n first, then edit
+            the DBREF it reports with |w@oedit #<dbref>|n. Typeclass
+            (Item/Weapon/Armor/Altar/Key) is changed from inside the
+            editor itself, not on the command line. See |whelp oedit|n
+            and |whelp olist|n for details.
 
             Below is the full list, grouped the same way
             typeclasses/items.py groups them at creation. "Options" lists
@@ -143,14 +144,13 @@ HELP_ENTRY_DICTS = [
               this object teaches via |wstudy|n; only meaningful when
               is_magick is set
 
-            ## Tool info
+            ## Thieves Tool (its own typeclass, not a field on Item -
+            ## see typeclasses.items.ThievesTool)
 
-            - |cis_thief_tools|n (bool)
             - |cthief_tools_bonus_dice|n (int)
 
             ## Light source
 
-            - |clight_radius_tiles|n (float) - 0 = doesn't emit light
             - |clight_energy|n (float)
             - |clight_color|n (tuple of 3 floats, 0.0-1.0 each - R, G, B)
 

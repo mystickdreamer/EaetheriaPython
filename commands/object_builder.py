@@ -9,33 +9,32 @@ Commands:
     @olist [<category>] [<search>]   - schema-driven table of matches
     @olist #<dbref>                  - full field dump of one object
 
-    @objedit <name>                  - create a new Item and edit it
-    @objedit #<dbref>               - edit an existing object
+    @ocreate <name>                  - create a new Item (does not open the editor)
+    @oedit #<dbref>                  - edit an existing object
 
     @redit <name>                    - create a new Room and edit it
     @redit #<dbref>                 - edit an existing Room
 
-@objedit deliberately does NOT edit Rooms - use @redit for those.
+@oedit deliberately does NOT edit Rooms - use @redit for those.
 
-A name passed to @objedit always means "create a new object".
-
-A DBREF passed to @objedit always means "edit this existing object".
+Object creation and object editing are two separate commands/steps -
+@oedit takes a DBREF only and never creates anything, so it can never
+guess wrong when multiple objects share a name (previously @objedit
+<name> meant "create"; that's gone, replaced by @ocreate).
 
 Examples:
 
-    @objedit sword
-        -> creates a new Item named "sword"
+    @ocreate sword
+        -> creates a new Item named "sword", reports its DBREF
 
-    @objedit longsword
-        -> creates another new Item named "longsword"
-
-    @objedit #123
+    @oedit #123
         -> opens the editor for existing object #123
 
 The typeclass of a newly-created object starts as Item. Change it from
-inside the editor with choice "1" (Type) - see
-world/building_menus.py:_ObjEditMenu and Object.editor_type in
-typeclasses/objects.py.
+inside the editor with choice "1" (Typeclass) - see world/oedit_menu.py
+(a fresh EvMenu; superseded world/building_menus.py's building_menu-
+contrib-based _ObjEditMenu family, which is no longer used by any
+command here).
 """
 
 from evennia.objects.models import ObjectDB
@@ -43,9 +42,9 @@ from evennia.utils.create import create_object
 
 from world.object_schema import get_schema
 
-from world.building_menus import menu_class_for, RoomBuildingMenu
+from world.building_menus import RoomBuildingMenu
 
-from typeclasses.items import Item, Weapon, Armor, Altar, Key
+from typeclasses.items import Item, Weapon, Armor, Altar, ThievesTool, Key
 from typeclasses.rooms import Room
 
 from commands.command import Command
@@ -75,6 +74,10 @@ CATEGORY_MAP = {
     "altar": ("typeclasses.items", Altar),
     "altars": ("typeclasses.items", Altar),
 
+    "thievestool": ("typeclasses.items", ThievesTool),
+    "thievestools": ("typeclasses.items", ThievesTool),
+    "thief tools": ("typeclasses.items", ThievesTool),
+
     "room": ("typeclasses.rooms", Room),
     "rooms": ("typeclasses.rooms", Room),
 
@@ -83,17 +86,11 @@ CATEGORY_MAP = {
 }
 
 
-# Building menu dispatch now lives in world/building_menus.py as
-# menu_class_for()/MENU_DISPATCH - it's shared with
-# _ObjEditMenu.close(), which needs the same lookup after a "1. Type"
-# change swaps an object's typeclass mid-session.
-
-
 def _render_detail(obj, looker):
     """
     Full schema-driven field dump for one object.
 
-    This is shared by @olist #<dbref> and @objedit so the two views
+    This is shared by @olist #<dbref> and @oedit so the two views
     stay synchronized with the schema definitions.
     """
 
@@ -149,7 +146,7 @@ def _render_table(objects, looker):
 
     lines.append(
         f"\n{len(objects)} match(es). "
-        f"Use @olist #<dbref> or @objedit <name> for full detail."
+        f"Use @olist #<dbref> or @oedit #<dbref> for full detail."
     )
 
     return "\n".join(lines)
@@ -303,129 +300,43 @@ class CmdOList(Command):
 
 
 # ====================================================================
-# @objedit
+# @ocreate
 # ====================================================================
 
-class CmdObjEdit(Command):
+class CmdOCreate(Command):
     """
-    Create or edit non-room objects through a menu-driven editor.
+    Create a new Item, ready for @oedit.
 
     Usage:
 
-        @objedit <name>
-            Create a new Item with this name and open the editor.
+        @ocreate <name>
 
-        @objedit #<dbref>
-            Edit an existing object.
+    Creates a bare Item (typeclasses.items.Item) in your inventory and
+    reports its DBREF. It does NOT open the editor - follow up with:
 
-    IMPORTANT:
+        @oedit #<dbref>
 
-        A name ALWAYS means "create a new object".
+    Change the object's typeclass (Weapon, Armor, Altar, Key) from
+    inside @oedit itself, once it exists - see @oedit's own help.
 
-        A DBREF ALWAYS means "edit an existing object".
-
-    Examples:
-
-        @objedit sword
-            -> creates a new Item named "sword"
-
-        @objedit longsword
-            -> creates another new Item named "longsword"
-
-        @objedit #123
-            -> edits existing object #123
-
-    Rooms are deliberately excluded from @objedit. They will eventually
-    have their own @redit command.
-
-    Newly-created objects start as Item. The object editor will
-    eventually provide the ability to change the typeclass from
-    inside the editor itself.
+    This replaces the old @objedit <name> creation path. Object
+    creation and object editing are now two separate steps rather than
+    one command doing both, on request.
     """
 
-    key = "@objedit"
-    aliases = ["objedit"]
+    key = "@ocreate"
+    aliases = ["ocreate"]
 
     locks = "cmd:perm(Builder)"
     help_category = "Building"
 
-    def parse(self):
-        """
-        Store the raw target string.
-
-        We no longer support:
-
-            @objedit sword = weapon
-
-        Typeclass selection will be handled inside the editor instead.
-        """
-
-        self.target_str = (
-            self.args.strip()
-            if self.args
-            else ""
-        )
-
-    # ----------------------------------------------------------------
-    # Existing object lookup
-    # ----------------------------------------------------------------
-
-    def _find_existing_target(self):
-        """
-        Find an existing object by explicit DBREF.
-
-        @objedit #123
-
-        searches globally because the DBREF explicitly identifies the
-        object the builder wants to edit.
-
-        We intentionally do NOT perform a name search here.
-
-        This prevents:
-
-            @objedit sword
-
-        from accidentally editing an existing sword when the builder
-        intended to create a new one.
-        """
-
+    def func(self):
         caller = self.caller
-
-        dbref_token = self.target_str.split()[0]
-
-        obj = caller.search(
-            dbref_token,
-            global_search=True,
-        )
-
-        if not obj:
-            return None
-
-        return obj
-
-    # ----------------------------------------------------------------
-    # New object creation
-    # ----------------------------------------------------------------
-
-    def _create_new_object(self):
-        """
-        Create a new Item for @objedit <name>.
-
-        The new object is placed in the builder's inventory.
-
-        The object starts as a normal Item. Later, the object editor
-        will allow the builder to change its typeclass.
-        """
-
-        caller = self.caller
-        name = self.target_str.strip()
+        name = self.args.strip() if self.args else ""
 
         if not name:
-            caller.msg(
-                "|rYou must provide a name for the new object.|n"
-            )
-
-            return None
+            caller.msg("Usage: @ocreate <name>")
+            return
 
         try:
             obj = create_object(
@@ -435,160 +346,123 @@ class CmdObjEdit(Command):
             )
 
         except Exception as err:
-            caller.msg(
-                f"|rFailed to create object: {err}|n"
-            )
+            caller.msg(f"|rFailed to create object: {err}|n")
 
             from evennia.utils import logger
             logger.log_trace()
 
-            return None
+            return
 
         caller.msg(
-            f"|gCreated new Item|n "
-            f"|w{obj.key}|n "
-            f"({obj.dbref})."
+            f"|gCreated new Item|n |w{obj.key}|n ({obj.dbref}). "
+            f"Use |w@oedit {obj.dbref}|n to edit it."
         )
 
-        return obj
 
-    # ----------------------------------------------------------------
-    # Main command
-    # ----------------------------------------------------------------
+# ====================================================================
+# @oedit
+# ====================================================================
+
+class CmdOEdit(Command):
+    """
+    Edit an existing Item/Weapon/Armor/Altar/Key through a menu-driven
+    editor.
+
+    Usage:
+
+        @oedit #<dbref>
+
+    @oedit is edit-only and always takes a DBREF - it deliberately does
+    NOT create objects and does NOT search by name, so it can never
+    guess wrong when several objects share a name. To create a new
+    object first, use:
+
+        @ocreate <name>
+
+    then edit the DBREF it reports:
+
+        @oedit #123
+
+    Rooms are deliberately excluded from @oedit - use @redit for those.
+
+    The editor works on a draft copy of the object: nothing is written
+    back until you choose "S" to save, and "Q" will warn you first if
+    you have unsaved changes. Typeclass can be changed from inside the
+    editor ("1. Typeclass") without needing to reopen it.
+    """
+
+    key = "@oedit"
+    aliases = ["oedit", "objedit"]
+
+    locks = "cmd:perm(Builder)"
+    help_category = "Building"
 
     def func(self):
         caller = self.caller
+        target_str = self.args.strip() if self.args else ""
 
-        # ------------------------------------------------------------
-        # No argument.
-        # ------------------------------------------------------------
+        if not target_str:
+            caller.msg("Usage: @oedit #<dbref>")
+            return
 
-        if not self.target_str:
+        if not target_str.startswith("#"):
             caller.msg(
-                "Edit what? "
-                "Usage: @objedit <name> or @objedit #<dbref>"
+                "|y@oedit only takes a DBREF now.|n\n"
+                "Use |w@ocreate <name>|n to create a new object, "
+                "then |w@oedit #<dbref>|n on the DBREF it reports."
             )
+            return
 
+        dbref_token = target_str.split()[0]
+        obj = caller.search(dbref_token, global_search=True)
+
+        if not obj:
             return
 
         # ------------------------------------------------------------
-        # We intentionally do not support the old:
-        #
-        #     @objedit sword = weapon
-        #
-        # syntax.
-        #
-        # Typeclass changes will happen inside the editor.
-        # ------------------------------------------------------------
-
-        if "=" in self.target_str:
-            caller.msg(
-                "|yThe '= typeclass' syntax is no longer supported.|n\n"
-                "Use |w@objedit <name>|n to create an object, "
-                "then change its type from inside the object editor."
-            )
-
-            return
-
-        # ------------------------------------------------------------
-        # DBREF = edit existing object.
-        #
-        #     @objedit #123
-        # ------------------------------------------------------------
-
-        if self.target_str.startswith("#"):
-            obj = self._find_existing_target()
-
-            if not obj:
-                return
-
-        # ------------------------------------------------------------
-        # Name = create a brand-new Item.
-        #
-        #     @objedit sword
-        # ------------------------------------------------------------
-
-        else:
-            obj = self._create_new_object()
-
-            if not obj:
-                return
-
-        # ------------------------------------------------------------
-        # Rooms are intentionally NOT editable through @objedit.
+        # Rooms are intentionally NOT editable through @oedit.
         #
         # This gives us a clean separation:
         #
-        #     @objedit  -> objects
-        #     @redit -> rooms
+        #     @oedit  -> objects
+        #     @redit  -> rooms
         # ------------------------------------------------------------
 
         if isinstance(obj, Room):
             caller.msg(
-                "|yRooms cannot be edited with @objedit.|n "
+                "|yRooms cannot be edited with @oedit.|n "
                 "Use @redit for rooms."
             )
-
             return
 
-        # ------------------------------------------------------------
-        # Find the appropriate menu for the object's current typeclass.
-        # ------------------------------------------------------------
-
-        menu_class = menu_class_for(obj)
-
-        if menu_class is None:
+        if get_schema(obj) is None:
             caller.msg(
                 f"{obj.get_display_name(caller)} "
                 f"isn't currently an editable object type."
             )
-
             return
 
         # ------------------------------------------------------------
         # Show the schema-driven detail view before opening the menu.
         # ------------------------------------------------------------
 
-        caller.msg(
-            _render_detail(obj, caller)
-        )
+        caller.msg(_render_detail(obj, caller))
 
         # ------------------------------------------------------------
-        # Open the building menu.
+        # Open the oedit menu (world/oedit_menu.py - a fresh EvMenu,
+        # not the building_menu contrib the old @objedit used).
         # ------------------------------------------------------------
 
         try:
-            menu = menu_class(
-                caller,
-                obj,
-            )
+            from world.oedit_menu import start_oedit
+            start_oedit(caller, obj)
 
         except Exception as err:
-            caller.msg(
-                f"|rFailed to open the editor: {err}|n"
-            )
+            caller.msg(f"|rFailed to open the editor: {err}|n")
 
             from evennia.utils import logger
             logger.log_trace()
 
-            return
-
-        # ------------------------------------------------------------
-        # Some versions/configurations of the building_menu contrib
-        # require an explicit call to open().
-        # ------------------------------------------------------------
-
-        if hasattr(menu, "open") and callable(menu.open):
-            try:
-                menu.open()
-
-            except Exception as err:
-                caller.msg(
-                    f"|rFailed to display the editor: {err}|n"
-                )
-
-                from evennia.utils import logger
-                logger.log_trace()
 
 
 # ====================================================================
@@ -621,10 +495,10 @@ class CmdRoomEdit(Command):
         @redit #123
             -> edits existing Room #123
 
-    This is the Room-only sibling of @objedit, which deliberately
-    excludes Rooms - see commands/object_builder.py:CmdObjEdit.
+    This is the Room-only sibling of @oedit, which deliberately
+    excludes Rooms - see commands/object_builder.py:CmdOEdit.
 
-    Unlike @objedit, there is no "change type" choice in this editor:
+    Unlike @oedit, there is no "change type" choice in this editor:
     Room isn't built on the same typeclasses.objects.Object base as
     Item/Weapon/Armor/Key, and rooms were never meant to switch type
     the way those are.
@@ -657,8 +531,8 @@ class CmdRoomEdit(Command):
 
         @redit #123
 
-        searches globally, same reasoning as CmdObjEdit._find_existing_
-        target: no name search here, so `@redit tavern` can never
+        searches globally, same reasoning as CmdOEdit's DBREF-only
+        rule: no name search here, so `@redit tavern` can never
         accidentally re-open an existing room named "tavern" when the
         builder meant to create a new one.
         """
@@ -678,7 +552,7 @@ class CmdRoomEdit(Command):
         if not isinstance(obj, Room):
             caller.msg(
                 f"{obj.get_display_name(caller)} isn't a Room. "
-                f"Use @objedit for non-Room objects."
+                f"Use @oedit for non-Room objects."
             )
 
             return None
@@ -693,7 +567,7 @@ class CmdRoomEdit(Command):
         """
         Create a new Room for @redit <name>.
 
-        Unlike @objedit's new Items, a new Room has no location at
+        Unlike @ocreate's new Items, a new Room has no location at
         all (location=None, the normal state for a Room) - it isn't
         placed inside the builder's inventory the way an Item is,
         since a Room isn't something you carry.
