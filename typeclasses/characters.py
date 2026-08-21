@@ -150,6 +150,13 @@ class Character(ObjectParent, DefaultCharacter):
         # "deliberate opt-in switch" shape as Character.holylight.
         self.db.teaches_magick_words = False
 
+        # ===== Spells (player-constructed via 'craft spell') =====
+        # spell name (lowercased) -> persistent recipe dict (see
+        # world/spell_rules.build_spell_record()). Names are the
+        # player-chosen key, case-insensitive per the design doc
+        # ("player names every spell ... case-insensitive on cast").
+        self.db.known_spells = {}
+
         # ===== Progression =====
         # Float, not int - lets small fractional rewards (see
         # EXPLORATION_XP_REWARD / at_post_move() below) actually
@@ -265,6 +272,7 @@ class Character(ObjectParent, DefaultCharacter):
         _ensure("memorized_locations", {})
         _ensure("known_magick_words", [])
         _ensure("teaches_magick_words", False)
+        _ensure("known_spells", {})
         _ensure("xp", 0.0)
         _ensure("explored_rooms", {})
         _ensure("conditions", {})
@@ -953,6 +961,53 @@ class Character(ObjectParent, DefaultCharacter):
         return True
 
     # ==================================================================
+    # Spells - see world/spell_recipe.py, world/spell_rules.py, and
+    # world/spell_menu.py (the CmdCraftSpell altar menu)
+    # ==================================================================
+    @property
+    def known_spells(self):
+        """name (lowercased) -> persistent spell record dict."""
+        return dict(self.attributes.get("known_spells", default={}))
+
+    def knows_spell(self, name):
+        """Whether this character already has a spell by this name (case-insensitive)."""
+        if not name:
+            return False
+        return name.strip().lower() in self.attributes.get("known_spells", default={})
+
+    def get_spell(self, name):
+        """Return the stored spell record dict for `name`, or None."""
+        if not name:
+            return None
+        return self.attributes.get("known_spells", default={}).get(
+            name.strip().lower()
+        )
+
+    def learn_spell(self, spell_record):
+        """
+        Permanently add a finished spell to this character's spell
+        list. spell_record must include a "name" key (see
+        world/spell_rules.build_spell_record()). Returns True if
+        newly learned, False if a spell with that name (case-
+        insensitive) already exists - callers should check
+        knows_spell() first to give the player a chance to rename
+        rather than silently overwrite.
+        """
+        name = spell_record.get("name") if spell_record else None
+        if not name:
+            return False
+
+        key = name.strip().lower()
+        known = self.attributes.get("known_spells", default={})
+
+        if key in known:
+            return False
+
+        known[key] = spell_record
+        self.attributes.add("known_spells", known)
+        return True
+
+    # ==================================================================
     # Conditions (status effects)
     # ==================================================================
     def add_condition(self, condition_name, value=1):
@@ -1350,3 +1405,55 @@ class Character(ObjectParent, DefaultCharacter):
             attribute_name, skill_name, required_successes,
             extra_bonus_dice=extra_bonus_dice, announce=announce,
         )
+
+    def perform_spell_check(self, primary_skill, required_successes,
+                             extra_bonus_dice=0, announce=True):
+        """
+        Roll for spell creation or casting.
+
+        Per the Magick design doc, both use the SAME pool: Intelligence
+        + Arcana + the spell's primary Magick skill + equipment (the
+        latter passed in as extra_bonus_dice - nothing currently grants
+        this automatically). If the primary skill IS Arcana, it isn't
+        counted twice. required_successes is the spell's creation
+        difficulty (creation roll) or its stored casting difficulty
+        (casting roll) - the pool doesn't change, only the target does.
+
+        Returns a dice.DiceRollResult, same as perform_skill_check().
+        """
+        canonical_primary = canonical_skill_name(primary_skill)
+        if canonical_primary is None:
+            raise ValueError(f"'{primary_skill}' is not a recognized skill.")
+
+        attr_total = self.get_attribute_total("intelligence")
+        arcana_total = self.get_skill_total("Arcana")
+
+        pool_size = attr_total + arcana_total
+        skills_in_pool = ["intelligence", "Arcana"]
+
+        if canonical_primary != "Arcana":
+            pool_size += self.get_skill_total(canonical_primary)
+            skills_in_pool.append(canonical_primary)
+
+        race_data = self.race_data
+        bonus_dice = extra_bonus_dice
+        difficulty_mod = 0
+
+        for stat_name in skills_in_pool:
+            bonus_dice += get_bonus_dice(race_data, stat_name)
+            difficulty_mod += get_difficulty_modifier(race_data, stat_name)
+
+        threshold = dice.DEFAULT_SUCCESS_THRESHOLD + difficulty_mod
+
+        result = dice.roll_pool(
+            pool_size,
+            required_successes=required_successes,
+            threshold=threshold,
+            bonus_dice=bonus_dice,
+        )
+
+        if announce:
+            label = f"Intelligence / Arcana / {canonical_primary}"
+            self.msg(f"|c[{label}]|n {result}")
+
+        return result

@@ -2,14 +2,22 @@
 Spell crafting menu (the "altar")
 
 EvMenu node functions driving the `craft spell` command (see
-commands/command.py:CmdCraftSpell). This is Stage 1 of the Magick
-spell-crafting system per the design document: a menu shell that lets
-a player build up a SpellRecipe (world/spell_recipe.py) from Magick
-words they've actually learned. Naming the finished spell, the
-creation roll, and permanent persistence into a character's known
-spell list are a later stage - "Save Recipe" here only stores a
-working draft (Character.db.spell_recipe_draft) so `craft spell` can
-pick it back up later.
+commands/command.py:CmdCraftSpell). Lets a player build up a
+SpellRecipe (world/spell_recipe.py) from Magick words they've
+actually learned, then either:
+
+  - "Save Recipe" - stash a working draft (Character.db.
+    spell_recipe_draft) so `craft spell` can pick it back up later,
+    without naming/rolling/persisting it yet.
+  - "Name & Create Spell" - name the finished spell, attempt the
+    creation roll (Character.perform_spell_check(), same pool the
+    design doc uses for casting later: Intelligence + Arcana +
+    primary skill), and on success permanently learn it into
+    Character.known_spells (world/spell_rules.build_spell_record()).
+    On failure the in-progress recipe is left alone so the player can
+    try again without losing their work.
+
+Casting (`cast "name"`, ritual mode) is a later stage.
 
 Design principle carried over from the study/vocabulary system: menus
 are generated from the character's own knowledge, not hard-coded. A
@@ -20,19 +28,22 @@ shows up automatically next time they open the altar.
 Caveat: like world/building_menus.py, this was written directly
 against Evennia's documented EvMenu usage pattern (node functions
 returning (text, options), auto-numbered options when "key" is
-omitted, "exec" callables for side effects before a "goto", and
-(nodename, kwargs) tuples in "goto" for passing state between nodes)
-but has NOT been smoke-tested against a live Evennia install (no
-network access in the sandbox this was written in). Test with
-`evennia reload` + `craft spell` before relying on it, and check
-evennia/utils/evmenu.py in your own install if anything about option
-handling looks off.
+omitted, and (nodename, kwargs) tuples in "goto" for passing state
+between nodes). An earlier version of this menu used "exec" option
+callbacks for side effects before a "goto" - live testing showed
+selections silently doing nothing (no server-side traceback either),
+so that's been replaced throughout with the same "goto" tuple ->
+small apply-node -> node_main(caller, "") pattern world/oedit_menu.py
+already used successfully. If anything about option handling still
+looks off, check evennia/utils/evmenu.py in your own install.
 """
 
+from world.dice import ResultTier
 from world.skills import SKILL_CATEGORIES
 from world.magick_words import get_word_data
 from world.spell_recipe import SpellRecipe, DELIVERY_TYPES
 from world.spell_rules import (
+    build_spell_record,
     calculate_complexity,
     calculate_creation_difficulty,
     calculate_mana_cost,
@@ -162,6 +173,11 @@ def node_main(caller, raw_string, **kwargs):
         {"desc": "Remove Modifier", "goto": "node_remove_modifier"},
         {"desc": "Review Spell", "goto": "node_review"},
         {
+            "key": ("f", "finish"),
+            "desc": "Name & Create Spell",
+            "goto": "node_name_spell",
+        },
+        {
             "key": ("s", "save"),
             "desc": "Save Recipe (draft)",
             "goto": "node_save",
@@ -180,12 +196,6 @@ def node_main(caller, raw_string, **kwargs):
 # Primary skill
 # ==========================================================================
 
-def _make_skill_setter(skill):
-    def _setter(caller, raw_string, **kwargs):
-        _recipe(caller).primary_skill = skill
-    return _setter
-
-
 def node_choose_skill(caller, raw_string, **kwargs):
     text = (
         "|wChoose your spell's PRIMARY Magick skill.|n\n"
@@ -201,13 +211,12 @@ def node_choose_skill(caller, raw_string, **kwargs):
 
     if not known_skills:
         caller.msg("|rYou have no ranks in any Magick skill yet.|n")
-        return "node_main"
+        return node_main(caller, "")
 
     options = [
         {
             "desc": f"{skill} (rank {caller.get_skill(skill)})",
-            "exec": _make_skill_setter(skill),
-            "goto": "node_main",
+            "goto": ("node_apply_skill", {"skill": skill}),
         }
         for skill in known_skills
     ]
@@ -218,15 +227,24 @@ def node_choose_skill(caller, raw_string, **kwargs):
     return text, options
 
 
+def node_apply_skill(caller, raw_string="", **kwargs):
+    """
+    Applies the choice made in node_choose_skill, then falls through
+    to node_main. Not reached via an "exec" option callback - that
+    convention turned out not to reliably fire in practice (see the
+    "F. Finish & Name Spell" flow's naming node for the same "goto"-
+    carries-the-kwargs pattern, and world/oedit_menu.py's node_edit_
+    field for the precedent this follows).
+    """
+    skill = kwargs.get("skill")
+    if skill:
+        _recipe(caller).primary_skill = skill
+    return node_main(caller, "")
+
+
 # ==========================================================================
 # Delivery / target
 # ==========================================================================
-
-def _make_delivery_setter(delivery):
-    def _setter(caller, raw_string, **kwargs):
-        _recipe(caller).delivery = delivery
-    return _setter
-
 
 def node_choose_delivery(caller, raw_string, **kwargs):
     text = (
@@ -241,8 +259,7 @@ def node_choose_delivery(caller, raw_string, **kwargs):
     options = [
         {
             "desc": delivery,
-            "exec": _make_delivery_setter(delivery),
-            "goto": "node_main",
+            "goto": ("node_apply_delivery", {"delivery": delivery}),
         }
         for delivery in DELIVERY_TYPES
     ]
@@ -251,6 +268,13 @@ def node_choose_delivery(caller, raw_string, **kwargs):
     )
 
     return text, options
+
+
+def node_apply_delivery(caller, raw_string="", **kwargs):
+    delivery = kwargs.get("delivery")
+    if delivery:
+        _recipe(caller).delivery = delivery
+    return node_main(caller, "")
 
 
 # ==========================================================================
@@ -268,7 +292,7 @@ def node_add_word_menu(caller, raw_string, **kwargs):
             "|rYou don't know any Magick words yet - 'study' something "
             "magical to learn some.|n"
         )
-        return "node_main"
+        return node_main(caller, "")
 
     text = f"|wAdd {label}|n - choose a category of known words."
 
@@ -284,19 +308,6 @@ def node_add_word_menu(caller, raw_string, **kwargs):
     return text, options
 
 
-def _make_word_adder(word_id, mode):
-    def _adder(caller, raw_string, **kwargs):
-        recipe = _recipe(caller)
-        try:
-            if mode == "modifier":
-                recipe.add_modifier(word_id)
-            else:
-                recipe.add_component(word_id)
-        except ValueError as err:
-            caller.msg(str(err))
-    return _adder
-
-
 def node_add_word_pick(caller, raw_string, **kwargs):
     mode = kwargs.get("mode", "component")
     category = kwargs.get("category", "")
@@ -305,7 +316,7 @@ def node_add_word_pick(caller, raw_string, **kwargs):
 
     if not words:
         caller.msg(f"You don't know any {category} words.")
-        return "node_main"
+        return node_main(caller, "")
 
     text = f"|wChoose a {category} word to add.|n"
 
@@ -316,8 +327,7 @@ def node_add_word_pick(caller, raw_string, **kwargs):
         options.append(
             {
                 "desc": f"{data['word']} - {data['meaning']} |c[{data['skill']}]|n",
-                "exec": _make_word_adder(word_id, mode),
-                "goto": "node_main",
+                "goto": ("node_apply_add_word", {"word_id": word_id, "mode": mode}),
             }
         )
 
@@ -326,19 +336,26 @@ def node_add_word_pick(caller, raw_string, **kwargs):
     return text, options
 
 
+def node_apply_add_word(caller, raw_string="", **kwargs):
+    word_id = kwargs.get("word_id")
+    mode = kwargs.get("mode", "component")
+
+    recipe = _recipe(caller)
+
+    try:
+        if mode == "modifier":
+            recipe.add_modifier(word_id)
+        else:
+            recipe.add_component(word_id)
+    except ValueError as err:
+        caller.msg(str(err))
+
+    return node_main(caller, "")
+
+
 # ==========================================================================
 # Removing words / modifiers
 # ==========================================================================
-
-def _make_word_remover(word_id, list_name):
-    def _remover(caller, raw_string, **kwargs):
-        recipe = _recipe(caller)
-        if list_name == "modifiers":
-            recipe.remove_modifier(word_id)
-        else:
-            recipe.remove_component(word_id)
-    return _remover
-
 
 def _node_remove(caller, list_name):
     recipe = _recipe(caller)
@@ -346,7 +363,7 @@ def _node_remove(caller, list_name):
 
     if not word_ids:
         caller.msg(f"There are no {list_name} to remove.")
-        return "node_main"
+        return node_main(caller, "")
 
     singular = list_name[:-1]
     text = f"|wRemove which {singular}?|n"
@@ -359,14 +376,30 @@ def _node_remove(caller, list_name):
         options.append(
             {
                 "desc": label,
-                "exec": _make_word_remover(word_id, list_name),
-                "goto": "node_main",
+                "goto": (
+                    "node_apply_remove_word",
+                    {"word_id": word_id, "list_name": list_name},
+                ),
             }
         )
 
     options.append({"key": ("q", "back"), "desc": "Back", "goto": "node_main"})
 
     return text, options
+
+
+def node_apply_remove_word(caller, raw_string="", **kwargs):
+    word_id = kwargs.get("word_id")
+    list_name = kwargs.get("list_name")
+
+    recipe = _recipe(caller)
+
+    if list_name == "modifiers":
+        recipe.remove_modifier(word_id)
+    else:
+        recipe.remove_component(word_id)
+
+    return node_main(caller, "")
 
 
 def node_remove_component(caller, raw_string, **kwargs):
@@ -411,6 +444,121 @@ def node_review(caller, raw_string, **kwargs):
 
 
 # ==========================================================================
+# Naming / creation roll / persistence
+# ==========================================================================
+
+def node_name_spell(caller, raw_string, **kwargs):
+    """
+    Free-text name entry, using the "_default" catch-all pattern (see
+    world/oedit_menu.py for the same convention): the first visit
+    (no "apply" kwarg) just shows the prompt, the "_default" option
+    re-enters this same node with apply=True so raw_string is treated
+    as the typed name.
+    """
+    recipe = _recipe(caller)
+    result = validate_recipe(recipe, caller)
+
+    if not result.valid:
+        lines = ["|rThis recipe isn't ready to name/create yet:|n"]
+        for error in result.errors:
+            lines.append(f"  - {error}")
+        caller.msg("\n".join(lines))
+        return node_main(caller, "")
+
+    if not kwargs.get("apply"):
+        text = "|wName your spell|n (or '@' to cancel):"
+        options = (
+            {"key": "@", "desc": "Cancel", "goto": "node_main"},
+            {"key": "_default", "goto": ("node_name_spell", {"apply": True})},
+        )
+        return text, options
+
+    name = raw_string.strip()
+
+    if not name:
+        caller.msg("|rA spell needs a name.|n")
+        return node_name_spell(caller, "", apply=False)
+
+    if caller.knows_spell(name):
+        caller.msg(
+            f"|rYou already know a spell called '{name}'. Choose a "
+            "different name.|n"
+        )
+        return node_name_spell(caller, "", apply=False)
+
+    return node_confirm_creation(caller, "", name=name)
+
+
+def node_confirm_creation(caller, raw_string, **kwargs):
+    recipe = _recipe(caller)
+    name = kwargs.get("name", "")
+
+    required = calculate_creation_difficulty(recipe)
+    mana_cost = calculate_mana_cost(recipe)
+
+    text = (
+        f"|wCreate '{name}'?|n\n\n"
+        f" Primary skill:  {recipe.primary_skill}\n"
+        f" Complexity:     {calculate_complexity(recipe)}\n"
+        f" Roll needed:    Intelligence + Arcana + {recipe.primary_skill} "
+        f"vs. {required} successes\n"
+        f" Mana cost (once learned): {mana_cost}\n\n"
+        "Attempting the roll does not consume the draft on failure - "
+        "you can try again."
+    )
+
+    options = (
+        {
+            "key": ("y", "yes"),
+            "desc": "Attempt the creation roll",
+            "goto": ("node_creation_roll", {"name": name}),
+        },
+        {"key": ("n", "no", "@"), "desc": "Back", "goto": "node_main"},
+    )
+
+    return text, options
+
+
+def node_creation_roll(caller, raw_string, **kwargs):
+    recipe = _recipe(caller)
+    name = kwargs.get("name", "")
+
+    result = validate_recipe(recipe, caller)
+
+    if not result.valid:
+        # State changed since confirmation (word forgotten somehow,
+        # etc.) - bounce out rather than roll against a bad recipe.
+        caller.msg("|rThis recipe is no longer valid - check Review Spell.|n")
+        return node_main(caller, "")
+
+    required = calculate_creation_difficulty(recipe)
+
+    roll = caller.perform_spell_check(recipe.primary_skill, required)
+
+    if roll.tier < ResultTier.SUCCESS:
+        caller.msg(
+            f"|rThe working falls apart before it takes shape. "
+            f"'{name}' is not yet created - your recipe is still here "
+            "if you want to try again.|n"
+        )
+        return node_main(caller, "")
+
+    record = build_spell_record(recipe, name)
+    caller.learn_spell(record)
+
+    caller.attributes.remove("spell_recipe_draft")
+    caller.ndb.spell_recipe = None
+
+    caller.msg(
+        f"|gSuccess! You have created and learned the spell "
+        f"'{record['name']}'.|n\n"
+        f"Casting difficulty: {record['casting_difficulty']} successes  "
+        f"Mana cost: {record['mana_cost']}"
+    )
+    return None, None
+
+
+# ==========================================================================
 # Save / cancel (end nodes)
 # ==========================================================================
 
@@ -423,7 +571,7 @@ def node_save(caller, raw_string, **kwargs):
         for error in result.errors:
             lines.append(f"  - {error}")
         caller.msg("\n".join(lines))
-        return "node_main"
+        return node_main(caller, "")
 
     caller.attributes.add("spell_recipe_draft", recipe.to_dict())
     caller.msg(

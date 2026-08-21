@@ -319,3 +319,46 @@ def calculate_mana_cost(recipe):
         return 0
 
     return complexity * 2
+
+
+def calculate_casting_difficulty(recipe):
+    """
+    Calculate the difficulty a finished spell will be cast against.
+
+    Per the design doc, the casting roll uses the same dice pool as
+    creation (see Character.perform_spell_check) but against the
+    spell's own fixed difficulty rather than being re-derived from
+    complexity every time. In practice that fixed number is set once,
+    at creation time, from the same complexity-based formula as
+    calculate_creation_difficulty() - kept as a separate function
+    (rather than reusing that one directly) so a future balancing pass
+    can split creation and casting difficulty apart without touching
+    every call site.
+    """
+    return calculate_creation_difficulty(recipe)
+
+
+def build_spell_record(recipe, name):
+    """
+    Build the persistent dict stored in Character.known_spells for a
+    finished spell, per the design doc: name, primary_skill,
+    secondary_skills, words/components, delivery/target, complexity,
+    creation difficulty, casting difficulty, mana cost.
+
+    Does not validate the recipe or check the name - callers (see
+    world/spell_menu.py) should call validate_recipe() and
+    Character.knows_spell() first.
+    """
+    return {
+        "name": name.strip(),
+        "primary_skill": recipe.primary_skill,
+        "secondary_skills": recipe.secondary_skills(),
+        "delivery": recipe.delivery,
+        "components": list(recipe.components),
+        "modifiers": list(recipe.modifiers),
+        "ritual": recipe.ritual,
+        "complexity": calculate_complexity(recipe),
+        "creation_difficulty": calculate_creation_difficulty(recipe),
+        "casting_difficulty": calculate_casting_difficulty(recipe),
+        "mana_cost": calculate_mana_cost(recipe),
+    }

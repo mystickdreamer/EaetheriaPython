@@ -5,6 +5,8 @@ Commands describe the input the account can do to the game.
 
 """
 
+import re
+
 from evennia.commands.command import Command as BaseCommand
 from evennia.utils.evmenu import EvMenu
 
@@ -1242,6 +1244,237 @@ class CmdMagickWords(Command):
 
         lines.append("|y" + "=" * 60 + "|n")
         caller.msg("\n".join(lines))
+
+
+class CmdSpells(Command):
+    """
+    List or inspect the spells you've created.
+
+    Usage:
+      spells
+      spells <name>
+
+    With no argument, lists every spell you've permanently learned
+    (see 'craft spell'). With a name, shows that spell's full recipe:
+    primary/secondary skills, delivery, components, complexity,
+    casting difficulty, and mana cost.
+    """
+
+    key = "spells"
+    help_category = "Magick"
+
+    def func(self):
+        caller = self.caller
+        caller.ensure_data_integrity()
+
+        known = caller.known_spells
+        name = self.args.strip() if self.args else ""
+
+        if not name:
+            lines = [
+                "|y" + "=" * 60 + "|n",
+                f"|w{'KNOWN SPELLS':^60}|n",
+                "|y" + "=" * 60 + "|n",
+            ]
+
+            if not known:
+                lines.append(" You haven't created any spells yet.")
+                lines.append(" (see 'craft spell' at an Altar)")
+            else:
+                for record in known.values():
+                    lines.append(
+                        f" {record['name']}  |c[{record['primary_skill']}, "
+                        f"{record['delivery']}]|n"
+                    )
+
+            lines.append("|y" + "=" * 60 + "|n")
+            caller.msg("\n".join(lines))
+            return
+
+        record = caller.get_spell(name)
+
+        if record is None:
+            caller.msg(f"You don't know a spell called '{name}'.")
+            return
+
+        secondary = ", ".join(record["secondary_skills"]) or "(none)"
+
+        word_lines = []
+        for word_id in record["components"] + record["modifiers"]:
+            data = magick_words_registry.get_word_data(word_id)
+            if not data:
+                continue
+            role = "modifier" if word_id in record["modifiers"] else "component"
+            word_lines.append(f"    - {data['word']} ({data['category']}, {role})")
+
+        lines = [
+            "|y" + "=" * 60 + "|n",
+            f"|w{record['name']:^60}|n",
+            "|y" + "=" * 60 + "|n",
+            f" Primary Skill:      {record['primary_skill']}",
+            f" Secondary Skills:   {secondary}",
+            f" Delivery:           {record['delivery']}",
+            f" Ritual:             {'yes' if record['ritual'] else 'no'}",
+            " Words:",
+            "\n".join(word_lines) if word_lines else "    (none)",
+            f" Complexity:         {record['complexity']}",
+            f" Casting Difficulty: {record['casting_difficulty']} successes",
+            f" Mana Cost:          {record['mana_cost']}",
+            "|y" + "=" * 60 + "|n",
+        ]
+        caller.msg("\n".join(lines))
+
+
+class CmdCast(Command):
+    """
+    Cast a spell you've created (see 'craft spell'/'spells').
+
+    Usage:
+      cast "<spell name>"
+      cast "<spell name>" <target>
+
+    Quotes around the name are required whenever you're also giving a
+    target, and always accepted even when you aren't. Which delivery
+    types need a target:
+
+      Self, Room    - no target; ignore anything typed after the name
+      Touch,
+      Projectile    - target another character (currently just
+                      "present in the room" - real Melee/Pole/Missile
+                      combat ranges aren't implemented yet)
+      Object        - target an item in your inventory or the room
+
+    Casting spends the spell's mana cost up front (win or lose), then
+    rolls Intelligence + Arcana + the spell's primary skill against
+    its stored casting difficulty - the same pool used to create it,
+    fixed at creation rather than changing if you later relearn the
+    primary skill's words differently.
+
+    This stage handles the roll, mana, and targeting - it does not
+    yet apply an in-game effect (damage, healing, wards, light, etc.)
+    to whatever you hit. That's the next stage of the Magick system.
+
+    Ritual casting ('cast "name" ritual') is not implemented yet - it
+    needs a round-based combat/ritual-tick system this project
+    doesn't have yet.
+    """
+
+    key = "cast"
+    help_category = "Magick"
+
+    _QUOTED = re.compile(r'^"([^"]+)"\s*(.*)$')
+
+    def _parse(self):
+        args = self.args.strip() if self.args else ""
+
+        if not args:
+            return "", ""
+
+        match = self._QUOTED.match(args)
+
+        if match:
+            return match.group(1).strip(), match.group(2).strip()
+
+        return args, ""
+
+    def _resolve_target(self, caller, record, target_text):
+        """
+        Return (target, ok). ok=False means bail out of func() - either
+        a message was already sent (a plain no-target error, or
+        caller.search's own built-in "not found"/"which one did you
+        mean" messaging - same non-quiet convention CmdStudy uses) or
+        there was nothing to resolve. target is None whenever the
+        delivery doesn't need one, even if ok is True.
+        """
+        delivery = record["delivery"]
+
+        if delivery in ("Self", "Room"):
+            return None, True
+
+        if not target_text:
+            caller.msg(f"'{record['name']}' ({delivery}) needs a target.")
+            return None, False
+
+        if delivery == "Object":
+            candidates = list(caller.contents)
+            if caller.location:
+                candidates += list(caller.location.contents)
+            target = caller.search(target_text, candidates=candidates)
+        else:
+            # Touch / Projectile - another character in the room.
+            # Placeholder until real combat ranges exist (see class
+            # docstring).
+            candidates = [
+                obj for obj in (caller.location.contents if caller.location else [])
+                if obj is not caller and hasattr(obj, "known_magick_words")
+            ]
+            target = caller.search(target_text, candidates=candidates)
+
+        if not target:
+            return None, False  # caller.search already sent a message
+
+        return target, True
+
+    def func(self):
+        caller = self.caller
+        caller.ensure_data_integrity()
+
+        name, target_text = self._parse()
+
+        if not name:
+            caller.msg('Usage: cast "<spell name>" [<target>]')
+            return
+
+        if name.lower() == "ritual" or target_text.lower() == "ritual":
+            caller.msg(
+                "|rRitual casting isn't implemented yet - it needs a "
+                "round-based combat/ritual-tick system this project "
+                "doesn't have yet.|n"
+            )
+            return
+
+        record = caller.get_spell(name)
+
+        if record is None:
+            caller.msg(f"You don't know a spell called '{name}'.")
+            return
+
+        target, ok = self._resolve_target(caller, record, target_text)
+
+        if not ok:
+            return
+
+        mana_cost = record["mana_cost"]
+
+        if caller.mana < mana_cost:
+            caller.msg(
+                f"You don't have enough mana to cast '{record['name']}' "
+                f"({mana_cost} required, you have {caller.mana})."
+            )
+            return
+
+        caller.mana -= mana_cost
+
+        roll = caller.perform_spell_check(
+            record["primary_skill"],
+            record["casting_difficulty"],
+        )
+
+        target_desc = f" at {target.get_display_name(caller)}" if target else ""
+
+        if roll.tier == ResultTier.BOTCH:
+            caller.msg(
+                f"|rThe Magick turns on you! '{record['name']}' botches.|n"
+            )
+        elif roll.tier < ResultTier.SUCCESS:
+            caller.msg(
+                f"You cast '{record['name']}'{target_desc}, but it fizzles."
+            )
+        else:
+            tier_word = "critically succeeds" if roll.tier == ResultTier.CRITICAL else "succeeds"
+            caller.msg(
+                f"|gYou cast '{record['name']}'{target_desc} - it {tier_word}.|n"
+            )
 
 
 class CmdCraftSpell(Command):

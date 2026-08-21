@@ -21,6 +21,7 @@ from commands.command import (
     CmdPick, CmdSpeak, CmdDoorEdit, CmdTestMagickVocabulary, CmdUnlock, CmdLock,
     CmdWear, CmdRemove, CmdBody, CmdEquipment, CmdItemEdit, CmdImm,
     CmdHolylight, CmdStudy, CmdMagickWords, CmdTestSkill, CmdCraftSpell,
+    CmdSpells, CmdCast,
 )
 from commands.object_builder import CmdOList, CmdOCreate, CmdOEdit, CmdRoomEdit
 
@@ -67,6 +68,8 @@ class CharacterCmdSet(default_cmds.CharacterCmdSet):
         self.add(CmdStudy())
         self.add(CmdMagickWords())
         self.add(CmdCraftSpell())
+        self.add(CmdSpells())
+        self.add(CmdCast())
         self.add(CmdTestMagickVocabulary())
         self.add(CmdTestSkill())
 
